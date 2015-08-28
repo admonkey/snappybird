@@ -1,7 +1,7 @@
 /*
   The contents of this file are dedicated by all of its authors, including
 
-    Michael S. Gashler,
+    Michael S. Gashler & Jeff Puckett <jeff@jeffpuckett.com>
 
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
@@ -24,6 +24,9 @@ public:
 	Model& m_model;
 	int ttl;
 	int frame;
+
+	int sec;
+
 	int m_keyboard[SDLK_LAST];
 	int m_mouse[4];
 	int m_mouseX;
@@ -33,6 +36,12 @@ public:
 public:
 	Controller(Model& m, bool* pKeepRunning);
 	virtual ~Controller();
+
+	// added for automation
+	void flap()
+	{
+		m_model.flap();
+	}
 
 	void onChar(char c)
 	{

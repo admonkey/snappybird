@@ -1,14 +1,14 @@
 /*
   The contents of this file are dedicated by all of its authors, including
 
-    Michael S. Gashler,
+    Michael S. Gashler, Jeff Puckett
 
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
 
 #include "Controller.h"
 #include "View.h"
-
+#include <ctime>
 
 Controller::Controller(Model& model, bool* pKeepRunning)
 : m_model(model), m_pKeepRunning(pKeepRunning)
@@ -87,6 +87,13 @@ void Controller::handleKeyPress(SDLKey key, SDLMod mod)
 
 void Controller::update()
 {
+	// added for automation
+	//if (time(0) != sec){
+	if (clock() % 13 == 0){
+		flap();
+		sec = time(0);
+	}
+
 	SDL_Event event;
 	while(SDL_PollEvent(&event))
 	{
