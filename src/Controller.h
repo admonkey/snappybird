@@ -25,7 +25,9 @@ public:
 	int ttl;
 	int frame;
 
-	int sec;
+	// added for automation
+	clock_t sec;
+	clock_t stt;
 
 	int m_keyboard[SDLK_LAST];
 	int m_mouse[4];

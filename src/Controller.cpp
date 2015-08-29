@@ -8,11 +8,17 @@
 
 #include "Controller.h"
 #include "View.h"
+
 #include <ctime>
+#include <iostream>
 
 Controller::Controller(Model& model, bool* pKeepRunning)
 : m_model(model), m_pKeepRunning(pKeepRunning)
 {
+	// added for automation
+	stt = clock();
+	sec = 0;
+	
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
 		m_keyboard[n] = 0;
@@ -88,10 +94,12 @@ void Controller::handleKeyPress(SDLKey key, SDLMod mod)
 void Controller::update()
 {
 	// added for automation
-	//if (time(0) != sec){
-	if (clock() % 13 == 0){
+	sec += clock() - stt;
+	//std::cout << sec << "\n";
+	if (sec > 150000){
 		flap();
-		sec = time(0);
+		stt = clock();
+		sec = 0;
 	}
 
 	SDL_Event event;
