@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
 				v->update();
 				mili_sleep(30);
 				c->update();
+				cout << c->getState() << "\n";
 			}
 			delete m;
 			delete v;

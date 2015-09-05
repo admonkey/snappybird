@@ -73,7 +73,25 @@ public:
 	
 	string getState()
 	{
-		string s = to_string(m_model.bird.vert_vel);
+		int discretizer = 10;
+		string s = "";
+
+		// next tube state
+		if(m_model.tubes.size() > 0){
+		  int i = 0;
+		  while(m_model.tubes[i]->x < m_model.bird.x){
+			i++;
+		  }
+		  s += to_string(m_model.tubes[i]->up);
+		  s += "," + to_string(m_model.tubes[i]->y / discretizer);
+		  s += "," + to_string((m_model.tubes[i]->x - m_model.bird.x) / discretizer);
+		}
+		else s += "0,0," + to_string(400 / discretizer);
+
+		// bird state
+		s += "," + to_string(m_model.bird.y / discretizer);
+		s += "," + to_string(m_model.bird.vert_vel / discretizer);
+
 		return s;
 	}
 
