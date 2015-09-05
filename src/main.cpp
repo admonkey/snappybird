@@ -48,24 +48,28 @@ int main(int argc, char *argv[])
 	try
 	{
 		bool keepRunning = true;
-		Model *m;
-		m = new Model;
-		View *v;
-		v = new View(*m, 500, 500);
-		Controller *c;
-		c = new Controller(*m, &keepRunning);
-		while(keepRunning)
-		{
-			if(!m->update())
-				keepRunning = false;
-			v->update();
-			mili_sleep(30);
-			c->update();
+		bool keepFlying = true;
+		while(keepRunning){
+			keepFlying = true;
+			Model *m;
+			m = new Model;
+			View *v;
+			v = new View(*m, 500, 500);
+			Controller *c;
+			c = new Controller(*m, &keepRunning);
+			while(keepFlying)
+			{
+				if(!m->update())
+					keepFlying = false;
+				v->update();
+				mili_sleep(30);
+				c->update();
+			}
+			delete m;
+			delete v;
+			delete c;
+			mili_sleep(1000);
 		}
-		delete m;
-		delete v;
-		delete c;
-		mili_sleep(1000);
 	}
 	catch(const std::exception& e)
 	{
