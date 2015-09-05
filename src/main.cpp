@@ -45,31 +45,30 @@ void mili_sleep(unsigned int nMiliseconds)
 int main(int argc, char *argv[])
 {
 	int nRet = 0;
-	while(nRet == 0){
-		try
+	try
+	{
+		bool keepRunning = true;
+		Model *m;
+		m = new Model;
+		View v(*m, 500, 500);
+		Controller c(*m, &keepRunning);
+		while(keepRunning)
 		{
-			bool keepRunning = true;
-			Model m;
-			View v(m, 500, 500);
-			Controller c(m, &keepRunning);
-			while(keepRunning)
-			{
-				if(!m.update()) // true for reward = 1, false for reward = 0
-					keepRunning = false;
-				//m.update();
-			
-				v.update();
-				mili_sleep(30);
-				c.update();
-			}
-			mili_sleep(1000);
+			if(!m->update())
+				keepRunning = false;
+			v.update();
+			mili_sleep(30);
+			c.update();
 		}
-		catch(const std::exception& e)
-		{
-			cerr << e.what() << "\n";
-			nRet = 1;
-		}
+		delete m;
+		mili_sleep(1000);
 	}
+	catch(const std::exception& e)
+	{
+		cerr << e.what() << "\n";
+		nRet = 1;
+	}
+
 	return nRet;
 }
 
