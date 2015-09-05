@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 			v = new View(*m, 500, 500);
 			Controller *c;
 			c = new Controller(*m, &keepRunning);
-			while(keepFlying)
+			while(keepFlying && keepRunning)
 			{
 				if(!m->update())
 					keepFlying = false;
