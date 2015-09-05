@@ -8,8 +8,19 @@
 
 #include "Model.h"
 #include <SDL/SDL.h>
+#include <string>
+#include <sstream>
+
+template <typename T>
+std::string to_string(T value)
+{
+	std::ostringstream os ;
+	os << value ;
+	return os.str() ;
+}
 
 using std::vector;
+using std::string;
 
 class View;
 
@@ -59,6 +70,12 @@ public:
 	}
 
 	void update();
+	
+	string getState()
+	{
+		string s = to_string(m_model.bird.vert_vel);
+		return s;
+	}
 
 protected:
 	void handleKeyPress(SDLKey eKey, SDLMod mod);
