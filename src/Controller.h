@@ -10,6 +10,7 @@
 #include <SDL/SDL.h>
 #include <string>
 #include <sstream>
+#include <map>
 
 template <typename T>
 std::string to_string(T value)
@@ -21,6 +22,8 @@ std::string to_string(T value)
 
 using std::vector;
 using std::string;
+using std::map;
+using std::pair;
 
 class View;
 
@@ -40,6 +43,8 @@ public:
 	int m_mouseX;
 	int m_mouseY;
 	bool* m_pKeepRunning;
+
+	map<string,double> qtable;
 
 public:
 	Controller(Model& m, bool* pKeepRunning);
@@ -93,6 +98,18 @@ public:
 		s += "," + to_string(m_model.bird.vert_vel / discretizer);
 
 		return s;
+	}
+	
+	double getQvalue(bool flap){
+		string s;
+		s = to_string(flap);
+		s += "," + getState();
+		map<string,double>::iterator it = qtable.find(s);
+		double qvalue = 0.0;
+		if(it != qtable.end())
+			//qvalue = qtable.find(s)->second;
+			qvalue = it->second;
+		return qvalue;
 	}
 
 protected:
