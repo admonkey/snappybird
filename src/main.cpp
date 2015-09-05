@@ -50,17 +50,19 @@ int main(int argc, char *argv[])
 		bool keepRunning = true;
 		Model *m;
 		m = new Model;
-		View v(*m, 500, 500);
+		View *v;
+		v = new View(*m, 500, 500);
 		Controller c(*m, &keepRunning);
 		while(keepRunning)
 		{
 			if(!m->update())
 				keepRunning = false;
-			v.update();
+			v->update();
 			mili_sleep(30);
 			c.update();
 		}
 		delete m;
+		delete v;
 		mili_sleep(1000);
 	}
 	catch(const std::exception& e)
