@@ -68,11 +68,11 @@ usage:
 
 # This rule makes the optimized binary by using g++ to link the optimized ".o" files together
 $(TARGET_PATH)/$(TARGET_NAME_OPT) : partialcleanopt $(OBJECTS_OPT)
-	g++ -O3 -o $(TARGET_PATH)/$(TARGET_NAME_OPT) $(OBJECTS_OPT) $(OPT_LFLAGS)
+	g++ -std=c++11 -O3 -o $(TARGET_PATH)/$(TARGET_NAME_OPT) $(OBJECTS_OPT) $(OPT_LFLAGS)
 
 # This rule makes the debug binary by using g++ to link the debug ".o" files together
 $(TARGET_PATH)/$(TARGET_NAME_DBG) : partialcleandbg $(OBJECTS_DBG)
-	g++ -g -o $(TARGET_PATH)/$(TARGET_NAME_DBG) $(OBJECTS_DBG) $(DBG_LFLAGS)
+	g++ -std=c++11 -g -o $(TARGET_PATH)/$(TARGET_NAME_DBG) $(OBJECTS_DBG) $(DBG_LFLAGS)
 
 # This includes all of the ".d" files. Each ".d" file contains a
 # generated rule that tells it how to make .o files. (The reason these are generated is so that
@@ -90,7 +90,7 @@ $(DEPS_OPT) : $(OBJ_PATH)/opt/%.d : %.cpp
 	@if [ ! -d "$$(dirname $@)" ]; then mkdir -p "$$(dirname $@)"; fi
 	@echo -en "$$(dirname $@)/" > $@
 	@g++ $(OPT_CFLAGS) -MM $< >> $@
-	@echo -e "	g++ $(OPT_CFLAGS) -c -std=c++11 $< -o $$(dirname $@)/$$(basename $@ .d).o" >> $@
+	@echo -e "	g++ $(OPT_CFLAGS) -c $< -o $$(dirname $@)/$$(basename $@ .d).o" >> $@
 
 # This rule makes the debug ".d" files by using "g++ -MM" with the corresponding ".cpp" file
 # The ".d" file will contain a rule that says how to make a debug ".o" file.
@@ -101,7 +101,7 @@ $(DEPS_DBG) : $(OBJ_PATH)/dbg/%.d : %.cpp
 	@if [ ! -d "$$(dirname $@)" ]; then mkdir -p "$$(dirname $@)"; fi
 	@echo -en "$$(dirname $@)/" > $@
 	@g++ $(DBG_CFLAGS) -MM $< >> $@
-	@echo -e "	g++ $(DBG_CFLAGS) -c -std=c++11 $< -o $$(dirname $@)/$$(basename $@ .d).o" >> $@
+	@echo -e "	g++ $(DBG_CFLAGS) -c $< -o $$(dirname $@)/$$(basename $@ .d).o" >> $@
 
 partialcleandbg :
 	@if [ ! -d "$(TARGET_PATH)" ]; then mkdir -p "$(TARGET_PATH)"; fi

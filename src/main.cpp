@@ -19,6 +19,7 @@
 #include "Model.h"
 #include "View.h"
 #include "Controller.h"
+#include <fstream>
 
 using std::cerr;
 using std::cout;
@@ -73,12 +74,31 @@ int main(int argc, char *argv[])
 				c->update(keepFlying);
 				//cout << c->getState() << "\n";
 			}
-			cout << "score: " << m->score << " game: " << ++game << "\n";
+			cout << "score: " << m->score << " game: " << game++ << "\n";
 			delete m;
 			delete v;
 			delete c;
 			//mili_sleep(1000);
 		}
+		cout << "writing qTable to file...\n";
+		std::ofstream qfile;
+		qfile.open("qtable.txt", std::ofstream::out);
+		std::map<string,double>::iterator iter;
+		std::string strToReturn = ""; //This is no longer on the heap
+
+		for (iter = mqtable.begin(); iter != mqtable.end(); ++iter) {
+		   strToReturn += iter->first; //Not a method call
+		   strToReturn += "=";
+		   strToReturn += to_string(iter->second);
+		   strToReturn += ";";
+		   //....
+		   // Make sure you don't modify table here or the iterators will not work as you expect
+		}
+		//...
+		qfile << strToReturn;
+		//qfile << "test";
+		qfile.close();
+		cout << "qTable written to file.\n";
 	}
 	catch(const std::exception& e)
 	{
