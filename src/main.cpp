@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 		map<string,double> mqtable;
 		int game = 1;
 		while(keepRunning){
-			cout << game++ << "\n";
+			
 			keepFlying = true;
 			Model *m;
 			m = new Model;
@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
 				c->update(keepFlying);
 				//cout << c->getState() << "\n";
 			}
+			cout << "score: " << m->score << " game: " << ++game << "\n";
 			delete m;
 			delete v;
 			delete c;

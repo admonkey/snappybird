@@ -9,6 +9,7 @@
 #include "Model.h"
 #include <SDL/SDL.h>
 #include <string>
+#include <iostream>
 #include <sstream>
 #include <map>
 
@@ -48,6 +49,7 @@ public:
 	string previousState;
 	bool previousFlap;
 	bool* ssleep;
+	bool DEBUGZ = false;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep);
@@ -83,7 +85,7 @@ public:
 	
 	string getState()
 	{
-		int discretizer = 10;
+		int discretizer = 8;
 		string s = "";
 
 		// next tube state
@@ -124,7 +126,7 @@ public:
 		s += "," + previousState;
 		double qvalue = 0.0;
 		if(reward)
-			qvalue = 1.0;
+			qvalue = 0.0;
 		else	qvalue = -1.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
@@ -132,7 +134,13 @@ public:
 		double discount = 0.9;
 		//qvalue += (discount * max(q_j_flap, q_j_noflap));
 		qvalue += (discount * std::max(getQvalue(true, getState()), getQvalue(false, getState())));
-		qtable->insert(std::pair<string,double>(s, qvalue));
+		//qtable->erase(std::pair<string,double>(s, qvalue));
+		map<string,double>::iterator it = qtable->find(s);
+		if(it != qtable->end())
+			it->second = qvalue;
+		else
+			qtable->insert(std::pair<string,double>(s, qvalue));
+		if(DEBUGZ) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
 	}
 
 protected:

@@ -13,13 +13,11 @@ ifeq ($(UNAME),Darwin)
 	OPT_CFLAGS = $(CFLAGS) -O3
 	DBG_LFLAGS = -L/opt/local/lib -L/usr/local/lib -L/sw/lib $(shell sdl-config --libs) -lpng -lz -lpthread -framework AppKit
 	OPT_LFLAGS = -L/opt/local/lib -L/usr/local/lib -L/sw/lib $(shell sdl-config --libs) -lpng -lz -lpthread -framework AppKit
-	#OPT_LFLAGS = -L/opt/local/lib -L/usr/local/lib -L/sw/lib $(shell sdl-config --cflags --libs sdl2) -lpng -lz -lpthread -framework AppKit
 else
 	CFLAGS = -Wall $(shell sdl-config --cflags)
 	DBG_CFLAGS = $(CFLAGS) -g -D_DEBUG
 	OPT_CFLAGS = $(CFLAGS) -O3
 	LFLAGS = $(shell sdl-config --libs)
-	#LFLAGS = $(shell sdl-config --cflags --libs sdl2)
 	DBG_LFLAGS = $(LFLAGS) -lpthread -lpng
 	OPT_LFLAGS = $(LFLAGS) -lpthread -lpng
 endif
@@ -92,7 +90,7 @@ $(DEPS_OPT) : $(OBJ_PATH)/opt/%.d : %.cpp
 	@if [ ! -d "$$(dirname $@)" ]; then mkdir -p "$$(dirname $@)"; fi
 	@echo -en "$$(dirname $@)/" > $@
 	@g++ $(OPT_CFLAGS) -MM $< >> $@
-	@echo -e "	g++ $(OPT_CFLAGS) -c $< -o $$(dirname $@)/$$(basename $@ .d).o" >> $@
+	@echo -e "	g++ $(OPT_CFLAGS) -c -std=c++11 $< -o $$(dirname $@)/$$(basename $@ .d).o" >> $@
 
 # This rule makes the debug ".d" files by using "g++ -MM" with the corresponding ".cpp" file
 # The ".d" file will contain a rule that says how to make a debug ".o" file.
@@ -103,7 +101,7 @@ $(DEPS_DBG) : $(OBJ_PATH)/dbg/%.d : %.cpp
 	@if [ ! -d "$$(dirname $@)" ]; then mkdir -p "$$(dirname $@)"; fi
 	@echo -en "$$(dirname $@)/" > $@
 	@g++ $(DBG_CFLAGS) -MM $< >> $@
-	@echo -e "	g++ $(DBG_CFLAGS) -c $< -o $$(dirname $@)/$$(basename $@ .d).o" >> $@
+	@echo -e "	g++ $(DBG_CFLAGS) -c -std=c++11 $< -o $$(dirname $@)/$$(basename $@ .d).o" >> $@
 
 partialcleandbg :
 	@if [ ! -d "$(TARGET_PATH)" ]; then mkdir -p "$(TARGET_PATH)"; fi

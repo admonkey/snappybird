@@ -36,7 +36,8 @@ bool Model::update()
 		if(t->x < -55) {
 			tubes[i] = tubes[tubes.size() - 1];
 			tubes.erase(tubes.begin() + tubes.size() - 1);
-			cout << to_str(++score) << "\n";
+			score++;
+			//cout << to_str(++score) << "\n";
 		}
 	}
 	if(++frame % 35 == 0) {
