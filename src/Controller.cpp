@@ -10,8 +10,8 @@
 #include "View.h"
 
 
-Controller::Controller(Model& model, bool* pKeepRunning)
-: m_model(model), m_pKeepRunning(pKeepRunning)
+Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
@@ -21,6 +21,9 @@ Controller::Controller(Model& model, bool* pKeepRunning)
 	m_mouse[3] = 0;
 	m_mouseX = 0;
 	m_mouseY = 0;
+	
+	previousState = getState();
+	previousFlap = false;
 }
 
 Controller::~Controller()
@@ -85,7 +88,7 @@ void Controller::handleKeyPress(SDLKey key, SDLMod mod)
 	}
 }
 
-void Controller::update()
+void Controller::update(bool keepFlying)
 {
 	SDL_Event event;
 	while(SDL_PollEvent(&event))
@@ -126,6 +129,14 @@ void Controller::update()
 				break;
 		}
 	}
+	setQvalue(previousFlap, keepFlying);
+	previousState = getState();
+	double fl = getQvalue(true, previousState);
+	double nofl = getQvalue(false, previousState);
+	if(fl > nofl){
+		m_model.flap();
+		previousFlap = true;
+	} else 	previousFlap = false;
 }
 
 

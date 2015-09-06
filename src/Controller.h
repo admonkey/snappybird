@@ -44,10 +44,12 @@ public:
 	int m_mouseY;
 	bool* m_pKeepRunning;
 
-	map<string,double> qtable;
+	map<string,double>* qtable;
+	string previousState;
+	bool previousFlap;
 
 public:
-	Controller(Model& m, bool* pKeepRunning);
+	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable);
 	virtual ~Controller();
 
 	void onChar(char c)
@@ -74,7 +76,7 @@ public:
 		return false;
 	}
 
-	void update();
+	void update(bool keepFlying);
 	
 	string getState()
 	{
@@ -100,16 +102,34 @@ public:
 		return s;
 	}
 	
-	double getQvalue(bool flap){
+	double getQvalue(bool flap, string state){
 		string s;
 		s = to_string(flap);
-		s += "," + getState();
-		map<string,double>::iterator it = qtable.find(s);
+		s += "," + state;
+		map<string,double>::iterator it = qtable->find(s);
 		double qvalue = 0.0;
-		if(it != qtable.end())
+		if(it != qtable->end())
 			//qvalue = qtable.find(s)->second;
 			qvalue = it->second;
 		return qvalue;
+	}
+
+	void setQvalue(bool flap, bool reward){
+		// combine last action with previous state and current reward
+		string s;
+		s = to_string(flap);
+		s += "," + previousState;
+		double qvalue = 0.0;
+		if(reward)
+			qvalue = 1.0;
+		else	qvalue = -10.0;
+		// Broken-Down Q-Learning Formula
+		//double q_j_flap = getQvalue(true, getState());
+		//double q_j_noflap = getQvalue(false, getState());
+		double discount = 0.9;
+		//qvalue += (discount * max(q_j_flap, q_j_noflap));
+		qvalue += (discount * std::max(getQvalue(true, getState()), getQvalue(false, getState())));
+		qtable->insert(std::pair<string,double>(s, qvalue));
 	}
 
 protected:
