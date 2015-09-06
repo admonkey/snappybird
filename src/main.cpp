@@ -20,6 +20,20 @@
 #include "View.h"
 #include "Controller.h"
 #include <fstream>
+#include <time.h>
+
+// Get current date/time, format is YYYY-MM-DD.HH:mm:ss
+const std::string currentDateTime() {
+    time_t     now = time(0);
+    struct tm  tstruct;
+    char       buf[80];
+    tstruct = *localtime(&now);
+    // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
+    // for more information about date/time format
+    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+
+    return buf;
+}
 
 using std::cerr;
 using std::cout;
@@ -52,9 +66,11 @@ int main(int argc, char *argv[])
 		bool keepFlying = true;
 		bool sleep = true;
 		map<string,double> mqtable;
-		int game = 1;
+		int game = 0;
+		int highScore = 0;
+		int bestGame = game;
 		while(keepRunning){
-			
+			game++;
 			keepFlying = true;
 			Model *m;
 			m = new Model;
@@ -74,7 +90,12 @@ int main(int argc, char *argv[])
 				c->update(keepFlying);
 				//cout << c->getState() << "\n";
 			}
-			cout << "score: " << m->score << " game: " << game++ << "\n";
+			cout << "highScore: " << highScore << " bestGame: " << bestGame;
+			cout << " score: " << m->score << " game: " << game << "\n";
+			if(m->score > highScore){
+				highScore = m->score;
+				bestGame = game;
+			}
 			delete m;
 			delete v;
 			delete c;
@@ -82,21 +103,20 @@ int main(int argc, char *argv[])
 		}
 		cout << "writing qTable to file...\n";
 		std::ofstream qfile;
-		qfile.open("qtable.txt", std::ofstream::out);
+		std::string fname = "qtable-hs" + to_string(highScore) + "-bg" + to_string(bestGame);
+		fname += "-g" + to_string(game) + "-" + currentDateTime() + ".txt";
+		qfile.open(fname.c_str(), std::ofstream::out);
 		std::map<string,double>::iterator iter;
 		std::string strToReturn = ""; //This is no longer on the heap
-
 		for (iter = mqtable.begin(); iter != mqtable.end(); ++iter) {
 		   strToReturn += iter->first; //Not a method call
 		   strToReturn += "=";
 		   strToReturn += to_string(iter->second);
 		   strToReturn += ";";
-		   //....
 		   // Make sure you don't modify table here or the iterators will not work as you expect
 		}
 		//...
 		qfile << strToReturn;
-		//qfile << "test";
 		qfile.close();
 		cout << "qTable written to file.\n";
 	}
