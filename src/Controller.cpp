@@ -10,8 +10,8 @@
 #include "View.h"
 
 
-Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable)
+Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)

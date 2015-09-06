@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
 	{
 		bool keepRunning = true;
 		bool keepFlying = true;
+		bool sleep = true;
 		map<string,double> mqtable;
 		while(keepRunning){
 			keepFlying = true;
@@ -57,20 +58,20 @@ int main(int argc, char *argv[])
 			View *v;
 			v = new View(*m, 500, 500);
 			Controller *c;
-			c = new Controller(*m, &keepRunning, &mqtable);
+			c = new Controller(*m, &keepRunning, &mqtable, &sleep);
 			while(keepFlying && keepRunning)
 			{
 				if(!m->update())
 					keepFlying = false;
 				v->update();
-				mili_sleep(30);
+				if(sleep) mili_sleep(30);
 				c->update(keepFlying);
 				cout << c->getState() << "\n";
 			}
 			delete m;
 			delete v;
 			delete c;
-			mili_sleep(1000);
+			//mili_sleep(1000);
 		}
 	}
 	catch(const std::exception& e)

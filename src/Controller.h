@@ -1,7 +1,7 @@
 /*
   The contents of this file are dedicated by all of its authors, including
 
-    Michael S. Gashler,
+    Michael S. Gashler, Jeff Puckett
 
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
@@ -47,9 +47,10 @@ public:
 	map<string,double>* qtable;
 	string previousState;
 	bool previousFlap;
+	bool* ssleep;
 
 public:
-	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable);
+	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep);
 	virtual ~Controller();
 
 	void onChar(char c)
@@ -64,7 +65,9 @@ public:
 
 	void onMouseDown(int nButton, int x, int y)
 	{
-		m_model.flap();
+		//m_model.flap();
+		if(*ssleep) *ssleep = false;
+		else *ssleep = true;
 	}
 
 	void onMouseUp(int nButton, int x, int y)
