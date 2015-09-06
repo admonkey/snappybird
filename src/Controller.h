@@ -125,7 +125,7 @@ public:
 		double qvalue = 0.0;
 		if(reward)
 			qvalue = 1.0;
-		else	qvalue = -10.0;
+		else	qvalue = -1.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());

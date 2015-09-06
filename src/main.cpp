@@ -51,7 +51,9 @@ int main(int argc, char *argv[])
 		bool keepFlying = true;
 		bool sleep = true;
 		map<string,double> mqtable;
+		int game = 1;
 		while(keepRunning){
+			cout << game++ << "\n";
 			keepFlying = true;
 			Model *m;
 			m = new Model;
@@ -63,10 +65,13 @@ int main(int argc, char *argv[])
 			{
 				if(!m->update())
 					keepFlying = false;
-				v->update();
-				if(sleep) mili_sleep(30);
+				
+				if(sleep) {
+					v->update();
+					mili_sleep(30);
+				}
 				c->update(keepFlying);
-				cout << c->getState() << "\n";
+				//cout << c->getState() << "\n";
 			}
 			delete m;
 			delete v;
