@@ -21,6 +21,7 @@
 #include "Controller.h"
 #include <fstream>
 #include <time.h>
+#include <sys/stat.h>
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
 const std::string currentDateTime() {
@@ -55,7 +56,40 @@ void mili_sleep(unsigned int nMiliseconds)
 #endif
 }
 
-
+void importQtable(map<string,double>* qtable){
+  struct stat buf;
+    if (stat("qtable.txt", &buf) != -1)
+    {
+        cout << "importing qTable...\n";
+	std::ifstream file("qtable.txt");
+	 if (file.is_open())
+	 {
+	 	std::string line = "";
+	 	std::string s = "";
+	 	std::string astate = "";
+	 	std::string qvalue = "";
+	   	while ( std::getline(file, line) )
+		{
+			s = "";
+			astate = "";
+			for(int i = 0; i < line.length(); i++){
+				if(line[i] != '=')
+					//std::cout << line[i];
+					s += line[i];
+				else {
+					astate = s;
+					s = "";
+				}
+				qvalue = s;
+			}
+		    //std::cout << "state: " << astate << "\tq: " << qvalue << std::endl;
+		    qtable->insert(std::pair<string,double>(astate, atof(qvalue.c_str())));
+		}
+	   	file.close();
+	 }
+    }
+    else cout << "no qTable to import. creating new.\n";
+}
 
 int main(int argc, char *argv[])
 {
@@ -70,6 +104,7 @@ int main(int argc, char *argv[])
 		int score = 0;
 		int highScore = score;
 		int bestGame = game;
+		importQtable(&mqtable);
 		while(keepRunning){
 			game++;
 			keepFlying = true;
@@ -119,7 +154,7 @@ int main(int argc, char *argv[])
 		   strToReturn += iter->first; //Not a method call
 		   strToReturn += "=";
 		   strToReturn += to_string(iter->second);
-		   strToReturn += ";";
+		   strToReturn += "\n";
 		   // Make sure you don't modify table here or the iterators will not work as you expect
 		}
 		//...
