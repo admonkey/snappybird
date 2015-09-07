@@ -57,6 +57,8 @@ public:
 
 	void onChar(char c)
 	{
+		if(c == 's')
+			std::cout << "skipped\n";
 		m_model.flap();
 		previousFlap = true;
 	}
@@ -87,7 +89,7 @@ public:
 	
 	string getState()
 	{
-		int discretizer = 2;
+		int discretizer = 5;
 		string s = "";
 
 		// next tube state
@@ -127,9 +129,10 @@ public:
 		s = to_string(flap);
 		s += "," + previousState;
 		double qvalue = 0.0;
-		if(reward)
-			qvalue = 0.0;
-		else	qvalue = -1.0;
+		if(reward && flap)
+			qvalue = 0.0001;
+		if(!reward)
+			qvalue = -1000.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());

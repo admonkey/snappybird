@@ -80,7 +80,6 @@ void importQtable(map<string,double>* qtable, int* highScore, int* bestGame, int
 			astate = "";
 			for(int i = 0; i < line.length(); i++){
 				if(line[i] != '=')
-					//std::cout << line[i];
 					s += line[i];
 				else {
 					astate = s;
@@ -88,7 +87,6 @@ void importQtable(map<string,double>* qtable, int* highScore, int* bestGame, int
 				}
 				qvalue = s;
 			}
-		    //std::cout << "state: " << astate << "\tq: " << qvalue << std::endl;
 		    qtable->insert(std::pair<string,double>(astate, atof(qvalue.c_str())));
 		}
 	   	file.close();
@@ -136,7 +134,6 @@ int main(int argc, char *argv[])
 					mili_sleep(30);
 				}
 				c->update(keepFlying);
-				//cout << c->getState() << "\n";
 			}
 			cout << "highScore: " << highScore << " bestGame: " << bestGame;
 			cout << " score: " << m->score << " game: " << game << "\n";
@@ -148,13 +145,13 @@ int main(int argc, char *argv[])
 			delete v;
 			delete c;
 			
-			//mili_sleep(1000);
+			if(sleep) mili_sleep(3000);
 		}
 		cout << "writing qTable to file...\n";
 		std::ofstream qfile;
 		std::string fname = currentDateTime() + " HS=" + to_string(highScore) + " BG=" + to_string(bestGame);
 		//fname += "-s" + to_string(score) + 
-		fname += " g=" + to_string(game) + " discretizer=2.qtable";
+		fname += " g=" + to_string(game) + " discretizer=5.qtable";
 		qfile.open(fname.c_str(), std::ofstream::out);
 		std::map<string,double>::iterator iter;
 		std::string strToReturn = ""; //This is no longer on the heap

@@ -108,6 +108,7 @@ void Controller::update(bool keepFlying)
 	SDL_Event event;
 	while(SDL_PollEvent(&event))
 	{
+	   if(m_model.frame != 39)
 		switch(event.type)
 		{
 			case SDL_KEYDOWN:
