@@ -67,7 +67,8 @@ int main(int argc, char *argv[])
 		bool sleep = true;
 		map<string,double> mqtable;
 		int game = 0;
-		int highScore = 0;
+		int score = 0;
+		int highScore = score;
 		int bestGame = game;
 		while(keepRunning){
 			game++;
@@ -85,7 +86,11 @@ int main(int argc, char *argv[])
 				
 				if(sleep) {
 					v->update();
-					cout << to_string(m->score) << "\n";
+					if(score < m->score){
+						score = m->score;
+						cout << to_string(score) << "\n";
+					}
+					
 					mili_sleep(30);
 				}
 				c->update(keepFlying);
@@ -100,6 +105,7 @@ int main(int argc, char *argv[])
 			delete m;
 			delete v;
 			delete c;
+			score = 0;
 			//mili_sleep(1000);
 		}
 		cout << "writing qTable to file...\n";
