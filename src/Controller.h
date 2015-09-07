@@ -52,6 +52,7 @@ public:
 	bool DEBUGZ = false;
 	int* ghighScore;
 	bool skip = false;
+	bool agentPlay = true;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
@@ -63,6 +64,17 @@ public:
 			std::cout << "skipping " << (*ghighScore - m_model.score) << " pipes..\n";
 			skip = true;
 			*ssleep = false;
+			return;
+		}
+		if(c == 'a'){
+			
+			if(agentPlay){
+				agentPlay = false;
+				std::cout << "Disabling agent control.\n";
+			} else {
+				agentPlay = true;
+				std::cout << "Enabling agent control.\n";
+			}
 			return;
 		}
 		m_model.flap();
