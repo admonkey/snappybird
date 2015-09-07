@@ -58,10 +58,10 @@ void mili_sleep(unsigned int nMiliseconds)
 
 void importQtable(map<string,double>* qtable, int* highScore, int* bestGame, int* game){
   struct stat buf;
-    if (stat("qtable.txt", &buf) != -1)
+    if (stat("qtable", &buf) != -1)
     {
         cout << "importing qTable...\n";
-	std::ifstream file("qtable.txt");
+	std::ifstream file("qtable");
 	 if (file.is_open())
 	 {
 	 	std::string line = "";
@@ -152,8 +152,9 @@ int main(int argc, char *argv[])
 		}
 		cout << "writing qTable to file...\n";
 		std::ofstream qfile;
-		std::string fname = currentDateTime() + "-hs" + to_string(highScore) + "-bg" + to_string(bestGame);
-		fname += "-s" + to_string(score) + "-g" + to_string(game) + "-qtable.txt";
+		std::string fname = currentDateTime() + "__HS=" + to_string(highScore) + "_BG=" + to_string(bestGame);
+		//fname += "-s" + to_string(score) + 
+		fname += "_g=" + to_string(game) + "_discretizer=5.qtable";
 		qfile.open(fname.c_str(), std::ofstream::out);
 		std::map<string,double>::iterator iter;
 		std::string strToReturn = ""; //This is no longer on the heap
