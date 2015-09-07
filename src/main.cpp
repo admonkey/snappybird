@@ -152,9 +152,9 @@ int main(int argc, char *argv[])
 		}
 		cout << "writing qTable to file...\n";
 		std::ofstream qfile;
-		std::string fname = currentDateTime() + "__HS=" + to_string(highScore) + "_BG=" + to_string(bestGame);
+		std::string fname = currentDateTime() + " HS=" + to_string(highScore) + " BG=" + to_string(bestGame);
 		//fname += "-s" + to_string(score) + 
-		fname += "_g=" + to_string(game) + "_discretizer=5.qtable";
+		fname += " g=" + to_string(game) + " discretizer=5.qtable";
 		qfile.open(fname.c_str(), std::ofstream::out);
 		std::map<string,double>::iterator iter;
 		std::string strToReturn = ""; //This is no longer on the heap
@@ -170,6 +170,9 @@ int main(int argc, char *argv[])
 		qfile << game << "\n";
 		qfile << strToReturn;
 		qfile.close();
+		std::ifstream  src(fname.c_str(), std::ios::binary);
+		std::ofstream  dst("qtable",   std::ios::binary);
+		dst << src.rdbuf();
 		cout << "qTable written to file.\n";
 	}
 	catch(const std::exception& e)
