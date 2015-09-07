@@ -50,15 +50,21 @@ public:
 	bool previousFlap;
 	bool* ssleep;
 	bool DEBUGZ = false;
+	int* ghighScore;
+	bool skip = false;
 
 public:
-	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep);
+	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
 	virtual ~Controller();
 
 	void onChar(char c)
 	{
-		if(c == 's')
-			std::cout << "skipped\n";
+		if(c == 's'){
+			std::cout << "skipping " << (*ghighScore - m_model.score) << " pipes..\n";
+			skip = true;
+			*ssleep = false;
+			return;
+		}
 		m_model.flap();
 		previousFlap = true;
 	}

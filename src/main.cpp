@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 			View *v;
 			v = new View(*m, 500, 500);
 			Controller *c;
-			c = new Controller(*m, &keepRunning, &mqtable, &sleep);
+			c = new Controller(*m, &keepRunning, &mqtable, &sleep, &highScore);
 			while(keepFlying && keepRunning)
 			{
 				if(!m->update())
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 			delete v;
 			delete c;
 			
-			if(sleep) mili_sleep(3000);
+			if(sleep) mili_sleep(1000);
 		}
 		cout << "writing qTable to file...\n";
 		std::ofstream qfile;

@@ -10,8 +10,8 @@
 #include "View.h"
 
 
-Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep)
+Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
@@ -103,6 +103,12 @@ void Controller::update(bool keepFlying)
 	} else 	{
 		previousFlap = false;
 		if(DEBUGZ) std::cout << "\t no flap\n";
+	}
+	
+	if(skip && (*ghighScore - m_model.score < 3)){
+		//std::cout << "skip && true\n";
+		skip = false;
+		*ssleep = true;
 	}
 	
 	SDL_Event event;
