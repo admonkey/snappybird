@@ -3,7 +3,7 @@
 ################
 SHELL = /bin/bash
 TARGET_PATH = ../bin
-TARGET_NAME_OPT = game
+TARGET_NAME_OPT = gametmp
 TARGET_NAME_DBG = $(TARGET_NAME_OPT)dbg
 OBJ_PATH = ../obj
 UNAME = $(shell uname -s)
