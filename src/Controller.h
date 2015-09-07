@@ -53,6 +53,7 @@ public:
 	int* ghighScore;
 	bool skip = false;
 	bool agentPlay = true;
+	int rapidFlap = 0;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
@@ -75,6 +76,10 @@ public:
 				agentPlay = true;
 				std::cout << "Enabling agent control.\n";
 			}
+			return;
+		}
+		if(c == 'r'){
+			rapidFlap = 30;
 			return;
 		}
 		m_model.flap();
