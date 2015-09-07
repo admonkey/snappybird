@@ -56,7 +56,7 @@ void mili_sleep(unsigned int nMiliseconds)
 #endif
 }
 
-void importQtable(map<string,double>* qtable){
+void importQtable(map<string,double>* qtable, int* highScore, int* bestGame, int* game){
   struct stat buf;
     if (stat("qtable.txt", &buf) != -1)
     {
@@ -65,6 +65,12 @@ void importQtable(map<string,double>* qtable){
 	 if (file.is_open())
 	 {
 	 	std::string line = "";
+	 	std::getline(file, line);
+	 	*highScore = atoi(line.c_str());
+	 	std::getline(file, line);
+	 	*bestGame = atoi(line.c_str());
+	 	std::getline(file, line);
+	 	*game = atoi(line.c_str());
 	 	std::string s = "";
 	 	std::string astate = "";
 	 	std::string qvalue = "";
@@ -104,10 +110,11 @@ int main(int argc, char *argv[])
 		int score = 0;
 		int highScore = score;
 		int bestGame = game;
-		importQtable(&mqtable);
+		importQtable(&mqtable,&highScore,&bestGame,&game);
 		while(keepRunning){
 			game++;
 			keepFlying = true;
+			score = 0;
 			Model *m;
 			m = new Model;
 			View *v;
@@ -140,13 +147,13 @@ int main(int argc, char *argv[])
 			delete m;
 			delete v;
 			delete c;
-			score = 0;
+			
 			//mili_sleep(1000);
 		}
 		cout << "writing qTable to file...\n";
 		std::ofstream qfile;
-		std::string fname = "qtable-hs" + to_string(highScore) + "-bg" + to_string(bestGame);
-		fname += "-g" + to_string(game) + "-" + currentDateTime() + ".txt";
+		std::string fname = currentDateTime() + "-hs" + to_string(highScore) + "-bg" + to_string(bestGame);
+		fname += "-s" + to_string(score) + "-g" + to_string(game) + "-qtable.txt";
 		qfile.open(fname.c_str(), std::ofstream::out);
 		std::map<string,double>::iterator iter;
 		std::string strToReturn = ""; //This is no longer on the heap
@@ -157,7 +164,9 @@ int main(int argc, char *argv[])
 		   strToReturn += "\n";
 		   // Make sure you don't modify table here or the iterators will not work as you expect
 		}
-		//...
+		qfile << highScore << "\n";
+		qfile << bestGame << "\n";
+		qfile << game << "\n";
 		qfile << strToReturn;
 		qfile.close();
 		cout << "qTable written to file.\n";
