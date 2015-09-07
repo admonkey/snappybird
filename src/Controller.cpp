@@ -90,6 +90,21 @@ void Controller::handleKeyPress(SDLKey key, SDLMod mod)
 
 void Controller::update(bool keepFlying)
 {
+	setQvalue(previousFlap, keepFlying);
+	previousState = getState();
+	double fl = getQvalue(true, previousState);
+	double nofl = getQvalue(false, previousState);
+	if(DEBUGZ) std::cout << "\t\t q flap: " << fl << " = " << previousState << "\n";
+	if(DEBUGZ) std::cout << "\t\t q no flap: " << nofl << " = " << previousState << "\n";
+	if(fl > nofl){
+		m_model.flap();
+		previousFlap = true;
+		if(DEBUGZ) std::cout << "\t FLAP\n";
+	} else 	{
+		previousFlap = false;
+		if(DEBUGZ) std::cout << "\t no flap\n";
+	}
+	
 	SDL_Event event;
 	while(SDL_PollEvent(&event))
 	{
@@ -128,20 +143,6 @@ void Controller::update(bool keepFlying)
 			default:
 				break;
 		}
-	}
-	setQvalue(previousFlap, keepFlying);
-	previousState = getState();
-	double fl = getQvalue(true, previousState);
-	double nofl = getQvalue(false, previousState);
-	if(DEBUGZ) std::cout << "\t\t q flap: " << fl << " = " << previousState << "\n";
-	if(DEBUGZ) std::cout << "\t\t q no flap: " << nofl << " = " << previousState << "\n";
-	if(fl > nofl){
-		m_model.flap();
-		previousFlap = true;
-		if(DEBUGZ) std::cout << "\t FLAP\n";
-	} else 	{
-		previousFlap = false;
-		if(DEBUGZ) std::cout << "\t no flap\n";
 	}
 }
 

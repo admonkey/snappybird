@@ -58,11 +58,13 @@ public:
 	void onChar(char c)
 	{
 		m_model.flap();
+		previousFlap = true;
 	}
 
 	void onSpecialKey(int key)
 	{
 		m_model.flap();
+		previousFlap = true;
 	}
 
 	void onMouseDown(int nButton, int x, int y)
