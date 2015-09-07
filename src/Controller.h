@@ -85,7 +85,7 @@ public:
 	
 	string getState()
 	{
-		int discretizer = 5;
+		int discretizer = 2;
 		string s = "";
 
 		// next tube state
