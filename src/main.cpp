@@ -85,6 +85,7 @@ int main(int argc, char *argv[])
 				
 				if(sleep) {
 					v->update();
+					cout << to_string(m->score) << "\n";
 					mili_sleep(30);
 				}
 				c->update(keepFlying);
