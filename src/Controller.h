@@ -50,19 +50,46 @@ public:
 	bool previousFlap;
 	bool* ssleep;
 	bool DEBUGZ = false;
+	int* ghighScore;
+	bool skip = false;
+	bool agentPlay = true;
+	int rapidFlap = 0;
 
 public:
-	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep);
+	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
 	virtual ~Controller();
 
 	void onChar(char c)
 	{
+		if(c == 's'){
+			std::cout << "skipping " << (*ghighScore - m_model.score) << " pipes..\n";
+			skip = true;
+			*ssleep = false;
+			return;
+		}
+		if(c == 'a'){
+			
+			if(agentPlay){
+				agentPlay = false;
+				std::cout << "Disabling agent control.\n";
+			} else {
+				agentPlay = true;
+				std::cout << "Enabling agent control.\n";
+			}
+			return;
+		}
+		if(c == 'r'){
+			rapidFlap = 30;
+			return;
+		}
 		m_model.flap();
+		previousFlap = true;
 	}
 
 	void onSpecialKey(int key)
 	{
 		m_model.flap();
+		previousFlap = true;
 	}
 
 	void onMouseDown(int nButton, int x, int y)
@@ -85,7 +112,7 @@ public:
 	
 	string getState()
 	{
-		int discretizer = 5;
+		int discretizer = 8;
 		string s = "";
 
 		// next tube state
@@ -125,9 +152,10 @@ public:
 		s = to_string(flap);
 		s += "," + previousState;
 		double qvalue = 0.0;
-		if(reward)
-			qvalue = 0.0;
-		else	qvalue = -1.0;
+		if(reward && flap)
+			qvalue = 0.0001;
+		if(!reward)
+			qvalue = -1000.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());

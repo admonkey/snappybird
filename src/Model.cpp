@@ -40,7 +40,7 @@ bool Model::update()
 			//cout << to_str(++score) << "\n";
 		}
 	}
-	if(++frame % 35 == 0) {
+	if(++frame % 40 == 0) {
 		bool up = (rand.next(2) == 0);
 		Tube* t = new Tube(rand.next(350) + (up ? 150 : 0), up);
 		tubes.push_back(t);

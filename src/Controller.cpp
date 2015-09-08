@@ -10,8 +10,8 @@
 #include "View.h"
 
 
-Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep)
+Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
@@ -90,9 +90,41 @@ void Controller::handleKeyPress(SDLKey key, SDLMod mod)
 
 void Controller::update(bool keepFlying)
 {
+	setQvalue(previousFlap, keepFlying);
+	previousState = getState();
+
+	if(rapidFlap == 0){
+		if(agentPlay){
+			double fl = getQvalue(true, previousState);
+			double nofl = getQvalue(false, previousState);
+			if(DEBUGZ) std::cout << "\t\t q flap: " << fl << " = " << previousState << "\n";
+			if(DEBUGZ) std::cout << "\t\t q no flap: " << nofl << " = " << previousState << "\n";
+			if(fl > nofl){
+				m_model.flap();
+				previousFlap = true;
+				if(DEBUGZ) std::cout << "\t FLAP\n";
+			} else 	{
+				previousFlap = false;
+				if(DEBUGZ) std::cout << "\t no flap\n";
+			}
+		} else previousFlap = false;
+	} else {
+		m_model.flap();
+		previousFlap = true;
+		if(DEBUGZ) std::cout << "\t FLAP\n";
+		rapidFlap--;
+	}
+
+	if(skip && (*ghighScore - m_model.score < 3)){
+		//std::cout << "skip && true\n";
+		skip = false;
+		*ssleep = true;
+	}
+	
 	SDL_Event event;
 	while(SDL_PollEvent(&event))
 	{
+	   if(m_model.frame != 39)
 		switch(event.type)
 		{
 			case SDL_KEYDOWN:
@@ -128,20 +160,6 @@ void Controller::update(bool keepFlying)
 			default:
 				break;
 		}
-	}
-	setQvalue(previousFlap, keepFlying);
-	previousState = getState();
-	double fl = getQvalue(true, previousState);
-	double nofl = getQvalue(false, previousState);
-	if(DEBUGZ) std::cout << "\t\t q flap: " << fl << " = " << previousState << "\n";
-	if(DEBUGZ) std::cout << "\t\t q no flap: " << nofl << " = " << previousState << "\n";
-	if(fl > nofl){
-		m_model.flap();
-		previousFlap = true;
-		if(DEBUGZ) std::cout << "\t FLAP\n";
-	} else 	{
-		previousFlap = false;
-		if(DEBUGZ) std::cout << "\t no flap\n";
 	}
 }
 
