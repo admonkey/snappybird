@@ -12,7 +12,7 @@
 
 
 Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(time(0))
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
@@ -97,17 +97,36 @@ void Controller::update(bool keepFlying)
 
 	if(rapidFlap == 0){
 		if(agentPlay){
-			double fl = getQvalue(true, previousState);
-			double nofl = getQvalue(false, previousState);
-			if(DEBUGZ) std::cout << "\t\t q flap: " << fl << " = " << previousState << "\n";
-			if(DEBUGZ) std::cout << "\t\t q no flap: " << nofl << " = " << previousState << "\n";
-			if(fl > nofl){
-				m_model.flap();
-				previousFlap = true;
-				if(DEBUGZ) std::cout << "\t FLAP\n";
-			} else 	{
-				previousFlap = false;
-				if(DEBUGZ) std::cout << "\t no flap\n";
+			if(explore()){
+				//std::cout << "EXPLORE\n";
+				if(toFlapOrNotToFlap()){
+					//std::cout << "FLAP\n";
+					m_model.flap();
+					previousFlap = true;
+				} else 	{
+					previousFlap = false;
+				}
+			} else {
+				double fl = getQvalue(true, previousState);
+				double nofl = getQvalue(false, previousState);
+				if(DEBUGZ) std::cout << "\t\t q flap: " << fl << " = " << previousState << "\n";
+				if(DEBUGZ) std::cout << "\t\t q no flap: " << nofl << " = " << previousState << "\n";
+				if(fl > nofl){
+					m_model.flap();
+					previousFlap = true;
+					if(DEBUGZ) std::cout << "\t FLAP\n";
+				} else if(fl == nofl) {
+					if(toFlapOrNotToFlap()){
+						//std::cout << "FLAP\n";
+						m_model.flap();
+						previousFlap = true;
+					} else 	{
+						previousFlap = false;
+					}
+				} else 	{
+					previousFlap = false;
+					if(DEBUGZ) std::cout << "\t no flap\n";
+				}
 			}
 		} else previousFlap = false;
 	} else {

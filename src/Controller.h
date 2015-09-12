@@ -12,6 +12,8 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include "rand.h"
+#include <time.h>
 
 template <typename T>
 std::string to_string(T value)
@@ -56,6 +58,7 @@ public:
 	int rapidFlap;
 	int discretizer;
 	std::string settings;
+	Rand rand;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
@@ -171,6 +174,14 @@ public:
 		else
 			qtable->insert(std::pair<string,double>(s, qvalue));
 		if(DEBUGZ) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
+	}
+	
+	bool explore(){
+		return (rand.next(100) == 0); // exploit 99%
+	}
+	
+	bool toFlapOrNotToFlap(){
+		return (rand.next(21) == 0); // 5% flap rate = 1/20 chance
 	}
 
 protected:
