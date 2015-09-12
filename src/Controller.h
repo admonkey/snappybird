@@ -49,11 +49,11 @@ public:
 	string previousState;
 	bool previousFlap;
 	bool* ssleep;
-	bool DEBUGZ = false;
+	bool DEBUGZ;
 	int* ghighScore;
-	bool skip = false;
-	bool agentPlay = true;
-	int rapidFlap = 0;
+	bool skip;
+	bool agentPlay;
+	int rapidFlap;
 	int discretizer;
 	std::string settings;
 
