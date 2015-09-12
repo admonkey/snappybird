@@ -54,6 +54,8 @@ public:
 	bool skip = false;
 	bool agentPlay = true;
 	int rapidFlap = 0;
+	int discretizer;
+	std::string settings;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
@@ -112,7 +114,7 @@ public:
 	
 	string getState()
 	{
-		int discretizer = 1;
+		
 		string s = "";
 
 		// next tube state

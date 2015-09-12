@@ -10,12 +10,12 @@
 #define MODEL_H
 
 #include "rand.h"
+#include "string.h"
 #include <vector>
 
 using std::vector;
 
 class Model;
-
 
 
 class Bird
@@ -90,6 +90,8 @@ public:
 	Rand rand;
 	int frame;
 	int score;
+	std::string settings;
+	int pipegap;
 
 
 	Model();

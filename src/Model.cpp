@@ -11,12 +11,14 @@
 #include "string.h"
 #include <stdlib.h>
 #include <iostream>
+#include <string>
 
 using std::cout;
 
 
-Model::Model() : rand(0), frame(38), score(0)
+Model::Model() : rand(0), frame(38), score(0), pipegap(42)
 {
+	settings = " pipegap=" + to_str(pipegap);
 }
 
 Model::~Model()
@@ -40,7 +42,7 @@ bool Model::update()
 			//cout << to_str(++score) << "\n";
 		}
 	}
-	if(++frame % 42 == 0) {
+	if(++frame % pipegap == 0) {
 		bool up = (rand.next(2) == 0);
 		Tube* t = new Tube(rand.next(350) + (up ? 150 : 0), up);
 		tubes.push_back(t);

@@ -8,10 +8,11 @@
 
 #include "Controller.h"
 #include "View.h"
+#include "Agent.h"
 
 
 Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
@@ -24,6 +25,7 @@ Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqt
 	
 	previousState = getState();
 	previousFlap = false;
+	settings = " discretizer=" + to_str(discretizer);
 }
 
 Controller::~Controller()

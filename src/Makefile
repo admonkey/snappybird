@@ -35,6 +35,7 @@ CPP_FILES =\
 	error.cpp\
 	string.cpp\
 	image.cpp\
+	Agent.cpp\
 
 ################
 # Lists
