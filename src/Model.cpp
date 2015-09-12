@@ -17,6 +17,7 @@ using std::cout;
 
 Model::Model() : rand(0), frame(38), score(0)
 {
+	lastUp = false;
 }
 
 Model::~Model()
@@ -40,9 +41,13 @@ bool Model::update()
 			//cout << to_str(++score) << "\n";
 		}
 	}
-	if(++frame % 40 == 0) {
-		bool up = (rand.next(2) == 0);
-		Tube* t = new Tube(rand.next(350) + (up ? 150 : 0), up);
+	if(++frame % 35 == 0) {
+		//bool up = (rand.next(2) == 0);
+		if(lastUp)
+			lastUp = false;
+		else	lastUp = true;
+		//Tube* t = new Tube(rand.next(350) + (up ? 150 : 0), up);
+		Tube* t = new Tube((lastUp ? 0 : 350) + (lastUp ? 150 : 0), lastUp);
 		tubes.push_back(t);
 	}
 	return true;

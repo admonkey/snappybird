@@ -3,7 +3,7 @@
 ################
 SHELL = /bin/bash
 TARGET_PATH = ../bin
-TARGET_NAME_OPT = game
+TARGET_NAME_OPT = gametmp
 TARGET_NAME_DBG = $(TARGET_NAME_OPT)dbg
 OBJ_PATH = ../obj
 UNAME = $(shell uname -s)
@@ -68,11 +68,11 @@ usage:
 
 # This rule makes the optimized binary by using g++ to link the optimized ".o" files together
 $(TARGET_PATH)/$(TARGET_NAME_OPT) : partialcleanopt $(OBJECTS_OPT)
-	g++ -std=c++11 -O3 -o $(TARGET_PATH)/$(TARGET_NAME_OPT) $(OBJECTS_OPT) $(OPT_LFLAGS)
+	g++ -O3 -o $(TARGET_PATH)/$(TARGET_NAME_OPT) $(OBJECTS_OPT) $(OPT_LFLAGS)
 
 # This rule makes the debug binary by using g++ to link the debug ".o" files together
 $(TARGET_PATH)/$(TARGET_NAME_DBG) : partialcleandbg $(OBJECTS_DBG)
-	g++ -std=c++11 -g -o $(TARGET_PATH)/$(TARGET_NAME_DBG) $(OBJECTS_DBG) $(DBG_LFLAGS)
+	g++ -g -o $(TARGET_PATH)/$(TARGET_NAME_DBG) $(OBJECTS_DBG) $(DBG_LFLAGS)
 
 # This includes all of the ".d" files. Each ".d" file contains a
 # generated rule that tells it how to make .o files. (The reason these are generated is so that
