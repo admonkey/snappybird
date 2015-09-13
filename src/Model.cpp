@@ -41,7 +41,7 @@ bool Model::update()
 			//cout << to_str(++score) << "\n";
 		}
 	}
-	if(++frame % 35 == 0) {
+	if(++frame % 42 == 0) {
 		//bool up = (rand.next(2) == 0);
 		if(lastUp)
 			lastUp = false;
