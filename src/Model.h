@@ -65,10 +65,14 @@ public:
 		x = 500;
 		up = _up;
 	}
+	
+	bool collideX(Bird& bird){
+		return (x < bird.x + 60 && x + 45 > bird.x);
+	}
 
 	bool update(Bird& bird) {
 		x -= 5;
-		if(x < bird.x + 60 && x + 45 > bird.x) {
+		if(collideX(bird)) {
 			if(up) {
 				if(bird.y + 50 > y)
 					return false;

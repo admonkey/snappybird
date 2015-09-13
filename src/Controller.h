@@ -63,7 +63,7 @@ public:
 	double discount;
 
 public:
-	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
+	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore, int randseed);
 	virtual ~Controller();
 
 	void onChar(char c)
@@ -117,27 +117,84 @@ public:
 
 	void update(bool keepFlying);
 	
+	int percentBetweenFloorCeiling(){
+		double ceiling = -55;
+		double floor = 500;
+		for (size_t i = 0; i < m_model.tubes.size(); i++){
+			if(m_model.tubes[i]->collideX(m_model.bird)){
+				if(m_model.tubes[i]->up){
+					floor = m_model.tubes[i]->y;
+				} else	ceiling = m_model.tubes[i]->y;
+				//std::cout << m_model.tubes[i]->up << " collideX\n";
+			}
+			/*if(!m_model.tubes[0]->up){
+				ceiling = m_model.tubes[0]->y;
+			}
+			else 	floor = m_model.tubes[0]->y;*/
+		}
+		return (int)(  ( (m_model.bird.y - ceiling) / (floor - ceiling) ) * 100  );
+	}
+	
+	void dCeilingFloor(int& dCeiling, int& dFloor, int& dNextX, int& dNextCeiling, int& dNextFloor){
+		double ceiling = -55;
+		double floor = 500;
+		for (size_t i = 0; i < m_model.tubes.size(); i++){
+			if(m_model.tubes[i]->collideX(m_model.bird)){
+				if(m_model.tubes[i]->up){
+					floor = m_model.tubes[i]->y;
+				} else	ceiling = m_model.tubes[i]->y;
+			}
+		}
+		dCeiling = m_model.bird.y - ceiling;
+		if(dCeiling > 100)	dCeiling = 100;
+		dFloor = floor - m_model.bird.y;
+		if(dFloor > 100)	dFloor = 100;
+		
+		// next tube
+		ceiling = -55;
+		floor = 500;
+		int i = 0;
+		if(m_model.tubes.size() > 0){
+			while(m_model.tubes[i]->x < m_model.bird.x){
+				i++;
+			}
+			dNextX = (m_model.tubes[i]->x - m_model.bird.x) / 10;
+			if(m_model.tubes[i]->up){
+				floor = m_model.tubes[i]->y;
+			} else	ceiling = m_model.tubes[i]->y;
+		}
+		dNextCeiling = m_model.bird.y - ceiling;
+		if(dNextCeiling > 100)	dNextCeiling = 100;
+		dNextFloor = floor - m_model.bird.y;
+		if(dNextFloor > 100)	dNextFloor = 100;
+	}
+	
 	string getState()
 	{
-		
-		string s = "";
+		int dCeiling = 0;
+		int dFloor = 0;
+		int dNextCeiling = 0;
+		int dNextFloor = 0;
+		int dNextX = 0;
+		dCeilingFloor(dCeiling, dFloor, dNextX, dNextCeiling, dNextFloor);
+		//string s = to_string(percentBetweenFloorCeiling());
+		string s = to_string(dCeiling) + "," + to_string(dFloor) + "," + to_string(dNextX) + "," + to_string(dNextCeiling) + "," + to_string(dNextFloor);
 
-		// next tube state
-		if(m_model.tubes.size() > 0){
+		/*if(m_model.tubes.size() > 0){  // next 2 tubes' state
 		  int i = 0;
 		  while(m_model.tubes[i]->x < m_model.bird.x){
 			i++;
 		  }
-		  s += to_string(m_model.tubes[i]->up);
+		  s += "," + to_string(m_model.tubes[i]->up);
 		  /*if(m_model.tubes[i]->up){
 		  	s += to_string((m_model.bird.y - m_model.tubes[i]->y) / discretizer);
-		  }else	s += to_string((m_model.tubes[i]->y - m_model.bird.y) / discretizer);*/
+		  }else	s += to_string((m_model.tubes[i]->y - m_model.bird.y) / discretizer);*//*
 		  s += "," + to_string((m_model.bird.y - m_model.tubes[i]->y) / discretizer);
-		  s += "," + to_string((m_model.tubes[i]->x - m_model.bird.x) / discretizer);
+		  s += "," + to_string((m_model.tubes[i]->x - m_model.bird.x - 55) / discretizer);
 		  
 		//  std::cout << "m_model.tubes[i]->y = " << m_model.tubes[i]->y << "\n";
 		}
-		else s += "0,0," + to_string(400 / discretizer);
+		else s += ",0,0," + to_string(400 / discretizer);*/
 
 		// bird state
 		//s += "," + to_string(m_model.bird.y / discretizer);
@@ -165,11 +222,11 @@ public:
 		s += "," + previousState;
 		double qvalue = 0.0;
 		if(reward)
-			qvalue = 1.0;
+			qvalue = 10.0;
 		//if(reward && !flap)
 			//qvalue = 0.01;
 		if(!reward)
-			qvalue = -0.1;
+			qvalue = -100.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());
@@ -182,7 +239,7 @@ public:
 			it->second = qvalue;
 		else
 			qtable->insert(std::pair<string,double>(s, qvalue));
-		if(DEBUGZ) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
+		if(*ssleep) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
 	}
 	
 	bool explore(){
@@ -190,7 +247,7 @@ public:
 	}
 	
 	bool toFlapOrNotToFlap(){
-		return (rand.next(21) == 0); // 5% flap rate = 1/20 chance
+		return (rand.next(15) == 0); // 5% flap rate = 1/20 chance
 	}
 
 protected:
