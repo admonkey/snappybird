@@ -12,6 +12,8 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include "rand.h"
+#include <time.h>
 
 template <typename T>
 std::string to_string(T value)
@@ -49,11 +51,16 @@ public:
 	string previousState;
 	bool previousFlap;
 	bool* ssleep;
-	bool DEBUGZ = false;
+	bool DEBUGZ;
 	int* ghighScore;
-	bool skip = false;
-	bool agentPlay = true;
-	int rapidFlap = 0;
+	bool skip;
+	bool agentPlay;
+	int rapidFlap;
+	int discretizer;
+	std::string settings;
+	Rand rand;
+	int explorationRate;
+	double discount;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
@@ -112,7 +119,7 @@ public:
 	
 	string getState()
 	{
-		int discretizer = 1;
+		
 		string s = "";
 
 		// next tube state
@@ -152,14 +159,16 @@ public:
 		s = to_string(flap);
 		s += "," + previousState;
 		double qvalue = 0.0;
-		if(reward && flap)
-			qvalue = 0.0001;
-		if(!reward)
-			qvalue = -1000.0;
+		if(reward)
+			qvalue = 1;
+		//if(reward && !flap)
+			//qvalue = 0.0001;
+		//if(!reward)
+			//qvalue = -1000.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());
-		double discount = 0.9;
+		
 		//qvalue += (discount * max(q_j_flap, q_j_noflap));
 		qvalue += (discount * std::max(getQvalue(true, getState()), getQvalue(false, getState())));
 		//qtable->erase(std::pair<string,double>(s, qvalue));
@@ -169,6 +178,14 @@ public:
 		else
 			qtable->insert(std::pair<string,double>(s, qvalue));
 		if(DEBUGZ) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
+	}
+	
+	bool explore(){
+		return (rand.next(explorationRate) == 0); 
+	}
+	
+	bool toFlapOrNotToFlap(){
+		return (rand.next(21) == 0); // 5% flap rate = 1/20 chance
 	}
 
 protected:

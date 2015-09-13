@@ -10,6 +10,7 @@
 #define MODEL_H
 
 #include "rand.h"
+#include "string.h"
 #include <vector>
 
 using std::vector;
@@ -90,6 +91,8 @@ public:
 	Rand rand;
 	int frame;
 	int score;
+	std::string settings;
+	int pipegap;
 	bool lastUp;
 
 	Model();

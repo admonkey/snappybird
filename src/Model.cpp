@@ -11,13 +11,15 @@
 #include "string.h"
 #include <stdlib.h>
 #include <iostream>
+#include <string>
 
 using std::cout;
 
 
-Model::Model() : rand(0), frame(38), score(0)
+Model::Model() : rand(0), frame(38), score(0), pipegap(42)
 {
 	lastUp = false;
+	settings = " pipegap=" + to_str(pipegap);
 }
 
 Model::~Model()
@@ -41,7 +43,7 @@ bool Model::update()
 			//cout << to_str(++score) << "\n";
 		}
 	}
-	if(++frame % 42 == 0) {
+	if(++frame % pipegap == 0) {
 		//bool up = (rand.next(2) == 0);
 		if(lastUp)
 			lastUp = false;

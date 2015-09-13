@@ -108,6 +108,7 @@ int main(int argc, char *argv[])
 		int score = 0;
 		int highScore = score;
 		int bestGame = game;
+		std::string settings = "";
 		importQtable(&mqtable,&highScore,&bestGame,&game);
 		while(keepRunning){
 			game++;
@@ -141,6 +142,8 @@ int main(int argc, char *argv[])
 				highScore = m->score;
 				bestGame = game;
 			}
+			settings = m->settings;
+			settings += c->settings;
 			delete m;
 			delete v;
 			delete c;
@@ -151,7 +154,7 @@ int main(int argc, char *argv[])
 		std::ofstream qfile;
 		std::string fname = currentDateTime() + " HS=" + to_string(highScore) + " BG=" + to_string(bestGame);
 		//fname += "-s" + to_string(score) + 
-		fname += " g=" + to_string(game) + " discretizer=1 pipe=35frames branch=hard.qtable";
+		fname += " g=" + to_string(game) + settings + ".qtable";
 		qfile.open(fname.c_str(), std::ofstream::out);
 		std::map<string,double>::iterator iter;
 		std::string strToReturn = ""; //This is no longer on the heap
