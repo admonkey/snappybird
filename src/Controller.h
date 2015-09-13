@@ -128,15 +128,16 @@ public:
 		  while(m_model.tubes[i]->x < m_model.bird.x){
 			i++;
 		  }
-		  //s += to_string(m_model.tubes[i]->up);
-		  if(m_model.tubes[i]->up){
+		  s += to_string(m_model.tubes[i]->up);
+		  /*if(m_model.tubes[i]->up){
 		  	s += to_string((m_model.bird.y - m_model.tubes[i]->y) / discretizer);
-		  }else	s += to_string((m_model.tubes[i]->y - m_model.bird.y) / discretizer);
+		  }else	s += to_string((m_model.tubes[i]->y - m_model.bird.y) / discretizer);*/
+		  s += "," + to_string((m_model.bird.y - m_model.tubes[i]->y) / discretizer);
 		  s += "," + to_string((m_model.tubes[i]->x - m_model.bird.x) / discretizer);
 		  
 		//  std::cout << "m_model.tubes[i]->y = " << m_model.tubes[i]->y << "\n";
 		}
-		else s += "0," + to_string(400 / discretizer);
+		else s += "0,0," + to_string(400 / discretizer);
 
 		// bird state
 		//s += "," + to_string(m_model.bird.y / discretizer);
