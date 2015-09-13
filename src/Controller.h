@@ -128,16 +128,20 @@ public:
 		  while(m_model.tubes[i]->x < m_model.bird.x){
 			i++;
 		  }
-		  s += to_string(m_model.tubes[i]->up);
-		  s += "," + to_string(m_model.tubes[i]->y / discretizer);
+		  //s += to_string(m_model.tubes[i]->up);
+		  if(m_model.tubes[i]->up){
+		  	s += to_string((m_model.bird.y - m_model.tubes[i]->y) / discretizer);
+		  }else	s += to_string((m_model.tubes[i]->y - m_model.bird.y) / discretizer);
 		  s += "," + to_string((m_model.tubes[i]->x - m_model.bird.x) / discretizer);
+		  
+		//  std::cout << "m_model.tubes[i]->y = " << m_model.tubes[i]->y << "\n";
 		}
-		else s += "0,0," + to_string(400 / discretizer);
+		else s += "0," + to_string(400 / discretizer);
 
 		// bird state
-		s += "," + to_string(m_model.bird.y / discretizer);
+		//s += "," + to_string(m_model.bird.y / discretizer);
 		s += "," + to_string(m_model.bird.vert_vel / discretizer);
-
+		//std::cout << s << "\n";
 		return s;
 	}
 	
@@ -160,11 +164,11 @@ public:
 		s += "," + previousState;
 		double qvalue = 0.0;
 		if(reward)
-			qvalue = 1;
+			qvalue = 1.0;
 		//if(reward && !flap)
-			//qvalue = 0.0001;
-		//if(!reward)
-			//qvalue = -1000.0;
+			//qvalue = 0.01;
+		if(!reward)
+			qvalue = -0.1;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());
