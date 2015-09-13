@@ -59,6 +59,8 @@ public:
 	int discretizer;
 	std::string settings;
 	Rand rand;
+	int explorationRate;
+	double discount;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
@@ -157,14 +159,16 @@ public:
 		s = to_string(flap);
 		s += "," + previousState;
 		double qvalue = 0.0;
-		if(reward && flap)
-			qvalue = 0.0001;
-		if(!reward)
-			qvalue = -1000.0;
+		if(reward)
+			qvalue = 1;
+		//if(reward && !flap)
+			//qvalue = 0.0001;
+		//if(!reward)
+			//qvalue = -1000.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());
-		double discount = 0.9;
+		
 		//qvalue += (discount * max(q_j_flap, q_j_noflap));
 		qvalue += (discount * std::max(getQvalue(true, getState()), getQvalue(false, getState())));
 		//qtable->erase(std::pair<string,double>(s, qvalue));
@@ -177,7 +181,7 @@ public:
 	}
 	
 	bool explore(){
-		return (rand.next(100) == 0); // exploit 99%
+		return (rand.next(explorationRate) == 0); 
 	}
 	
 	bool toFlapOrNotToFlap(){

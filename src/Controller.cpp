@@ -12,7 +12,7 @@
 
 
 Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(time(0))
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(time(0)), explorationRate(75), discount(0.9)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
@@ -25,7 +25,7 @@ Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqt
 	
 	previousState = getState();
 	previousFlap = false;
-	settings = " discretizer=" + to_str(discretizer);
+	settings = " discretizer=" + to_str(discretizer) + " xRate=" + to_str(explorationRate) + " discount=" + to_str(discount);
 }
 
 Controller::~Controller()
