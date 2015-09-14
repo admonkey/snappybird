@@ -168,8 +168,8 @@ public:
 			qvalue = 1.0;
 		//if(reward && !flap)
 			//qvalue = 0.01;
-		if(!reward)
-			qvalue = -0.1;
+		//if(!reward)
+			//qvalue = -1000.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());
@@ -182,7 +182,7 @@ public:
 			it->second = qvalue;
 		else
 			qtable->insert(std::pair<string,double>(s, qvalue));
-		if(DEBUGZ) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
+		if(*ssleep) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
 	}
 	
 	bool explore(){
@@ -190,7 +190,7 @@ public:
 	}
 	
 	bool toFlapOrNotToFlap(){
-		return (rand.next(21) == 0); // 5% flap rate = 1/20 chance
+		return (rand.next(20) == 0); // 5% flap rate = 1/20 chance
 	}
 
 protected:
