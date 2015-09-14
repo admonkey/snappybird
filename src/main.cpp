@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
 		std::ofstream qfile;
 		std::string fname = currentDateTime() + " HS=" + to_string(highScore) + " BG=" + to_string(bestGame);
 		//fname += "-s" + to_string(score) + 
-		fname += " g=" + to_string(game) + settings + ".qtable";
+		fname += " g=" + to_string(game) + settings + " branch=hardreward.qtable";
 		qfile.open(fname.c_str(), std::ofstream::out);
 		std::map<string,double>::iterator iter;
 		std::string strToReturn = ""; //This is no longer on the heap
