@@ -22,6 +22,7 @@
 #include <fstream>
 #include <time.h>
 #include <sys/stat.h>
+#include "rand.h"
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
 const std::string currentDateTime() {
@@ -110,6 +111,7 @@ int main(int argc, char *argv[])
 		int bestGame = game;
 		std::string settings = "";
 		importQtable(&mqtable,&highScore,&bestGame,&game);
+		Rand rand = Rand(time(0));
 		while(keepRunning){
 			game++;
 			keepFlying = true;
@@ -119,7 +121,7 @@ int main(int argc, char *argv[])
 			View *v;
 			v = new View(*m, 500, 500);
 			Controller *c;
-			c = new Controller(*m, &keepRunning, &mqtable, &sleep, &highScore);
+			c = new Controller(*m, &keepRunning, &mqtable, &sleep, &highScore, rand.next(1000));
 			while(keepFlying && keepRunning)
 			{
 				if(!m->update())

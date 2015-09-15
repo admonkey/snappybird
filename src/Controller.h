@@ -63,7 +63,7 @@ public:
 	double discount;
 
 public:
-	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore);
+	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore, int randseed);
 	virtual ~Controller();
 
 	void onChar(char c)
@@ -168,8 +168,8 @@ public:
 			qvalue = 1.0;
 		//if(reward && !flap)
 			//qvalue = 0.01;
-		//if(!reward)
-			//qvalue = -1000.0;
+		if(!reward)
+			qvalue = -1000.0;
 		// Broken-Down Q-Learning Formula
 		//double q_j_flap = getQvalue(true, getState());
 		//double q_j_noflap = getQvalue(false, getState());

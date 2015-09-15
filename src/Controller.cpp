@@ -11,8 +11,8 @@
 #include "Agent.h"
 
 
-Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(time(0)), explorationRate(100), discount(0.99)
+Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore, int randseed)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(randseed), explorationRate(100), discount(0.99)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
