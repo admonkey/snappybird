@@ -63,6 +63,8 @@ public:
 	double discount;
 	
 	bool viewQ;
+	
+	bool scaledExplorer;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore, int randseed);
@@ -195,11 +197,18 @@ public:
 	}
 	
 	bool explore(){
-		return (rand.next(explorationRate) == 0); 
+		if(explorationRate == 0) return false;
+		else return (rand.next(explorationRate) == 0); 
 	}
 	
 	bool toFlapOrNotToFlap(){
-		return (rand.next(20) == 0); // 5% flap rate = 1/20 chance
+		if(rand.next(10) == 0){	// 5% flap rate = 1/20 chance
+			m_model.flap();
+			previousFlap = true;
+		} else 	{
+			previousFlap = false;
+		}
+		return previousFlap;
 	}
 
 protected:
