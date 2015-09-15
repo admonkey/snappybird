@@ -61,6 +61,8 @@ public:
 	Rand rand;
 	int explorationRate;
 	double discount;
+	
+	bool viewQ;
 
 public:
 	Controller(Model& m, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore, int randseed);
@@ -68,6 +70,12 @@ public:
 
 	void onChar(char c)
 	{
+		if(c == 'q'){
+			// view Q insert values
+			if(viewQ)	viewQ = false;
+			else		viewQ = true;
+			return;
+		}
 		if(c == 's'){
 			// skip to part right before death
 			std::cout << "skipping " << (*ghighScore - m_model.score) << " pipes..\n";
@@ -182,8 +190,8 @@ public:
 		else
 			qtable->insert(std::pair<string,double>(s, qvalue));
 			
-		// debug
-		if(*ssleep) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
+		// press Q to view
+		if(*ssleep && viewQ) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
 	}
 	
 	bool explore(){

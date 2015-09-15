@@ -12,7 +12,7 @@
 
 
 Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore, int randseed)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(randseed), explorationRate(100), discount(0.99)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(randseed), explorationRate(100), discount(0.99), viewQ(false)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
