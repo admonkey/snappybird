@@ -12,7 +12,7 @@
 
 
 Controller::Controller(Model& model, bool* pKeepRunning, map<string,double>* mqtable, bool* sleep, int* highScore, int randseed)
-: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(randseed), explorationRate(0), discount(0.99), viewQ(true), scaledExplorer(false)
+: m_model(model), m_pKeepRunning(pKeepRunning), qtable(mqtable), ssleep(sleep), ghighScore(highScore), discretizer(1), DEBUGZ(false), skip(false), agentPlay(true), rapidFlap(0), rand(randseed), explorationRate(0), discount(0.99), viewQ(false), scaledExplorer(false)
 {
 	int n;
 	for(n = 0; n < SDLK_LAST; n++)
@@ -104,7 +104,7 @@ void Controller::update(bool keepFlying)
 				double nofl = getQvalue(false, previousState);
 				int xrate = (int)(std::max(fl,nofl));
 				// explore rate equal to max q-value (confidence rate)
-				if( (scaledExplorer) && (std::min(fl,nofl) > 0) && (xrate > 0) && (rand.next(xrate) == 0) ){
+				if( (scaledExplorer) && (std::min(fl,nofl) > 0) && (xrate > 0) && (xrate < 10) && (rand.next(xrate) == 0) ){
 					toFlapOrNotToFlap();
 				} else if(fl > nofl){
 					m_model.flap();

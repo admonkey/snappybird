@@ -2,5 +2,29 @@
 set -e
 cd src
 make opt
-cd ../bin
-./game
+clear
+echo "#####################################################"
+echo "#  A trained qTable has been provided in the"
+echo "#  project submission tar."
+echo "#"
+echo "#  *YOU MUST COPY THIS* into the bin folder after"
+echo "#  compiling so that it can be imported."
+echo "#  If game doesn't find a qTable, then it will"
+echo "#  create a new one and begin training."
+echo "#"
+echo "#  Click the mouse anywhere on the game to"
+echo "#  toggle the view on/off. You will still see"
+echo "#  game summary stats printed to console."
+echo "#"
+echo "#  Press 's' when the view is playing to skip"
+echo "#  to the last couple pipes before he dies."
+echo "#"
+echo "#  Press ESC to end the game and write-out"
+echo "#  the qTable."
+echo "#"
+echo "#  Check the controller.h source code function"
+echo "#  'void onChar(char c)' for a full list of commands."
+echo "#"
+echo "#  enter the following to play:"
+echo "#	cd bin && ./game"
+echo "#	"
