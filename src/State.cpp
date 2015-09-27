@@ -6,14 +6,14 @@
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
 
-#include "Agent.h"
+#include "State.h"
 
-Agent::Agent()
-: randNum(0), explorationRate(0.01), learningRate(1.0), discountFactor(0.99)
+State::State()
+: state(0)
 {
 }
 
-Agent::~Agent()
+State::~State()
 {
 }
 

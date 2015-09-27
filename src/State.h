@@ -6,14 +6,17 @@
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
 
-#include "Agent.h"
+#ifndef STATE_H
+#define STATE_H
 
-Agent::Agent()
-: randNum(0), explorationRate(0.01), learningRate(1.0), discountFactor(0.99)
+class State
 {
-}
+public:
+	int state;
 
-Agent::~Agent()
-{
-}
+public:
+	State();
+	virtual ~State();
+};
 
+#endif // STATE_H

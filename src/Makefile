@@ -36,6 +36,7 @@ CPP_FILES =\
 	string.cpp\
 	image.cpp\
 	Agent.cpp\
+	State.cpp\
 
 ################
 # Lists

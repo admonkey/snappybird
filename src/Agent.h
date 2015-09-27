@@ -5,6 +5,8 @@
 
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
+#include "rand.h"
+#include "State.h"
 
 #ifndef AGENT_H
 #define AGENT_H
@@ -12,7 +14,11 @@
 class Agent
 {
 public:
-	int state;
+	State state;
+	double explorationRate;
+	double learningRate;
+	double discountFactor;
+	Rand randNum;
 
 public:
 	Agent();
