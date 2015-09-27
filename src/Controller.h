@@ -9,6 +9,7 @@
 #include "Model.h"
 #include <SDL/SDL.h>
 #include "Agent.h"
+#include <iostream>
 
 using std::vector;
 
@@ -30,10 +31,11 @@ public:
 	int m_mouseX;
 	int m_mouseY;
 	bool* m_pKeepRunning;
+	
+	Agent agent;
 
 public:
 	Controller(Model& m, bool* pKeepRunning);
-	Controller(Model& m, bool* pKeepRunning, Agent& agent);
 	virtual ~Controller();
 
 	void onChar(char c);

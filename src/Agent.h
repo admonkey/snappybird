@@ -20,6 +20,7 @@ public:
 	double learningRate;
 	double discountFactor;
 	Rand randNum;
+	bool playing;
 
 public:
 	Agent();

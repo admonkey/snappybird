@@ -16,12 +16,6 @@ Controller::Controller(Model& model, bool* pKeepRunning)
 	initArrays();
 }
 
-Controller::Controller(Model& model, bool* pKeepRunning, Agent& agent)
-: m_model(model), m_pKeepRunning(pKeepRunning)
-{
-	initArrays();
-}
-
 Controller::~Controller()
 {
 }
@@ -97,7 +91,21 @@ void Controller::handleKeyPress(SDLKey key, SDLMod mod)
 
 void Controller::onChar(char c)
 {
-	m_model.flap();
+	if(c == 'a'){
+		// toggle the agent player on/off
+		// learning will continue
+		if(agent.playing){
+			agent.playing = false;
+			std::cout << "Disabling agent control.\n";
+		} else {
+			agent.playing = true;
+			std::cout << "Enabling agent control.\n";
+		}
+		return;
+	}
+
+	if(!agent.playing)
+		m_model.flap();
 }
 
 void Controller::update()
