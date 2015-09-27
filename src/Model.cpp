@@ -34,6 +34,7 @@ bool Model::update()
 		if(!t->update(bird))
 			return false;
 		if(t->x < -55) {
+			delete tubes[i];
 			tubes[i] = tubes[tubes.size() - 1];
 			tubes.erase(tubes.begin() + tubes.size() - 1);
 			cout << to_str(++score) << "\n";

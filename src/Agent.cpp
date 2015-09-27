@@ -22,7 +22,7 @@
 #include "Agent.h"
 
 Agent::Agent()
-: randNum(0), explorationRate(0.01), learningRate(1.0), discountFactor(0.99)
+: explorationRate(0.01), learningRate(1.0), discountFactor(0.99), randNum(0)
 {
 }
 
