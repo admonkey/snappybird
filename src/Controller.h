@@ -1,13 +1,14 @@
 /*
   The contents of this file are dedicated by all of its authors, including
 
-    Michael S. Gashler,
+    Michael S. Gashler, Jeff Puckett
 
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
 
 #include "Model.h"
 #include <SDL/SDL.h>
+#include "Agent.h"
 
 using std::vector;
 
@@ -32,6 +33,7 @@ public:
 
 public:
 	Controller(Model& m, bool* pKeepRunning);
+	Controller(Model& m, bool* pKeepRunning, Agent& agent);
 	virtual ~Controller();
 
 	void onChar(char c)

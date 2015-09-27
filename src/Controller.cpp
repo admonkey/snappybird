@@ -23,6 +23,19 @@ Controller::Controller(Model& model, bool* pKeepRunning)
 	m_mouseY = 0;
 }
 
+Controller::Controller(Model& model, bool* pKeepRunning, Agent& agent)
+: m_model(model), m_pKeepRunning(pKeepRunning)
+{
+	int n;
+	for(n = 0; n < SDLK_LAST; n++)
+		m_keyboard[n] = 0;
+	m_mouse[1] = 0;
+	m_mouse[2] = 0;
+	m_mouse[3] = 0;
+	m_mouseX = 0;
+	m_mouseY = 0;
+}
+
 Controller::~Controller()
 {
 }

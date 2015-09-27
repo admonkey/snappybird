@@ -1,0 +1,6 @@
+# snappy unnecessaries #
+########################
+obj/
+bin/*
+*qtable
+maxpipecalcs
