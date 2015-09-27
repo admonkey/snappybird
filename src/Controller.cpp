@@ -1,7 +1,7 @@
 /*
   The contents of this file are dedicated by all of its authors, including
 
-    Michael S. Gashler,
+    Michael S. Gashler, Jeff Puckett
 
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
@@ -13,27 +13,13 @@
 Controller::Controller(Model& model, bool* pKeepRunning)
 : m_model(model), m_pKeepRunning(pKeepRunning)
 {
-	int n;
-	for(n = 0; n < SDLK_LAST; n++)
-		m_keyboard[n] = 0;
-	m_mouse[1] = 0;
-	m_mouse[2] = 0;
-	m_mouse[3] = 0;
-	m_mouseX = 0;
-	m_mouseY = 0;
+	initArrays();
 }
 
 Controller::Controller(Model& model, bool* pKeepRunning, Agent& agent)
 : m_model(model), m_pKeepRunning(pKeepRunning)
 {
-	int n;
-	for(n = 0; n < SDLK_LAST; n++)
-		m_keyboard[n] = 0;
-	m_mouse[1] = 0;
-	m_mouse[2] = 0;
-	m_mouse[3] = 0;
-	m_mouseX = 0;
-	m_mouseY = 0;
+	initArrays();
 }
 
 Controller::~Controller()
@@ -73,6 +59,17 @@ char GSDL_filterKey(int key)
 	return '\0';
 }
 
+void Controller::initArrays()
+{
+	int n;
+	for(n = 0; n < SDLK_LAST; n++)
+		m_keyboard[n] = 0;
+	m_mouse[1] = 0;
+	m_mouse[2] = 0;
+	m_mouse[3] = 0;
+	m_mouseX = 0;
+	m_mouseY = 0;
+}
 
 void Controller::handleKeyPress(SDLKey key, SDLMod mod)
 {

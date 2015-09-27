@@ -64,6 +64,7 @@ public:
 
 protected:
 	void handleKeyPress(SDLKey eKey, SDLMod mod);
+	void initArrays();
 };
 
 
