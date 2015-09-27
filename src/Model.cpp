@@ -52,3 +52,15 @@ void Model::flap()
 {
 	bird.flap();
 }
+
+void Model::reset()
+{
+	for(size_t i = 0; i < tubes.size(); i++)
+		delete(tubes[i]);
+	tubes.clear();
+	bird.y = 100;
+	bird.vert_vel = 0.0;
+	rand = Rand(0);
+	frame = 38;
+	score = 0;
+}

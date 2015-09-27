@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 		while(keepRunning)
 		{
 			if(!m.update())
-				keepRunning = false;
+				m.reset();
 			v.update();
 			mili_sleep(30);
 			c.update();

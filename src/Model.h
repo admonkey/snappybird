@@ -97,6 +97,7 @@ public:
 
 	bool update();
 	void flap();
+	void reset();
 };
 
 #endif // MODEL_H
