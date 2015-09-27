@@ -95,6 +95,11 @@ void Controller::handleKeyPress(SDLKey key, SDLMod mod)
 	}
 }
 
+void Controller::onChar(char c)
+{
+	m_model.flap();
+}
+
 void Controller::update()
 {
 	SDL_Event event;

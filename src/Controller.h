@@ -36,19 +36,16 @@ public:
 	Controller(Model& m, bool* pKeepRunning, Agent& agent);
 	virtual ~Controller();
 
-	void onChar(char c)
-	{
-		m_model.flap();
-	}
+	void onChar(char c);
 
 	void onSpecialKey(int key)
 	{
-		m_model.flap();
+		onChar(' ');
 	}
 
 	void onMouseDown(int nButton, int x, int y)
 	{
-		m_model.flap();
+		onChar(' ');
 	}
 
 	void onMouseUp(int nButton, int x, int y)

@@ -5,6 +5,7 @@
 
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
+
 #include "rand.h"
 #include "State.h"
 
