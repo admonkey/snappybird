@@ -1,0 +1,5 @@
+# snappy unnecessaries #
+########################
+obj/
+bin/*
+*qtable
