@@ -11,7 +11,7 @@
 
 
 Controller::Controller(Model& model, bool* pKeepRunning)
-: m_model(model), m_pKeepRunning(pKeepRunning)
+: m_model(model), m_pKeepRunning(pKeepRunning), agent(model)
 {
 	initArrays();
 }

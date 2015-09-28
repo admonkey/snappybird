@@ -6,6 +6,7 @@
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
 
+#include "Model.h"
 #include "rand.h"
 #include "State.h"
 #include "qTable.h"
@@ -16,6 +17,7 @@
 class Agent
 {
 public:
+	Model& m_model;
 	State state;
 	double explorationRate;
 	double learningRate;
@@ -25,7 +27,7 @@ public:
 	qTable qt;
 
 public:
-	Agent();
+	Agent(Model& m);
 	virtual ~Agent();
 };
 
