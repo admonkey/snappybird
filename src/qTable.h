@@ -8,6 +8,7 @@
 
 #include <string>
 #include <map>
+#include <iostream>
 
 #ifndef QTABLE_H
 #define QTABLE_H

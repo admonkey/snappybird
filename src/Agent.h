@@ -18,19 +18,25 @@
 class Agent
 {
 public:
-	Model& m_model;
-	State state;
 	double explorationRate;
 	double learningRate;
 	double discountFactor;
+
 	Rand randNum;
-	bool playing;
+	Model& m_model;
+	State state;
+	std::string previousState;
+	bool died;
+	bool flapped;
 	qTable qt;
+	
+	bool playing;
 
 public:
 	Agent(Model& m);
 	virtual ~Agent();
 	bool update();
+	double calculateQ();
 };
 
 #endif // AGENT_H

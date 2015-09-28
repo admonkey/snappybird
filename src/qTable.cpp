@@ -36,5 +36,6 @@ void qTable::setQ(std::string stateAction, double qVal)
 		tab.insert(std::pair<std::string,double>(stateAction, qVal));
 		
 	// press Q to view
-	//if(*ssleep && viewQ) std::cout << "\t setq: " << qvalue << " = " << s << "\n";
+	//if(*ssleep && viewQ) 
+	std::cout << "\t setq: " << qVal << " = " << stateAction << "\n";
 }

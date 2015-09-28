@@ -22,7 +22,9 @@
 #include "Agent.h"
 
 Agent::Agent(Model& model)
-: m_model(model), state(model), explorationRate(0.01), learningRate(1.0), discountFactor(0.99), randNum(0), playing(false)
+: 	explorationRate(0.01), learningRate(1.0), discountFactor(0.99), 
+	randNum(0), m_model(model), state(model), previousState(""), died(false), flapped(false),
+	playing(false)
 {
 }
 
@@ -32,6 +34,30 @@ Agent::~Agent()
 
 bool Agent::update()
 {
-	std::cout << state.toString() << "\n";
+	qt.setQ(previousState + "," + to_str(flapped), calculateQ());
+	//std::cout << state.toString() << "\n";
+	previousState = state.toString();
 	return true;
+}
+
+double Agent::calculateQ()
+{
+	// combine previous state with last action
+	std::string s;
+	s = previousState;
+	s += "," + to_str(flapped);
+	
+	// current reward
+	double qvalue = 1.0;
+	if(died)
+		qvalue = -1000.0;
+
+
+	// add discounted max next state
+	double qFlap 	= qt.getQ( state.toString() + "," + to_str(true) );
+	double qNoFlap 	= qt.getQ( state.toString() + "," + to_str(false) );
+	double maxQ = std::max(qFlap, qNoFlap);
+	qvalue += (discountFactor * maxQ);
+
+	return qvalue;
 }

@@ -53,8 +53,11 @@ int main(int argc, char *argv[])
 		Controller c(m, &keepRunning);
 		while(keepRunning)
 		{
-			if(!m.update())
+			if(!m.update()){
+				c.agent.died = true;
 				m.reset();
+			} else	c.agent.died = false;
+			
 			v.update();
 			mili_sleep(30);
 			c.update();
