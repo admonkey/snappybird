@@ -33,7 +33,7 @@ std::string State::toString()
 	  // difference between bird-x and tube-x
 	  s += "," + to_str((m_model.tubes[i]->x - m_model.bird.x) / discretizer);
 	}
-	else s += "0,0," + to_str(400 / discretizer);
+	else s += "1," + to_str((m_model.bird.y - 500) / discretizer) + "," + to_str(400 / discretizer);
 
 	// bird-y velocity
 	s += "," + to_str(m_model.bird.vert_vel / discretizer);

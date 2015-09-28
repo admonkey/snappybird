@@ -50,7 +50,7 @@ double Agent::calculateQ()
 	// current reward
 	double qvalue = 1.0;
 	if(died)
-		qvalue = -1000.0;
+		return qvalue = -1000.0;
 
 
 	// add discounted max next state
