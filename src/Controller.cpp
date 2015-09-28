@@ -103,6 +103,16 @@ void Controller::onChar(char c)
 		}
 		return;
 	}
+	
+	if(c == 'q'){
+		// toggle show the q value settings
+		if(agent.qt.viewQ){
+			agent.qt.viewQ = false;
+		} else {
+			agent.qt.viewQ = true;
+		}
+		return;
+	}
 
 	if(!agent.playing)
 		m_model.flap();

@@ -17,6 +17,7 @@ class qTable
 {
 public:
 	std::map<std::string,double> tab;
+	bool viewQ;
 
 public:
 	qTable();
