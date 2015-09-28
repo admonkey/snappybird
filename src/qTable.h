@@ -20,8 +20,8 @@ public:
 public:
 	qTable();
 	virtual ~qTable();
-	double getQ(std::string state, bool flap);
-	void setQ(std::string state, bool flap, double qVal);
+	double getQ(std::string stateAction);
+	void setQ(std::string stateAction, double qVal);
 };
 
 #endif // QTABLE_H
