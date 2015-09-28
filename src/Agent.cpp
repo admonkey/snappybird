@@ -30,3 +30,8 @@ Agent::~Agent()
 {
 }
 
+bool Agent::update()
+{
+	std::cout << state.toString() << "\n";
+	return true;
+}

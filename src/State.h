@@ -21,8 +21,7 @@ public:
 public:
 	State(Model& m);
 	virtual ~State();
-	std::string getState();
-	void setState();
+	std::string toString();
 };
 
 #endif // STATE_H

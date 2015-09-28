@@ -110,6 +110,7 @@ void Controller::onChar(char c)
 
 void Controller::update()
 {
+	agent.update();
 	SDL_Event event;
 	while(SDL_PollEvent(&event))
 	{

@@ -17,7 +17,7 @@ State::~State()
 {
 }
 
-std::string State::getState()
+std::string State::toString()
 {
 	std::string s = "";
 	// find next tube
@@ -38,8 +38,4 @@ std::string State::getState()
 	// bird-y velocity
 	s += "," + to_str(m_model.bird.vert_vel / discretizer);
 	return s;
-}
-
-void State::setState()
-{
 }

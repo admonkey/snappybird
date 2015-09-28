@@ -6,6 +6,7 @@
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
 
+#include <iostream>
 #include "Model.h"
 #include "rand.h"
 #include "State.h"
@@ -29,6 +30,7 @@ public:
 public:
 	Agent(Model& m);
 	virtual ~Agent();
+	bool update();
 };
 
 #endif // AGENT_H
