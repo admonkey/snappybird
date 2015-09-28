@@ -37,6 +37,7 @@ CPP_FILES =\
 	image.cpp\
 	Agent.cpp\
 	State.cpp\
+	qTable.cpp\
 
 ################
 # Lists

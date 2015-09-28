@@ -8,6 +8,7 @@
 
 #include "rand.h"
 #include "State.h"
+#include "qTable.h"
 
 #ifndef AGENT_H
 #define AGENT_H
@@ -21,6 +22,7 @@ public:
 	double discountFactor;
 	Rand randNum;
 	bool playing;
+	qTable qt;
 
 public:
 	Agent();
