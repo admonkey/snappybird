@@ -11,7 +11,7 @@
 
 
 Controller::Controller(Model& model, bool* pKeepRunning)
-: m_model(model), m_pKeepRunning(pKeepRunning), agent(model)
+: m_model(model), m_pKeepRunning(pKeepRunning), agent(model), viewOn(true)
 {
 	initArrays();
 }
@@ -110,6 +110,16 @@ void Controller::onChar(char c)
 			agent.qt.viewQ = false;
 		} else {
 			agent.qt.viewQ = true;
+		}
+		return;
+	}
+	
+	if(c == 'v'){
+		// toggle view on/off
+		if(viewOn){
+			viewOn = false;
+		} else {
+			viewOn = true;
 		}
 		return;
 	}

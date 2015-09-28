@@ -58,11 +58,14 @@ int main(int argc, char *argv[])
 				m.reset();
 			} else	c.agent.died = false;
 			
-			v.update();
-			mili_sleep(30);
+			if(c.viewOn){
+				v.update();
+				mili_sleep(30);
+			}
+			
 			c.update();
 		}
-		mili_sleep(1000);
+		if(c.viewOn) mili_sleep(1000);
 	}
 	catch(const std::exception& e)
 	{

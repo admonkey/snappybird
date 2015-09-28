@@ -33,6 +33,7 @@ public:
 	bool* m_pKeepRunning;
 	
 	Agent agent;
+	bool viewOn;
 
 public:
 	Controller(Model& m, bool* pKeepRunning);
