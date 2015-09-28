@@ -8,8 +8,8 @@
 
 #include "State.h"
 
-State::State()
-: state(0)
+State::State(Model& model)
+: m_model(model), state(0)
 {
 }
 

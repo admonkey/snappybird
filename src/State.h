@@ -6,16 +6,19 @@
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
 
+#include "Model.h"
+
 #ifndef STATE_H
 #define STATE_H
 
 class State
 {
 public:
+	Model& m_model;
 	int state;
 
 public:
-	State();
+	State(Model& m);
 	virtual ~State();
 };
 
