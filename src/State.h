@@ -6,6 +6,7 @@
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
 
+#include <string>
 #include "Model.h"
 
 #ifndef STATE_H
@@ -20,6 +21,8 @@ public:
 public:
 	State(Model& m);
 	virtual ~State();
+	std::string getState();
+	void setState();
 };
 
 #endif // STATE_H

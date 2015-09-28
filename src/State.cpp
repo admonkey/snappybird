@@ -17,3 +17,11 @@ State::~State()
 {
 }
 
+std::string State::getState()
+{
+	return "state";
+}
+
+void State::setState()
+{
+}
