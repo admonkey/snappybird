@@ -36,7 +36,7 @@ bool Agent::update()
 {
 	qt.setQ(previousState + "," + to_str(flapped), calculateQ());
 	//std::cout << state.toString() << "\n";
-	previousState = state.toString();
+	previousState = state.toCSV();
 	return true;
 }
 
@@ -54,8 +54,8 @@ double Agent::calculateQ()
 
 
 	// add discounted max next state
-	double qFlap 	= qt.getQ( state.toString() + "," + to_str(true) );
-	double qNoFlap 	= qt.getQ( state.toString() + "," + to_str(false) );
+	double qFlap 	= qt.getQ( state.toCSV() + "," + to_str(true) );
+	double qNoFlap 	= qt.getQ( state.toCSV() + "," + to_str(false) );
 	double maxQ = std::max(qFlap, qNoFlap);
 	qvalue += (discountFactor * maxQ);
 

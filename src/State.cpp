@@ -21,18 +21,28 @@ State::State(Model& model)
 
 State::~State()
 {
-	Json::Value array;
+	Json::Value StateSettingsJSON;
 	Json::StyledWriter styledWriter;
-	for (int i=0; i<stateVars.size(); i++)
-		array["StateSettings"]["Variables"].append(stateVars[i]);
+	for (size_t i=0; i<stateVars.size(); i++)
+		StateSettingsJSON["Variables"].append(stateVars[i]);
 
-	for (int i=0; i<stateSettings.size(); i++)
-		array["StateSettings"][stateSettings[i].first].append(stateSettings[i].second);
+	for (size_t i=0; i<stateSettings.size(); i++)
+		StateSettingsJSON[stateSettings[i].first] = stateSettings[i].second;
+	
+	//array["StateSettings"]["InstanceID"].append(uuid);
+	/*for (size_t i=0; i<sizeof uuid; i++) {
+		array["StateSettings"]["InstanceID"].append(uuid);
+		printf("%02x ", uuid[i]);
+	}*/
+	
+	Json::Value test;
+	test["InstanceID"] = 1;
+	test["StateSettings"] = StateSettingsJSON;
 
-	std::cout << styledWriter.write(array);
+	std::cout << styledWriter.write(test);
 }
 
-std::string State::toString()
+std::string State::toCSV()
 {
 	std::string s = "";
 	// find next tube

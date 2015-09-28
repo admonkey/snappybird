@@ -19,6 +19,8 @@
 #include "Model.h"
 #include "View.h"
 #include "Controller.h"
+#include "json/json.h"
+#include <fstream>
 
 using std::cerr;
 using std::cout;
@@ -47,6 +49,10 @@ int main(int argc, char *argv[])
 	int nRet = 0;
 	try
 	{
+		cout << "argc = " << argc << std::endl; 
+		for(int i = 0; i < argc; i++) 
+			cout << "argv[" << i << "] = " << argv[i] << std::endl; 
+      
 		bool keepRunning = true;
 		Model m;
 		View v(m, 500, 500);

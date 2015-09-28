@@ -26,7 +26,7 @@ public:
 public:
 	State(Model& m);
 	virtual ~State();
-	std::string toString();
+	std::string toCSV();
 };
 
 #endif // STATE_H
