@@ -38,6 +38,7 @@ CPP_FILES =\
 	Agent.cpp\
 	State.cpp\
 	qTable.cpp\
+	jsoncpp.cpp\
 
 ################
 # Lists

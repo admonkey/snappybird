@@ -8,6 +8,9 @@
 
 #include "string.h"
 #include "Model.h"
+#include "json/json.h"
+#include <fstream>
+#include <iostream>
 
 #ifndef STATE_H
 #define STATE_H
@@ -17,6 +20,8 @@ class State
 public:
 	Model& m_model;
 	double discretizer;
+	vector<std::string> stateVars;
+	vector< std::pair<std::string,double> > stateSettings;
 
 public:
 	State(Model& m);

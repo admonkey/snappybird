@@ -11,10 +11,25 @@
 State::State(Model& model)
 : m_model(model), discretizer(1.0)
 {
+	stateVars.push_back("Bird.Velocity-Y");
+	stateVars.push_back("Bird-NextTube.Delta-Y");
+	stateVars.push_back("Bird-NextTube.Delta-X");
+	stateVars.push_back("NextTube.Up");
+	
+	stateSettings.push_back(std::pair<std::string,double>("Discretizer", discretizer));
 }
 
 State::~State()
 {
+	Json::Value array;
+	Json::StyledWriter styledWriter;
+	for (int i=0; i<stateVars.size(); i++)
+		array["StateSettings"]["Variables"].append(stateVars[i]);
+
+	for (int i=0; i<stateSettings.size(); i++)
+		array["StateSettings"][stateSettings[i].first].append(stateSettings[i].second);
+
+	std::cout << styledWriter.write(array);
 }
 
 std::string State::toString()
