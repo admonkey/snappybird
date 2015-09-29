@@ -76,43 +76,52 @@ int main(int argc, char *argv[])
 		int highScore = 0;
 		int bestGame = 0;
 		int lastScore = 0;
-		Json::Value scoreChanges;
+		Json::Value scoreChangesJSON;
+		int scoreChangeCount = 0;
 
 		time_t start = time(0);
 		while(keepRunning)
 		{
+			// if bird dies, update stats & reset game
 			if(!m.update()){
 				c.agent.died = true;
 				totalFrames += m.frame;
 				games++;
+				// high score
 				if(m.score > highScore){
 					 highScore = m.score;
 					 bestGame = games;
 				}
+				// last score
+				// check > 0, else null comparison causes blank entry
 				if(m.score != lastScore){
+				   scoreChangeCount++;
 				   if(m.score > 0)
-					scoreChanges[to_str(games)] = m.score;
+					scoreChangesJSON[to_str(games)] = m.score;
 				   else
-				   	scoreChanges[to_str(games)] = 0;
+				   	scoreChangesJSON[to_str(games)] = 0;
 				}
 				   if(m.score > 0)
 					lastScore = m.score;
 				   else
 				   	lastScore = 0;
 				lastScore = m.score;
+
 				m.reset();
-			} else	c.agent.died = false;
+			} else	c.agent.died = false; // signal agent reward system
 			
+			// if watching live
 			if(c.viewOn){
 				v.update();
 				mili_sleep(30);
 			}
-			
+
 			c.update();
 		}
 		time_t end = time(0);
 		if(c.viewOn) mili_sleep(1000);
 
+		// update settings object
 		InstanceSettingsJSON["StartTime"] = getDateTime(start);
 		InstanceSettingsJSON["EndTime"] = getDateTime(end);
 		InstanceSettingsJSON["TotalTimeSeconds"] = difftime(end, start);
@@ -120,15 +129,16 @@ int main(int argc, char *argv[])
 		InstanceSettingsJSON["Games"] = games;
 		InstanceSettingsJSON["HighScore"] = highScore;
 		InstanceSettingsJSON["BestGame"] = bestGame;
-		InstanceSettingsJSON["ScoreChanges"] = scoreChanges;
-		
-		//for (size_t i=0; i < scoreChanges.size(); i++)
-			//InstanceSettingsJSON["BestGame"].append([scoreChanges[i].first] = scoreChanges[i].second);
-		
+		InstanceSettingsJSON["ScoreChanges"] = scoreChangeCount;
 		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
-		
+
+		// write out results
 		Json::StyledWriter styledWriter;
 		std::cout << styledWriter.write(InstanceSettingsJSON);
+		std::ofstream gSettings("Settings.json", std::ofstream::binary);
+		gSettings << styledWriter.write(InstanceSettingsJSON);
+		std::ofstream gChanges("ScoreChanges.json", std::ofstream::binary);
+		gChanges << styledWriter.write(scoreChangesJSON);
 	}
 	catch(const std::exception& e)
 	{
