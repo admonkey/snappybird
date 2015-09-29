@@ -21,6 +21,7 @@ public:
 	double explorationRate;
 	double learningRate;
 	double discountFactor;
+	double flapRate;
 
 	Rand randNum;
 	Model& m_model;

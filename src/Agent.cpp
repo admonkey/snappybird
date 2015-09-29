@@ -22,7 +22,7 @@
 #include "Agent.h"
 
 Agent::Agent(Model& model, Json::Value& importJSON)
-: 	explorationRate(0.01), learningRate(1.0), discountFactor(0.99), 
+: 	explorationRate(100), learningRate(1.0), discountFactor(0.99), flapRate(25),
 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
 	playing(false)
 {
@@ -36,8 +36,15 @@ Agent::~Agent()
 
 bool Agent::update()
 {
-	qt.setQ(previousState + "," + to_str(flapped), calculateQ());
-	//std::cout << state.toString() << "\n";
+	if( randNum.next(flapRate) == 0 ){
+		m_model.flap();
+		flapped = true;
+	} else	flapped = false;
+	/*if( randNum.next(explorationRate) == 0 ){
+		
+	}*/
+	qt.setQ(previousState + to_str(flapped), calculateQ());
+	//if (flapped) std::cout << "flapped\n";
 	previousState = state.toCSV();
 	return true;
 }

@@ -124,8 +124,10 @@ void Controller::onChar(char c)
 		return;
 	}
 
-	if(!agent.playing)
+	if(!agent.playing){
 		m_model.flap();
+		agent.flapped = true;
+	}
 }
 
 void Controller::update()

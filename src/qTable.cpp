@@ -7,6 +7,7 @@
 */
 
 #include "qTable.h"
+#include <algorithm>
 
 qTable::qTable() : viewQ(false)
 {
@@ -36,6 +37,8 @@ void qTable::setQ(std::string stateAction, double qVal)
 		tab.insert(std::pair<std::string,double>(stateAction, qVal));
 		
 	// press Q to view
-	if(viewQ) 
-		std::cout << "\t setq: " << qVal << " = " << stateAction << "\n";
+	if(viewQ) {
+		std::replace( stateAction.begin(), stateAction.end(), ',', '\t');
+		std::cout << "\t stateAction: " << stateAction << "\tq: " << qVal << "\n";
+	}
 }
