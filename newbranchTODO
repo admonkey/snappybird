@@ -1,7 +1,6 @@
 implement reinforcement learning algo
 
 export
-	state
 	agent
 	qTable
 

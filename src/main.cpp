@@ -22,10 +22,21 @@
 #include "json/json.h"
 #include <fstream>
 #include <time.h>
+#include <sys/stat.h>
 
 using std::cerr;
 using std::cout;
 using std::vector;
+
+bool fileExists(const char* fname)
+{
+	struct stat buf;
+	if (stat(fname, &buf) != -1) {
+		cout << "found " << fname << "...\n";
+		return true;
+	}
+	else 	cout << fname << "doesn't exist.\n";
+}
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
 const std::string getDateTime(time_t time) {
@@ -62,15 +73,26 @@ int main(int argc, char *argv[])
 	int nRet = 0;
 	try
 	{
+		Json::StyledWriter styledWriter;
 		Json::Value InstanceSettingsJSON;
 		InstanceSettingsJSON["InstanceID"] = argv[1];
 		InstanceSettingsJSON["Hostname"] = argv[2];
-		
+
+		// import instance
+		Json::Value ImportSettingsJSON;
+		if (fileExists("Settings.json"))
+		{
+			std::ifstream ImportSettings("Settings.json", std::ifstream::binary);
+			ImportSettings >> ImportSettingsJSON;
+			//std::cout << styledWriter.write(ImportSettingsJSON);
+			cout << "Settings.json imported.\n";
+		}
+
 		bool keepRunning = true;
 		Model m;
 		View v(m, 500, 500);
 		Controller c(m, &keepRunning);
-		
+
 		int totalFrames = 0;
 		int games = 0;
 		int highScore = 0;
@@ -133,7 +155,6 @@ int main(int argc, char *argv[])
 		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
 
 		// write out results
-		Json::StyledWriter styledWriter;
 		std::cout << styledWriter.write(InstanceSettingsJSON);
 		std::ofstream gSettings("Settings.json", std::ofstream::binary);
 		gSettings << styledWriter.write(InstanceSettingsJSON);
