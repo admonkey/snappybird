@@ -15,7 +15,7 @@
 using std::cout;
 
 
-Model::Model() : rand(0), frame(38), score(0)
+Model::Model() : rand(0), frame(0), score(0)
 {
 }
 

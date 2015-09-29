@@ -28,8 +28,8 @@ using std::cout;
 using std::vector;
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
-const std::string currentDateTime() {
-    time_t     now = time(0);
+const std::string getDateTime(time_t time) {
+    time_t     now = time;
     struct tm  tstruct;
     char       buf[80];
     tstruct = *localtime(&now);
@@ -65,15 +65,22 @@ int main(int argc, char *argv[])
 		Json::Value InstanceSettingsJSON;
 		InstanceSettingsJSON["InstanceID"] = argv[1];
 		InstanceSettingsJSON["Hostname"] = argv[2];
-		InstanceSettingsJSON["StartTime"] = currentDateTime();
+		
 		bool keepRunning = true;
 		Model m;
 		View v(m, 500, 500);
 		Controller c(m, &keepRunning);
+		
+		int totalFrames = 0;
+		int games = 0;
+
+		time_t start = time(0);
 		while(keepRunning)
 		{
 			if(!m.update()){
 				c.agent.died = true;
+				totalFrames += m.frame;
+				games++;
 				m.reset();
 			} else	c.agent.died = false;
 			
@@ -84,8 +91,14 @@ int main(int argc, char *argv[])
 			
 			c.update();
 		}
+		time_t end = time(0);
 		if(c.viewOn) mili_sleep(1000);
-		InstanceSettingsJSON["EndTime"] = currentDateTime();
+
+		InstanceSettingsJSON["StartTime"] = getDateTime(start);
+		InstanceSettingsJSON["EndTime"] = getDateTime(end);
+		InstanceSettingsJSON["TotalTimeSeconds"] = difftime(end, start);
+		InstanceSettingsJSON["Frames"] = totalFrames;
+		InstanceSettingsJSON["Games"] = games;
 		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
 		Json::StyledWriter styledWriter;
 		std::cout << styledWriter.write(InstanceSettingsJSON);
