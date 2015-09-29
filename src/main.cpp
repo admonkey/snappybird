@@ -35,7 +35,8 @@ bool fileExists(const char* fname)
 		cout << "found " << fname << "...\n";
 		return true;
 	}
-	else 	cout << fname << "doesn't exist.\n";
+	else cout << fname << " doesn't exist.\n";
+	return false;
 }
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
