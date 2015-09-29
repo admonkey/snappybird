@@ -21,11 +21,24 @@
 #include "Controller.h"
 #include "json/json.h"
 #include <fstream>
+#include <time.h>
 
 using std::cerr;
 using std::cout;
 using std::vector;
 
+// Get current date/time, format is YYYY-MM-DD.HH:mm:ss
+const std::string currentDateTime() {
+    time_t     now = time(0);
+    struct tm  tstruct;
+    char       buf[80];
+    tstruct = *localtime(&now);
+    // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
+    // for more information about date/time format
+    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+
+    return buf;
+}
 
 void mili_sleep(unsigned int nMiliseconds)
 {
@@ -52,7 +65,7 @@ int main(int argc, char *argv[])
 		Json::Value InstanceSettingsJSON;
 		InstanceSettingsJSON["InstanceID"] = argv[1];
 		InstanceSettingsJSON["Hostname"] = argv[2];
-      
+		InstanceSettingsJSON["StartTime"] = currentDateTime();
 		bool keepRunning = true;
 		Model m;
 		View v(m, 500, 500);
@@ -72,7 +85,7 @@ int main(int argc, char *argv[])
 			c.update();
 		}
 		if(c.viewOn) mili_sleep(1000);
-
+		InstanceSettingsJSON["EndTime"] = currentDateTime();
 		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
 		Json::StyledWriter styledWriter;
 		std::cout << styledWriter.write(InstanceSettingsJSON);
