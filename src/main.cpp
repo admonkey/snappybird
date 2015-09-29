@@ -73,6 +73,10 @@ int main(int argc, char *argv[])
 		
 		int totalFrames = 0;
 		int games = 0;
+		int highScore = 0;
+		int bestGame = 0;
+		int lastScore = 0;
+		Json::Value scoreChanges;
 
 		time_t start = time(0);
 		while(keepRunning)
@@ -81,6 +85,21 @@ int main(int argc, char *argv[])
 				c.agent.died = true;
 				totalFrames += m.frame;
 				games++;
+				if(m.score > highScore){
+					 highScore = m.score;
+					 bestGame = games;
+				}
+				if(m.score != lastScore){
+				   if(m.score > 0)
+					scoreChanges[to_str(games)] = m.score;
+				   else
+				   	scoreChanges[to_str(games)] = 0;
+				}
+				   if(m.score > 0)
+					lastScore = m.score;
+				   else
+				   	lastScore = 0;
+				lastScore = m.score;
 				m.reset();
 			} else	c.agent.died = false;
 			
@@ -99,7 +118,15 @@ int main(int argc, char *argv[])
 		InstanceSettingsJSON["TotalTimeSeconds"] = difftime(end, start);
 		InstanceSettingsJSON["Frames"] = totalFrames;
 		InstanceSettingsJSON["Games"] = games;
+		InstanceSettingsJSON["HighScore"] = highScore;
+		InstanceSettingsJSON["BestGame"] = bestGame;
+		InstanceSettingsJSON["ScoreChanges"] = scoreChanges;
+		
+		//for (size_t i=0; i < scoreChanges.size(); i++)
+			//InstanceSettingsJSON["BestGame"].append([scoreChanges[i].first] = scoreChanges[i].second);
+		
 		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
+		
 		Json::StyledWriter styledWriter;
 		std::cout << styledWriter.write(InstanceSettingsJSON);
 	}
