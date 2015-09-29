@@ -22,6 +22,7 @@ public:
 	double discretizer;
 	vector<std::string> stateVars;
 	vector< std::pair<std::string,double> > stateSettings;
+	Json::Value StateSettingsJSON;
 
 public:
 	State(Model& m);

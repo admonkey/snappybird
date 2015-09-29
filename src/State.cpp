@@ -17,29 +17,16 @@ State::State(Model& model)
 	stateVars.push_back("NextTube.Up");
 	
 	stateSettings.push_back(std::pair<std::string,double>("Discretizer", discretizer));
+	
+	for (size_t i=0; i < stateVars.size(); i++)
+		StateSettingsJSON["Variables"].append(stateVars[i]);
+
+	for (size_t i=0; i < stateSettings.size(); i++)
+		StateSettingsJSON[stateSettings[i].first] = stateSettings[i].second;
 }
 
 State::~State()
 {
-	Json::Value StateSettingsJSON;
-	Json::StyledWriter styledWriter;
-	for (size_t i=0; i<stateVars.size(); i++)
-		StateSettingsJSON["Variables"].append(stateVars[i]);
-
-	for (size_t i=0; i<stateSettings.size(); i++)
-		StateSettingsJSON[stateSettings[i].first] = stateSettings[i].second;
-	
-	//array["StateSettings"]["InstanceID"].append(uuid);
-	/*for (size_t i=0; i<sizeof uuid; i++) {
-		array["StateSettings"]["InstanceID"].append(uuid);
-		printf("%02x ", uuid[i]);
-	}*/
-	
-	Json::Value test;
-	test["InstanceID"] = 1;
-	test["StateSettings"] = StateSettingsJSON;
-
-	std::cout << styledWriter.write(test);
 }
 
 std::string State::toCSV()

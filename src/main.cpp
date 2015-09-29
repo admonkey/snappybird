@@ -49,9 +49,9 @@ int main(int argc, char *argv[])
 	int nRet = 0;
 	try
 	{
-		cout << "argc = " << argc << std::endl; 
-		for(int i = 0; i < argc; i++) 
-			cout << "argv[" << i << "] = " << argv[i] << std::endl; 
+		Json::Value InstanceSettingsJSON;
+		InstanceSettingsJSON["InstanceID"] = argv[1];
+		InstanceSettingsJSON["Hostname"] = argv[2];
       
 		bool keepRunning = true;
 		Model m;
@@ -72,6 +72,10 @@ int main(int argc, char *argv[])
 			c.update();
 		}
 		if(c.viewOn) mili_sleep(1000);
+
+		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
+		Json::StyledWriter styledWriter;
+		std::cout << styledWriter.write(InstanceSettingsJSON);
 	}
 	catch(const std::exception& e)
 	{
