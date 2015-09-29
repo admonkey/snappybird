@@ -21,9 +21,9 @@
 
 #include "Agent.h"
 
-Agent::Agent(Model& model, Json::Value& importJSONc)
+Agent::Agent(Model& model, Json::Value& importJSON)
 : 	explorationRate(0.01), learningRate(1.0), discountFactor(0.99), 
-	randNum(0), m_model(model), importJSON(importJSONc), state(model), previousState(""), died(false), flapped(false),
+	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
 	playing(false)
 {
 }

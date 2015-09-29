@@ -8,7 +8,7 @@
 
 #include "State.h"
 
-State::State(Model& model)
+State::State(Model& model, Json::Value& importJSON)
 : m_model(model), discretizer(1.0)
 {
 	stateVars.push_back("Bird.Velocity-Y");

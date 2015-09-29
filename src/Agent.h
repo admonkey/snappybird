@@ -24,7 +24,6 @@ public:
 
 	Rand randNum;
 	Model& m_model;
-	Json::Value& importJSON;
 	State state;
 	std::string previousState;
 	bool died;
@@ -34,7 +33,7 @@ public:
 	bool playing;
 
 public:
-	Agent(Model& m, Json::Value& importJSONc);
+	Agent(Model& m, Json::Value& importJSON);
 	virtual ~Agent();
 	bool update();
 	double calculateQ();

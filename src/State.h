@@ -25,7 +25,7 @@ public:
 	Json::Value StateSettingsJSON;
 
 public:
-	State(Model& m);
+	State(Model& m, Json::Value& importJSON);
 	virtual ~State();
 	std::string toCSV();
 };
