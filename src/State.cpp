@@ -9,15 +9,14 @@
 #include "State.h"
 
 State::State(Model& model, Json::Value& importJSON)
-: m_model(model), discretizer(1.0)
+: m_model(model)
 {
-	stateVars.push_back("Bird.Velocity-Y");
-	stateVars.push_back("Bird-NextTube.Delta-Y");
-	stateVars.push_back("Bird-NextTube.Delta-X");
-	stateVars.push_back("NextTube.Up");
+	if( ! importJSON["StateSettings"].isNull() ) {
 	
-	stateSettings.push_back(std::pair<std::string,double>("Discretizer", discretizer));
-	
+	}
+	else	defaultState();
+
+	// export state settings
 	for (size_t i=0; i < stateVars.size(); i++)
 		StateSettingsJSON["Variables"].append(stateVars[i]);
 
@@ -27,6 +26,17 @@ State::State(Model& model, Json::Value& importJSON)
 
 State::~State()
 {
+}
+
+void State::defaultState()
+{
+	discretizer = 1.0;
+	stateVars.push_back("Bird.Velocity-Y");
+	stateVars.push_back("Bird-NextTube.Delta-Y");
+	stateVars.push_back("Bird-NextTube.Delta-X");
+	stateVars.push_back("NextTube.Up");
+	
+	stateSettings.push_back(std::pair<std::string,double>("Discretizer", discretizer));
 }
 
 std::string State::toCSV()

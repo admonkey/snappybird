@@ -28,6 +28,7 @@ public:
 	State(Model& m, Json::Value& importJSON);
 	virtual ~State();
 	std::string toCSV();
+	void defaultState();
 };
 
 #endif // STATE_H

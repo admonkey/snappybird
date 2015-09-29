@@ -26,6 +26,8 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
 	playing(false)
 {
+	//if(importJSON.isNull())
+		//std::cout << "import null\n";
 }
 
 Agent::~Agent()
