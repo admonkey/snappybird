@@ -11,17 +11,14 @@
 State::State(Model& model, Json::Value& importJSON)
 : m_model(model)
 {
-	if( ! importJSON["StateSettings"].isNull() ) {
+	// search for import value, or assign second parameter as default
+	discretizer = importJSON["StateSettings"].get("Discretizer", 1.0 ).asDouble();
+	StateSettingsJSON["Discretizer"] = discretizer;
 	
-	}
-	else	defaultState();
-
-	// export state settings
-	for (size_t i=0; i < stateVars.size(); i++)
-		StateSettingsJSON["Variables"].append(stateVars[i]);
-
-	for (size_t i=0; i < stateSettings.size(); i++)
-		StateSettingsJSON[stateSettings[i].first] = stateSettings[i].second;
+	// import state variables
+	if( importJSON["StateSettings"]["Variables"].isNull() )
+		defaultState();
+	else	StateSettingsJSON["Variables"] = importJSON["StateSettings"]["Variables"];
 }
 
 State::~State()
@@ -30,16 +27,72 @@ State::~State()
 
 void State::defaultState()
 {
-	discretizer = 1.0;
-	stateVars.push_back("Bird.Velocity-Y");
-	stateVars.push_back("Bird-NextTube.Delta-Y");
-	stateVars.push_back("Bird-NextTube.Delta-X");
-	stateVars.push_back("NextTube.Up");
-	
-	stateSettings.push_back(std::pair<std::string,double>("Discretizer", discretizer));
+	ClassicStateVars();
+}
+
+void State::ClassicStateVars()
+{
+	StateSettingsJSON["Variables"]["001"] = "Bird.Velocity-Y";
+	StateSettingsJSON["Variables"]["002"] = "Bird-NextTube.Delta-Y";
+	StateSettingsJSON["Variables"]["003"] = "Bird-NextTube.Delta-X";
+	StateSettingsJSON["Variables"]["004"] = "NextTube.Up";
 }
 
 std::string State::toCSV()
+{
+	//return toDynamicCSV();
+	return toClassicStateCSV();
+}
+
+std::string State::toDynamicCSV() // FIX: major slow
+{
+	std::string s = "";
+	Json::ValueIterator itr = StateSettingsJSON["Variables"].begin();
+	for (  size_t i=0; i<StateSettingsJSON["Variables"].size(); i++ ){
+		if ( itr.key()=="001" ){ // Bird.Velocity-Y
+			s += to_str(m_model.bird.vert_vel / discretizer) + ",";
+			itr++; continue;
+		}
+		if ( itr.key()=="002" ){ // Bird-NextTube.Delta-Y
+			// find next tube
+			if(m_model.tubes.size() > 0){
+			  int i = 0;
+			  while(m_model.tubes[i]->x < m_model.bird.x){
+				i++;
+			  }
+			  // difference between bird-y and tube-y
+			  s += to_str((m_model.bird.y - m_model.tubes[i]->y) / discretizer) + ",";
+			}
+			else s += to_str((m_model.bird.y - 500) / discretizer) + ",";
+			itr++; continue;
+		}
+		if ( itr.key()=="003" ){ // Bird-NextTube.Delta-X
+			// find next tube
+			if(m_model.tubes.size() > 0){
+			  int i = 0;
+			  while(m_model.tubes[i]->x < m_model.bird.x)	i++;
+			  // difference between bird-x and tube-x
+	  		  s += to_str((m_model.tubes[i]->x - m_model.bird.x) / discretizer) + ",";
+			}
+			else s += to_str(400 / discretizer) + ",";
+			itr++; continue;
+		}
+		if ( itr.key()=="004" ){ // NextTube.Up
+			// find next tube
+			if(m_model.tubes.size() > 0){
+			  int i = 0;
+			  while(m_model.tubes[i]->x < m_model.bird.x)	i++;
+			  // difference between bird-x and tube-x
+	  		  s += to_str(m_model.tubes[i]->up) + ",";
+			}
+			else s += "1,";
+			itr++; continue;
+		}
+	}
+	return s;
+}
+
+std::string State::toClassicStateCSV()
 {
 	std::string s = "";
 	// find next tube
@@ -58,6 +111,6 @@ std::string State::toCSV()
 	else s += "1," + to_str((m_model.bird.y - 500) / discretizer) + "," + to_str(400 / discretizer);
 
 	// bird-y velocity
-	s += "," + to_str(m_model.bird.vert_vel / discretizer);
+	s += "," + to_str(m_model.bird.vert_vel / discretizer) + ",";
 	return s;
 }

@@ -47,7 +47,7 @@ double Agent::calculateQ()
 	// combine previous state with last action
 	std::string s;
 	s = previousState;
-	s += "," + to_str(flapped);
+	s += to_str(flapped);
 	
 	// current reward
 	double qvalue = 1.0;
@@ -56,8 +56,8 @@ double Agent::calculateQ()
 
 
 	// add discounted max next state
-	double qFlap 	= qt.getQ( state.toCSV() + "," + to_str(true) );
-	double qNoFlap 	= qt.getQ( state.toCSV() + "," + to_str(false) );
+	double qFlap 	= qt.getQ( state.toCSV() + to_str(true) );
+	double qNoFlap 	= qt.getQ( state.toCSV() + to_str(false) );
 	double maxQ = std::max(qFlap, qNoFlap);
 	qvalue += (discountFactor * maxQ);
 

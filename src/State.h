@@ -20,15 +20,16 @@ class State
 public:
 	Model& m_model;
 	double discretizer;
-	vector<std::string> stateVars;
-	vector< std::pair<std::string,double> > stateSettings;
 	Json::Value StateSettingsJSON;
 
 public:
 	State(Model& m, Json::Value& importJSON);
 	virtual ~State();
 	std::string toCSV();
+	std::string toDynamicCSV(); // untested
+	std::string toClassicStateCSV();
 	void defaultState();
+	void ClassicStateVars();
 };
 
 #endif // STATE_H
