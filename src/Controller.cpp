@@ -10,8 +10,8 @@
 #include "View.h"
 
 
-Controller::Controller(Model& model, bool* pKeepRunning)
-: m_model(model), m_pKeepRunning(pKeepRunning), agent(model), viewOn(true)
+Controller::Controller(Model& model, bool* pKeepRunning, Json::Value& importJSON)
+: m_model(model), m_pKeepRunning(pKeepRunning), agent(model, importJSON), viewOn(true)
 {
 	initArrays();
 }

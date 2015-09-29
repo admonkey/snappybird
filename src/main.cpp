@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 		bool keepRunning = true;
 		Model m;
 		View v(m, 500, 500);
-		Controller c(m, &keepRunning);
+		Controller c(m, &keepRunning, ImportSettingsJSON);
 
 		int totalFrames = 0;
 		int games = 0;

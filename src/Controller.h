@@ -36,7 +36,7 @@ public:
 	bool viewOn;
 
 public:
-	Controller(Model& m, bool* pKeepRunning);
+	Controller(Model& m, bool* pKeepRunning, Json::Value& importJSON);
 	virtual ~Controller();
 
 	void onChar(char c);
