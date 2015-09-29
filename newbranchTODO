@@ -1,0 +1,11 @@
+implement reinforcement learning algo
+
+export
+	state
+	agent
+	qTable
+
+import
+	state
+	agent
+	qTable
