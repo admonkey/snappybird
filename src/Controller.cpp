@@ -123,10 +123,19 @@ void Controller::onChar(char c)
 		}
 		return;
 	}
+	
+	if(c == 'm'){
+		// toggle viewMax on/off
+		if(agent.viewMax){
+			agent.viewMax = false;
+		} else {
+			agent.viewMax = true;
+		}
+		return;
+	}
 
 	if(!agent.playing){
-		m_model.flap();
-		agent.flapped = true;
+		agent.flap(true);
 	}
 }
 

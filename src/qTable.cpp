@@ -9,7 +9,7 @@
 #include "qTable.h"
 #include <algorithm>
 
-qTable::qTable() : viewQ(false)
+qTable::qTable() : viewQ(true)
 {
 }
 
@@ -40,5 +40,6 @@ void qTable::setQ(std::string stateAction, double qVal)
 	if(viewQ) {
 		std::replace( stateAction.begin(), stateAction.end(), ',', '\t');
 		std::cout << "\t stateAction: " << stateAction << "\tq: " << qVal << "\n";
+		//std::cout << "getQ: " << getQ(stateAction) << "\n";
 	}
 }

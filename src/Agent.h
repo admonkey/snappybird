@@ -32,6 +32,7 @@ public:
 	qTable qt;
 	
 	bool playing;
+	bool viewMax;
 
 public:
 	Agent(Model& m, Json::Value& importJSON);
@@ -39,6 +40,8 @@ public:
 	bool update();
 	double calculateQ();
 	void explore();
+	bool exploit();
+	bool exploration();
 	void flap(bool flap);
 };
 

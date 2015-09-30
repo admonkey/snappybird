@@ -132,6 +132,8 @@ int main(int argc, char *argv[])
 				lastScore = m.score;
 
 				m.reset();
+				cout << "highScore: " << highScore << " bestGame: " << bestGame;
+				cout << " lastScore: " << lastScore << " games: " << games << "\n";
 			} else	c.agent.died = false; // signal agent reward system
 			
 			// if watching live
