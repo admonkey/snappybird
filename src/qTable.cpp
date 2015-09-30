@@ -41,7 +41,7 @@ void qTable::setQ(std::string stateAction, double qVal)
 	// press Q to view
 	if(viewQ) {
 		std::replace( stateAction.begin(), stateAction.end(), ',', '\t');
-		std::cout << "\t stateAction: " << stateAction << "\tq: " << qVal << "\n";
+		std::cout << "\tstateAction:\t" << stateAction << "\tsetQ: " << qVal << "\n";
 		//std::cout << "getQ: " << getQ(stateAction) << "\n";
 	}
 }

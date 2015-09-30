@@ -20,9 +20,10 @@
 */ 
 
 #include "Agent.h"
+#include <algorithm>
 
 Agent::Agent(Model& model, Json::Value& importJSON)
-: 	explorationRate(0), learningRate(1.0), discountFactor(0.99), flapRate(25),
+: 	explorationRate(1000), learningRate(1.0), discountFactor(0.99), flapRate(25),
 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
 	playing(true), viewMax(false)
 {
@@ -48,10 +49,19 @@ bool Agent::exploration()
 
 bool Agent::exploit()
 {
-	double qFlap 	= qt.getQ( state.toCSV() + to_str(true) );
-	double qNoFlap 	= qt.getQ( state.toCSV() + to_str(false) );
+	std::string currentState = state.toCSV();
+	double qFlap 	= qt.getQ( currentState + to_str(true) );
+	double qNoFlap 	= qt.getQ( currentState + to_str(false) );
 	double maxQ = std::max(qFlap, qNoFlap);
-	if(viewMax) std::cout << "qFlap" << to_str(true) << ": " << qFlap << " " << "qNoFlap" << to_str(false) << ": " << qNoFlap << " max:" << maxQ << "\n";
+
+	//if(viewMax && (qFlap != 0)) {
+	if(viewMax) {
+		std::replace( currentState.begin(), currentState.end(), ',', '\t');
+		std::cout << "\t\t\t" << currentState << to_str(true) << "\tgetQ: " << qFlap << "\n";
+		std::cout << "\t\t\t" << currentState << to_str(false) << "\tgetQ: " << qNoFlap << "\t\tmax:" << maxQ << "\n";
+		//std::cout << "\t\texploiting: qFlap" << to_str(true) << ": " << qFlap << "\n";
+		//std::cout << "\t\texploiting: qNoFlap" << to_str(false) << ": " << qNoFlap << " max:" << maxQ << "\n";
+	}
 	
 	// avoid punishment
 	if( qNoFlap < 0 ){
@@ -71,7 +81,7 @@ bool Agent::exploit()
 	if( exploration() )
 		return false;
 
-	if( qFlap > qNoFlap ) std::cout << "flap\n";
+	//if( qFlap > qNoFlap ) std::cout << "flap\n";
 	flap( qFlap > qNoFlap );
 	return true;
 }
@@ -89,22 +99,23 @@ bool Agent::update()
 	qt.setQ(previousState + to_str(flapped), calculateQ());
 	//std::cout << "getQ: " << qt.getQ(previousState + to_str(flapped)) << "\n";
 
+	// save state for next frame
+	previousState = state.toCSV();
+	
 	// agent decision process
 	if(playing){
 		if(!exploit()) explore();
 	} else	flap(false);
-	
-	// save state for next frame
-	previousState = state.toCSV();
+
 	return true;
 }
 
 double Agent::calculateQ()
 {
-	// combine previous state with last action
+	/*// combine previous state with last action
 	std::string s;
 	s = previousState;
-	s += to_str(flapped);
+	s += to_str(flapped);*/
 	
 	// current reward
 	double 	qvalue = 0.01;
