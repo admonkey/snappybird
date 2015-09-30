@@ -8,8 +8,10 @@
 
 #include "qTable.h"
 #include <algorithm>
+#include "string.h"
+#include <fstream>
 
-qTable::qTable() : viewQ(true)
+qTable::qTable() : viewQ(false)
 {
 }
 
@@ -42,4 +44,30 @@ void qTable::setQ(std::string stateAction, double qVal)
 		std::cout << "\t stateAction: " << stateAction << "\tq: " << qVal << "\n";
 		//std::cout << "getQ: " << getQ(stateAction) << "\n";
 	}
+}
+
+void qTable::writeTable(std::string instanceID)
+{
+	std::cout << "writing qTable to file...\n";
+	std::ofstream qfile;
+	std::string fname = instanceID + ".qtable";
+	qfile.open(fname.c_str(), std::ofstream::out);
+	std::map<std::string,double>::iterator iter;
+	std::string strToReturn = ""; //This is no longer on the heap
+	for (iter = tab.begin(); iter != tab.end(); ++iter) {
+	   strToReturn += iter->first; //Not a method call
+	   strToReturn += "=";
+	   strToReturn += to_str(iter->second);
+	   strToReturn += "\n";
+	   // Make sure you don't modify table here or the iterators will not work as you expect
+	}
+	qfile << strToReturn;
+	qfile.close();
+	
+	/*// annonymous double write for default next import
+	std::ifstream  src(fname.c_str(), std::ios::binary);
+	std::ofstream  dst("qtable",   std::ios::binary);
+	dst << src.rdbuf();*/
+	
+	std::cout << "qTable written to file.\n";
 }

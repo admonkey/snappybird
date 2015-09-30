@@ -24,6 +24,7 @@ public:
 	virtual ~qTable();
 	double getQ(std::string stateAction);
 	void setQ(std::string stateAction, double qVal);
+	void writeTable(std::string instanceID);
 };
 
 #endif // QTABLE_H

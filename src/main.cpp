@@ -148,6 +148,10 @@ int main(int argc, char *argv[])
 		}
 		time_t end = time(0);
 		if(c.viewOn) mili_sleep(1000);
+		
+		// write out qTable
+		//c.agent.qt.writeTable(InstanceSettingsJSON["InstanceID"].asString());
+		c.agent.qt.writeTable("");
 
 		// update settings object
 		InstanceSettingsJSON["StartTime"] = getDateTime(start);

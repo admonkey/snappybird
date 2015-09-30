@@ -22,7 +22,7 @@
 #include "Agent.h"
 
 Agent::Agent(Model& model, Json::Value& importJSON)
-: 	explorationRate(100), learningRate(1.0), discountFactor(0.99), flapRate(25),
+: 	explorationRate(0), learningRate(1.0), discountFactor(0.99), flapRate(25),
 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
 	playing(true), viewMax(false)
 {
@@ -87,7 +87,7 @@ bool Agent::update()
 {
 	// update qTable
 	qt.setQ(previousState + to_str(flapped), calculateQ());
-	std::cout << "getQ: " << qt.getQ(previousState + to_str(flapped)) << "\n";
+	//std::cout << "getQ: " << qt.getQ(previousState + to_str(flapped)) << "\n";
 
 	// agent decision process
 	if(playing){
