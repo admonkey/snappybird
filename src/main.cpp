@@ -79,6 +79,12 @@ int main(int argc, char *argv[])
 		InstanceSettingsJSON["InstanceID"] = argv[1];
 		InstanceSettingsJSON["Hostname"] = argv[2];
 
+		int totalFrames = 0;
+		int totalGames = 0;
+		int totalHighScore = 0;
+		int totalBestGame = 0;
+		int totalScoreChangeCount = 0;
+
 		// import instance
 		Json::Value ImportSettingsJSON;
 		if (fileExists("Settings.json"))
@@ -87,6 +93,13 @@ int main(int argc, char *argv[])
 			ImportSettings >> ImportSettingsJSON;
 			//std::cout << styledWriter.write(ImportSettingsJSON);
 			cout << "Settings.json imported.\n";
+
+			// total scores
+			totalFrames = ImportSettingsJSON["TotalFrames"].asInt();
+			totalGames = ImportSettingsJSON["TotalGames"].asInt();
+			totalHighScore = ImportSettingsJSON["TotalHighScore"].asInt();
+			totalBestGame = ImportSettingsJSON["TotalBestGame"].asInt();
+			totalScoreChangeCount = ImportSettingsJSON["TotalScoreChangeCount"].asInt();
 		}
 
 		bool keepRunning = true;
@@ -95,7 +108,7 @@ int main(int argc, char *argv[])
 		Controller c(m, &keepRunning, ImportSettingsJSON);
 		c.agent.qt.readTable("");
 
-		int totalFrames = 0;
+		int frames = 0;
 		int games = 0;
 		int highScore = 0;
 		int bestGame = 0;
@@ -110,7 +123,7 @@ int main(int argc, char *argv[])
 			if(!m.update()){
 				c.agent.died = true;
 				
-				totalFrames += m.frame;
+				frames += m.frame;
 				games++;
 				// high score
 				if(m.score > highScore){
@@ -158,12 +171,25 @@ int main(int argc, char *argv[])
 		InstanceSettingsJSON["StartTime"] = getDateTime(start);
 		InstanceSettingsJSON["EndTime"] = getDateTime(end);
 		InstanceSettingsJSON["TotalTimeSeconds"] = difftime(end, start);
-		InstanceSettingsJSON["Frames"] = totalFrames;
+		InstanceSettingsJSON["Frames"] = frames;
 		InstanceSettingsJSON["Games"] = games;
 		InstanceSettingsJSON["HighScore"] = highScore;
 		InstanceSettingsJSON["BestGame"] = bestGame;
 		InstanceSettingsJSON["ScoreChanges"] = scoreChangeCount;
 		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
+		
+		// total scores
+		InstanceSettingsJSON["TotalFrames"] = totalFrames + frames;
+		InstanceSettingsJSON["TotalGames"] = totalGames + games;
+		InstanceSettingsJSON["TotalScoreChangeCount"] = totalScoreChangeCount + scoreChangeCount;
+		if(highScore > totalHighScore){
+			InstanceSettingsJSON["TotalHighScore"] = highScore;
+			InstanceSettingsJSON["TotalBestGame"] = totalBestGame + bestGame;
+		}
+		else {
+			InstanceSettingsJSON["TotalHighScore"] = totalHighScore;
+			InstanceSettingsJSON["TotalBestGame"] = totalBestGame;
+		}
 
 		// write out results
 		std::cout << styledWriter.write(InstanceSettingsJSON);
