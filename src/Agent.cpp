@@ -23,7 +23,7 @@
 #include <algorithm>
 
 Agent::Agent(Model& model, Json::Value& importJSON)
-: 	explorationRate(1000), learningRate(1.0), discountFactor(0.99), flapRate(25),
+: 	explorationRate(100), learningRate(1.0), discountFactor(0.99), flapRate(25),
 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
 	playing(true), viewMax(false)
 {
@@ -54,7 +54,6 @@ bool Agent::exploit()
 	double qNoFlap 	= qt.getQ( currentState + to_str(false) );
 	double maxQ = std::max(qFlap, qNoFlap);
 
-	//if(viewMax && (qFlap != 0)) {
 	if(viewMax) {
 		std::replace( currentState.begin(), currentState.end(), ',', '\t');
 		std::cout << "\t\t\t" << currentState << to_str(true) << "\tgetQ: " << qFlap << "\n";
@@ -120,7 +119,7 @@ double Agent::calculateQ()
 	// current reward
 	double 	qvalue = 0.01;
 	if(died)
-		return qvalue = -0.01;
+		qvalue = -1;
 
 	// add discounted max next state
 	double qFlap 	= qt.getQ( state.toCSV() + to_str(true) );
