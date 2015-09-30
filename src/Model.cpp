@@ -15,7 +15,7 @@
 using std::cout;
 
 
-Model::Model() : rand(0), frame(0), score(0)
+Model::Model() : rand(0), frame(0), score(0), viewScore(true)
 {
 }
 
@@ -37,7 +37,8 @@ bool Model::update()
 			delete tubes[i];
 			tubes[i] = tubes[tubes.size() - 1];
 			tubes.erase(tubes.begin() + tubes.size() - 1);
-			cout << to_str(++score) << "\n";
+			++score;
+			if(viewScore) cout << to_str(score) << "\n";
 		}
 	}
 	if(++frame % 35 == 0) {

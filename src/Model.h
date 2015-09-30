@@ -90,7 +90,7 @@ public:
 	Rand rand;
 	int frame;
 	int score;
-
+	bool viewScore;
 
 	Model();
 	~Model();

@@ -118,8 +118,10 @@ void Controller::onChar(char c)
 		// toggle view on/off
 		if(viewOn){
 			viewOn = false;
+			m_model.viewScore = false;
 		} else {
 			viewOn = true;
+			m_model.viewScore = true;
 		}
 		return;
 	}
