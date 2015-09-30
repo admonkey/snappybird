@@ -93,6 +93,7 @@ int main(int argc, char *argv[])
 		Model m;
 		View v(m, 500, 500);
 		Controller c(m, &keepRunning, ImportSettingsJSON);
+		c.agent.qt.readTable("");
 
 		int totalFrames = 0;
 		int games = 0;

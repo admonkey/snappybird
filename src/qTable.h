@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <sys/stat.h>
 
 #ifndef QTABLE_H
 #define QTABLE_H
@@ -25,6 +26,7 @@ public:
 	double getQ(std::string stateAction);
 	void setQ(std::string stateAction, double qVal);
 	void writeTable(std::string instanceID);
+	void readTable(std::string instanceID);
 };
 
 #endif // QTABLE_H

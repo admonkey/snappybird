@@ -71,3 +71,38 @@ void qTable::writeTable(std::string instanceID)
 	
 	std::cout << "qTable written to file.\n";
 }
+
+void qTable::readTable(std::string instanceID){
+  const char* fname = (instanceID + ".qtable").c_str();
+  struct stat buf;
+    if (stat(fname, &buf) != -1)
+    {
+        std::cout << "importing qTable...\n";
+	std::ifstream file(fname);
+	 if (file.is_open())
+	 {
+	 	std::string line = "";
+	 	std::string s = "";
+	 	std::string astate = "";
+	 	std::string qvalue = "";
+	   	while ( std::getline(file, line) )
+		{
+			s = "";
+			astate = "";
+			for(int i = 0; i < line.length(); i++){
+				if(line[i] != '=')
+					s += line[i];
+				else {
+					astate = s;
+					s = "";
+				}
+				qvalue = s;
+			}
+		    tab.insert(std::pair<std::string,double>(astate, atof(qvalue.c_str())));
+		}
+	   	file.close();
+	 }
+	 std::cout << "qTable imported.\n";
+    }
+    else std::cout << "no qTable to import. creating new.\n";
+}
