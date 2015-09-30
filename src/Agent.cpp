@@ -34,12 +34,23 @@ Agent::~Agent()
 {
 }
 
-bool Agent::update()
+void Agent::explore()
 {
-	if( randNum.next(flapRate) == 0 ){
+	flap( randNum.next(flapRate) == 0 );
+}
+
+void Agent::flap(bool flap)
+{
+	if (flap) {
 		m_model.flap();
 		flapped = true;
 	} else	flapped = false;
+}
+
+bool Agent::update()
+{
+	if(playing)
+		explore();
 	/*if( randNum.next(explorationRate) == 0 ){
 		
 	}*/
@@ -57,9 +68,9 @@ double Agent::calculateQ()
 	s += to_str(flapped);
 	
 	// current reward
-	double qvalue = 1.0;
+	double 	qvalue = 1;
 	if(died)
-		return qvalue = -1000.0;
+		return qvalue = 0;
 
 
 	// add discounted max next state

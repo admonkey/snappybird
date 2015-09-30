@@ -38,6 +38,8 @@ public:
 	virtual ~Agent();
 	bool update();
 	double calculateQ();
+	void explore();
+	void flap(bool flap);
 };
 
 #endif // AGENT_H

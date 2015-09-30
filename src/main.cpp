@@ -108,6 +108,7 @@ int main(int argc, char *argv[])
 			// if bird dies, update stats & reset game
 			if(!m.update()){
 				c.agent.died = true;
+				
 				totalFrames += m.frame;
 				games++;
 				// high score
@@ -140,6 +141,8 @@ int main(int argc, char *argv[])
 			}
 
 			c.update();
+			if(c.agent.died)
+				c.agent.previousState = "";
 		}
 		time_t end = time(0);
 		if(c.viewOn) mili_sleep(1000);
