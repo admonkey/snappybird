@@ -47,42 +47,25 @@ bool Agent::exploration()
 	return ( randNum.next(explorationRate) == 0 );
 }
 
-bool Agent::exploit()
+void Agent::exploit()
 {
 	std::string currentState = state.toCSV();
 	double qFlap 	= qt.getQ( currentState + to_str(true) );
 	double qNoFlap 	= qt.getQ( currentState + to_str(false) );
-	double maxQ = std::max(qFlap, qNoFlap);
 
 	if(viewMax) {
 		std::replace( currentState.begin(), currentState.end(), ',', '\t');
 		std::cout << "\t\t\t" << currentState << to_str(true) << "\tgetQ: " << qFlap << "\n";
-		std::cout << "\t\t\t" << currentState << to_str(false) << "\tgetQ: " << qNoFlap << "\t\tmax:" << maxQ << "\n";
-		//std::cout << "\t\texploiting: qFlap" << to_str(true) << ": " << qFlap << "\n";
-		//std::cout << "\t\texploiting: qNoFlap" << to_str(false) << ": " << qNoFlap << " max:" << maxQ << "\n";
-	}
-	
-	// avoid punishment
-	if( qNoFlap < 0 ){
-		flap( true );
-		return true;
-	}
-	if( qFlap < 0 ){
-		flap( false );
-		return true;
+		std::cout << "\t\t\t" << currentState << to_str(false) << "\tgetQ: " << qNoFlap;
+		std::cout << "\t\tmax:" << std::max(qFlap, qNoFlap) << "\n";
 	}
 
-	// exploratory conditions
-	if( maxQ == 0 )
-		return false;
+	// explore if equal
 	if( qFlap == qNoFlap )
-		return false;
-	if( exploration() )
-		return false;
+		explore();
 
-	//if( qFlap > qNoFlap ) std::cout << "flap\n";
+	// exploit
 	flap( qFlap > qNoFlap );
-	return true;
 }
 
 void Agent::flap(bool flap)
@@ -96,14 +79,15 @@ bool Agent::update()
 {
 	// update qTable
 	qt.setQ(previousState + to_str(flapped), calculateQ());
-	//std::cout << "getQ: " << qt.getQ(previousState + to_str(flapped)) << "\n";
 
 	// save state for next frame
 	previousState = state.toCSV();
 	
 	// agent decision process
 	if(playing){
-		if(!exploit()) explore();
+		if( exploration() )
+			explore();
+		else 	exploit();
 	} else	flap(false);
 
 	return true;

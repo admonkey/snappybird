@@ -40,7 +40,7 @@ public:
 	bool update();
 	double calculateQ();
 	void explore();
-	bool exploit();
+	void exploit();
 	bool exploration();
 	void flap(bool flap);
 };
