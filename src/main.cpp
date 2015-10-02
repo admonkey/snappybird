@@ -1,7 +1,7 @@
 /*
   The contents of this file are dedicated by all of its authors, including
 
-    Michael S. Gashler,
+    Michael S. Gashler, Jeff Puckett
 
   to the public domain (http://creativecommons.org/publicdomain/zero/1.0/).
 */
@@ -95,11 +95,11 @@ int main(int argc, char *argv[])
 			cout << "Settings.json imported.\n";
 
 			// total scores
-			totalFrames = ImportSettingsJSON["TotalFrames"].asInt();
-			totalGames = ImportSettingsJSON["TotalGames"].asInt();
-			totalHighScore = ImportSettingsJSON["TotalHighScore"].asInt();
-			totalBestGame = ImportSettingsJSON["TotalBestGame"].asInt();
-			totalScoreChangeCount = ImportSettingsJSON["TotalScoreChangeCount"].asInt();
+			totalFrames = ImportSettingsJSON["TotalScores"]["TotalFrames"].asInt();
+			totalGames = ImportSettingsJSON["TotalScores"]["TotalGames"].asInt();
+			totalHighScore = ImportSettingsJSON["TotalScores"]["TotalHighScore"].asInt();
+			totalBestGame = ImportSettingsJSON["TotalScores"]["TotalBestGame"].asInt();
+			totalScoreChangeCount = ImportSettingsJSON["TotalScores"]["TotalScoreChangeCount"].asInt();
 		}
 
 		bool keepRunning = true;
@@ -146,8 +146,12 @@ int main(int argc, char *argv[])
 				lastScore = m.score;
 
 				m.reset();
-				cout << "highScore: " << highScore << " bestGame: " << bestGame;
-				cout << " lastScore: " << lastScore << " games: " << games << "\n";
+				if( (c.viewOn) || (games % 10 == 0) ){
+					cout << "totalGames: " << totalGames + games;
+					cout << " totalHighScore: " << totalHighScore << " totalBestGame: " << totalBestGame;
+					cout << " highScore: " << highScore << " bestGame: " << bestGame;
+					cout << " lastScore: " << lastScore << " games: " << games << "\n";
+				}
 			} else	c.agent.died = false; // signal agent reward system
 			
 			// if watching live
@@ -168,27 +172,29 @@ int main(int argc, char *argv[])
 		c.agent.qt.writeTable("");
 
 		// update settings object
-		InstanceSettingsJSON["StartTime"] = getDateTime(start);
-		InstanceSettingsJSON["EndTime"] = getDateTime(end);
-		InstanceSettingsJSON["TotalTimeSeconds"] = difftime(end, start);
-		InstanceSettingsJSON["Frames"] = frames;
-		InstanceSettingsJSON["Games"] = games;
-		InstanceSettingsJSON["HighScore"] = highScore;
-		InstanceSettingsJSON["BestGame"] = bestGame;
-		InstanceSettingsJSON["ScoreChanges"] = scoreChangeCount;
 		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
-		
+		InstanceSettingsJSON["Time"]["StartTime"] = getDateTime(start);
+		InstanceSettingsJSON["Time"]["EndTime"] = getDateTime(end);
+		InstanceSettingsJSON["Time"]["TotalTimeSeconds"] = difftime(end, start);
+
+		// instance scores
+		InstanceSettingsJSON["InstanceScores"]["Frames"] = frames;
+		InstanceSettingsJSON["InstanceScores"]["Games"] = games;
+		InstanceSettingsJSON["InstanceScores"]["ScoreChangeCount"] = scoreChangeCount;
+		InstanceSettingsJSON["InstanceScores"]["HighScore"] = highScore;
+		InstanceSettingsJSON["InstanceScores"]["BestGame"] = bestGame;
+
 		// total scores
-		InstanceSettingsJSON["TotalFrames"] = totalFrames + frames;
-		InstanceSettingsJSON["TotalGames"] = totalGames + games;
-		InstanceSettingsJSON["TotalScoreChangeCount"] = totalScoreChangeCount + scoreChangeCount;
+		InstanceSettingsJSON["TotalScores"]["TotalFrames"] = totalFrames + frames;
+		InstanceSettingsJSON["TotalScores"]["TotalGames"] = totalGames + games;
+		InstanceSettingsJSON["TotalScores"]["TotalScoreChangeCount"] = totalScoreChangeCount + scoreChangeCount;
 		if(highScore > totalHighScore){
-			InstanceSettingsJSON["TotalHighScore"] = highScore;
-			InstanceSettingsJSON["TotalBestGame"] = totalBestGame + bestGame;
+			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = highScore;
+			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalGames + bestGame;
 		}
 		else {
-			InstanceSettingsJSON["TotalHighScore"] = totalHighScore;
-			InstanceSettingsJSON["TotalBestGame"] = totalBestGame;
+			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = totalHighScore;
+			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalBestGame;
 		}
 
 		// write out results
