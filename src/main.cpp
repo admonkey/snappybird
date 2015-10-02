@@ -113,7 +113,8 @@ int main(int argc, char *argv[])
 		int highScore = 0;
 		int bestGame = 0;
 		int lastScore = 0;
-		Json::Value scoreChangesJSON;
+		//Json::Value scoreChangesJSON;
+		std::string scoreChangesCSV = "";
 		int scoreChangeCount = 0;
 
 		time_t start = time(0);
@@ -135,9 +136,11 @@ int main(int argc, char *argv[])
 				if(m.score != lastScore){
 				   scoreChangeCount++;
 				   if(m.score > 0)
-					scoreChangesJSON[to_str(games)] = m.score;
+					//scoreChangesJSON[to_str(games)] = m.score;
+					scoreChangesCSV += to_str(games) + "," + to_str(m.score) + "\n";
 				   else
-				   	scoreChangesJSON[to_str(games)] = 0;
+				   	//scoreChangesJSON[to_str(games)] = 0;
+				   	scoreChangesCSV += to_str(games) + ",0\n";
 				}
 				   if(m.score > 0)
 					lastScore = m.score;
@@ -202,8 +205,10 @@ int main(int argc, char *argv[])
 		std::cout << styledWriter.write(InstanceSettingsJSON);
 		std::ofstream gSettings("Settings.json", std::ofstream::binary);
 		gSettings << styledWriter.write(InstanceSettingsJSON);
-		std::ofstream gChanges("ScoreChanges.json", std::ofstream::binary);
-		gChanges << styledWriter.write(scoreChangesJSON);
+		//std::ofstream gChanges("ScoreChanges.json", std::ofstream::binary);
+		//gChanges << styledWriter.write(scoreChangesJSON);
+		std::ofstream gChanges("ScoreChanges.csv", std::ofstream::binary);
+		gChanges << scoreChangesCSV;
 	}
 	catch(const std::exception& e)
 	{
