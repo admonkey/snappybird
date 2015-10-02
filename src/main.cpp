@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 		int bestGame = 0;
 		int lastScore = 0;
 		//Json::Value scoreChangesJSON;
-		std::string scoreChangesCSV = "";
+		std::string scoreChangesCSV = "(0,0)";
 		int scoreChangeCount = 0;
 
 		time_t start = time(0);
@@ -125,6 +125,7 @@ int main(int argc, char *argv[])
 				c.agent.died = true;
 				
 				frames += m.frame;
+				totalGames++;
 				games++;
 				// high score
 				if(m.score > highScore){
@@ -137,10 +138,10 @@ int main(int argc, char *argv[])
 				   scoreChangeCount++;
 				   if(m.score > 0)
 					//scoreChangesJSON[to_str(games)] = m.score;
-					scoreChangesCSV += to_str(games) + "," + to_str(m.score) + "\n";
+					scoreChangesCSV += ",(" + to_str(totalGames) + "," + to_str(m.score) + ")";
 				   else
 				   	//scoreChangesJSON[to_str(games)] = 0;
-				   	scoreChangesCSV += to_str(games) + ",0\n";
+				   	scoreChangesCSV += ",(" + to_str(totalGames) + ",0)";
 				}
 				   if(m.score > 0)
 					lastScore = m.score;
@@ -150,7 +151,7 @@ int main(int argc, char *argv[])
 
 				m.reset();
 				if( (c.viewOn) || (games % 10 == 0) ){
-					cout << "totalGames: " << totalGames + games;
+					cout << "totalGames: " << totalGames;
 					cout << " totalHighScore: " << totalHighScore << " totalBestGame: " << totalBestGame;
 					cout << " highScore: " << highScore << " bestGame: " << bestGame;
 					cout << " lastScore: " << lastScore << " games: " << games << "\n";

@@ -18,3 +18,19 @@ make opt
 cd ../bin
 ./$game $game $(hostname -f)
 rm $game
+
+# make sure MySQL mode 'STRICT_TRANS_TABLES' is enabled
+# SELECT @@GLOBAL.sql_mode;
+# SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES';
+
+alterUUID="ALTER TABLE ScoreChangeCount MODIFY InstanceID char(36) Default '$(uuidgen)';"
+query="INSERT INTO ScoreChangeCount (GameNumber, Score) VALUES"
+revert=";ALTER TABLE ScoreChangeCount MODIFY InstanceID char(36) NOT NULL;"
+
+# insert record into database
+mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
+$alterUUID
+$query
+$(cat ScoreChanges.csv)
+$revert
+EOF
