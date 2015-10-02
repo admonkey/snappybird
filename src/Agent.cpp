@@ -23,12 +23,21 @@
 #include <algorithm>
 
 Agent::Agent(Model& model, Json::Value& importJSON)
-: 	explorationRate(100), learningRate(1.0), discountFactor(0.99), flapRate(25),
-	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
+: 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
 	playing(true), viewMax(false)
 {
-	//if(importJSON.isNull())
-		//std::cout << "import null\n";
+	// search for import value, or assign second parameter as default
+	explorationRate = importJSON["AgentSettings"].get("ExplorationRate", 100 ).asDouble();
+	AgentSettingsJSON["ExplorationRate"] = explorationRate;
+	
+	learningRate = importJSON["AgentSettings"].get("LearningRate", 1.0 ).asDouble();
+	AgentSettingsJSON["LearningRate"] = learningRate;
+	
+	discountFactor = importJSON["AgentSettings"].get("DiscountFactor", 0.99 ).asDouble();
+	AgentSettingsJSON["DiscountFactor"] = discountFactor;
+	
+	flapRate = importJSON["AgentSettings"].get("FlapRate", 25 ).asDouble();
+	AgentSettingsJSON["FlapRate"] = flapRate;
 }
 
 Agent::~Agent()

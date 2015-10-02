@@ -18,6 +18,7 @@
 class Agent
 {
 public:
+	Json::Value AgentSettingsJSON;
 	double explorationRate;
 	double learningRate;
 	double discountFactor;

@@ -172,6 +172,7 @@ int main(int argc, char *argv[])
 		c.agent.qt.writeTable("");
 
 		// update settings object
+		InstanceSettingsJSON["AgentSettings"] = c.agent.AgentSettingsJSON;
 		InstanceSettingsJSON["StateSettings"] = c.agent.state.StateSettingsJSON;
 		InstanceSettingsJSON["Time"]["StartTime"] = getDateTime(start);
 		InstanceSettingsJSON["Time"]["EndTime"] = getDateTime(end);
