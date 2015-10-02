@@ -38,6 +38,9 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	
 	flapRate = importJSON["AgentSettings"].get("FlapRate", 25 ).asDouble();
 	AgentSettingsJSON["FlapRate"] = flapRate;
+
+	scaledExplorer = importJSON["AgentSettings"].get("ScaledExplorer", true ).asBool();
+	AgentSettingsJSON["ScaledExplorer"] = scaledExplorer;
 }
 
 Agent::~Agent()
@@ -51,6 +54,8 @@ void Agent::explore()
 
 bool Agent::exploration()
 {
+	//if(scaledExplorer)
+		
 	if(explorationRate == 0)
 		return false;
 	return ( randNum.next(explorationRate) == 0 );

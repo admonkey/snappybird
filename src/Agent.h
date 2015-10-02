@@ -23,6 +23,7 @@ public:
 	double learningRate;
 	double discountFactor;
 	double flapRate;
+	bool scaledExplorer;
 
 	Rand randNum;
 	Model& m_model;
