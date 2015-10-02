@@ -35,6 +35,8 @@ public:
 	
 	bool playing;
 	bool viewMax;
+	double qFlap;
+	double qNoFlap;
 
 public:
 	Agent(Model& m, Json::Value& importJSON);

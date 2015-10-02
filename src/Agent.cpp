@@ -24,10 +24,10 @@
 
 Agent::Agent(Model& model, Json::Value& importJSON)
 : 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
-	playing(true), viewMax(false)
+	playing(true), viewMax(false), qFlap(0), qNoFlap(0)
 {
 	// search for import value, or assign second parameter as default
-	explorationRate = importJSON["AgentSettings"].get("ExplorationRate", 100 ).asDouble();
+	explorationRate = importJSON["AgentSettings"].get("ExplorationRate", 10000 ).asDouble();
 	AgentSettingsJSON["ExplorationRate"] = explorationRate;
 	
 	learningRate = importJSON["AgentSettings"].get("LearningRate", 1.0 ).asDouble();
@@ -54,8 +54,10 @@ void Agent::explore()
 
 bool Agent::exploration()
 {
-	//if(scaledExplorer)
-		
+	// increase exploration rate relative to absolute value of maximum Q
+	if(scaledExplorer)
+		explorationRate *= abs(  std::max(qFlap, qNoFlap)  );
+
 	if(explorationRate == 0)
 		return false;
 	return ( randNum.next(explorationRate) == 0 );
@@ -63,17 +65,6 @@ bool Agent::exploration()
 
 void Agent::exploit()
 {
-	std::string currentState = state.toCSV();
-	double qFlap 	= qt.getQ( currentState + to_str(true) );
-	double qNoFlap 	= qt.getQ( currentState + to_str(false) );
-
-	if(viewMax) {
-		std::replace( currentState.begin(), currentState.end(), ',', '\t');
-		std::cout << "\t\t\t" << currentState << to_str(true) << "\tgetQ: " << qFlap << "\n";
-		std::cout << "\t\t\t" << currentState << to_str(false) << "\tgetQ: " << qNoFlap;
-		std::cout << "\t\tmax:" << std::max(qFlap, qNoFlap) << "\n";
-	}
-
 	// explore if equal
 	if( qFlap == qNoFlap )
 		explore();
@@ -99,6 +90,8 @@ bool Agent::update()
 	
 	// agent decision process
 	if(playing){
+		qFlap 	= qt.getQ( previousState + to_str(true) );
+		qNoFlap	= qt.getQ( previousState + to_str(false) );
 		if( exploration() )
 			explore();
 		else 	exploit();
