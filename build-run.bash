@@ -18,6 +18,9 @@ make opt
 cd ../bin
 ./$game $game $(hostname -f)
 rm $game
+cp ScoreChanges.csv $game.ScoreChanges.csv
+cp Settings.json $game.Settings.json
+cp .qtable $game.qtable
 
 # make sure MySQL mode 'STRICT_TRANS_TABLES' is enabled
 # SELECT @@GLOBAL.sql_mode;
@@ -31,6 +34,6 @@ revert=";ALTER TABLE ScoreChangeCount MODIFY InstanceID char(36) NOT NULL;"
 mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
 $alterUUID
 $query
-$(cat ScoreChanges.csv)
+$(cat $game.ScoreChanges.csv)
 $revert
 EOF

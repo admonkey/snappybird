@@ -171,9 +171,7 @@ int main(int argc, char *argv[])
 		time_t end = time(0);
 		if(c.viewOn) mili_sleep(1000);
 		
-		// write out qTable
-		//c.agent.qt.writeTable(InstanceSettingsJSON["InstanceID"].asString());
-		c.agent.qt.writeTable("");
+
 
 		// update settings object
 		InstanceSettingsJSON["AgentSettings"] = c.agent.AgentSettingsJSON;
@@ -202,14 +200,17 @@ int main(int argc, char *argv[])
 			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalBestGame;
 		}
 
-		// write out results
+		// write out results & settings
 		std::cout << styledWriter.write(InstanceSettingsJSON);
 		std::ofstream gSettings("Settings.json", std::ofstream::binary);
 		gSettings << styledWriter.write(InstanceSettingsJSON);
-		//std::ofstream gChanges("ScoreChanges.json", std::ofstream::binary);
-		//gChanges << styledWriter.write(scoreChangesJSON);
+		
+		// write out score changes CSV
 		std::ofstream gChanges("ScoreChanges.csv", std::ofstream::binary);
 		gChanges << scoreChangesCSV;
+
+		// write out qTable
+		c.agent.qt.writeTable("");
 	}
 	catch(const std::exception& e)
 	{
