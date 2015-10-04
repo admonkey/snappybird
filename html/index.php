@@ -11,21 +11,21 @@
 			WHERE GameNumber > " . $startGame . "  -- AND GameNumber < 330000
 			AND InstanceID = '40081c52-bb10-4f33-9692-527ffe1b540c'
 		  ORDER BY GameNumber
-		   LIMIT 30;";
+		  -- LIMIT 40;";
 	$result = mysql_query($query);
 	if (!$result)
 		die('Invalid query: ' . mysql_error());
 	$labelCount = $startGame;
 	$seriesCount = 0;
 	$labels = $startGame;
-	$series = "{meta: 'Game# " . $startGame . "', value: 0 }";
+	$series = "{meta: 'Game: " . $startGame . "', value: 0 }";
 	while ($row = mysql_fetch_assoc($result)) {
 		if($expanded) while ( $labelCount != $row['GameNumber'] ){
 			$labels .= "," . ++$labelCount;
-			$series .= ",{meta: 'Game# " . $labelCount . "', value: " . $row['Score'] . "}";
+			$series .= ",{meta: 'Game: " . $labelCount . "', value: " . $row['Score'] . "}";
 		}
 		$labels .= "," . $row['GameNumber'];
-		$series .= ",{meta: 'Game# " . ($expanded ? $labelCount : $row['GameNumber']) . "', value: " . $row['Score'] . "}";
+		$series .= ",{meta: 'Game: " . ($expanded ? $labelCount : $row['GameNumber']) . "', value: " . $row['Score'] . "}";
 	}
 ?>
 <script>

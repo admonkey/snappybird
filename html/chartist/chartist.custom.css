@@ -14,6 +14,10 @@ This allows you to customize even the point size in CSS */
   stroke-width: 1px;
 }
 
+.ct-grid {
+	stroke-width: 0px;
+}
+
 /* Chartist tooltip */
 .chartist-tooltip {
 	position:absolute;
