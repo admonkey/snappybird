@@ -12,12 +12,12 @@
 		    	echo $siteTitle;
 	?></title>
 
-	<!-- JQUERY --><script src="js/jquery.1.11.2.min.js"></script>
+	<!-- JQUERY --><script src="jquery/jquery.1.11.2.min.js"></script>
 
 	<!-- BOOTSTRAP -->
-		<script src="js/bootstrap.3.3.4.min.js"></script>
-		<link rel="stylesheet" href="css/bootstrap.3.3.4.min.css"></link>
-		<link rel="stylesheet" href="css/bootstrap.custom.css"></link>
+		<script src="bootstrap/bootstrap.3.3.4.min.js"></script>
+		<link rel="stylesheet" href="bootstrap/bootstrap.3.3.4.min.css"></link>
+		<link rel="stylesheet" href="bootstrap/bootstrap.custom.css"></link>
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -25,9 +25,9 @@
 		<![endif]-->
 
 	<!-- CHARTIST -->
-		<script src="js/chartist.0.9.4.min.js"></script>
-		<link rel="stylesheet" href="css/chartist.min.css"></link>
-		<link rel="stylesheet" href="css/chartist.custom.css"></link>
+		<script src="chartist/chartist.0.9.4.min.js"></script>
+		<link rel="stylesheet" href="chartist/chartist.min.css"></link>
+		<link rel="stylesheet" href="chartist/chartist.custom.css"></link>
 	
   </head>
   <body>

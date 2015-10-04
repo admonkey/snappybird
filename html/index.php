@@ -3,22 +3,6 @@
 	require_once('header.php');
 ?>
 
-<style>
-	/* This selector overrides the points style on line charts. 
-	Points on line charts are actually just very short strokes. 
-	This allows you to customize even the point size in CSS */
-	.ct-series-a .ct-point {
-	  /* Colour of your points */
-	  stroke: red;
-	  /* Size of your points */
-	  stroke-width: 6px;
-	  /* Make your points appear as squares 
-	  stroke-linecap: square;*/
-	}
-</style>
-
-
-
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 <!--<div class="ct-chart ct-golden-section" id="chart2"></div>-->
 <?php
