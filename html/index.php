@@ -5,8 +5,9 @@
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 <?php
-	$startGame = 245000;
-	$query = "SELECT * FROM ScoreChangeCount 
+	$expanded = false;
+	$startGame = 248600;
+	$query = "SELECT GameNumber, Score FROM ScoreChangeCount 
 			WHERE GameNumber > " . $startGame . "  -- AND GameNumber < 330000
 			AND InstanceID = '40081c52-bb10-4f33-9692-527ffe1b540c'
 		  ORDER BY GameNumber
@@ -19,12 +20,12 @@
 	$labels = $startGame;
 	$series = "{meta: 'Game# " . $startGame . "', value: 0 }";
 	while ($row = mysql_fetch_assoc($result)) {
-		while ( $labelCount != $row['GameNumber'] ){
+		if($expanded) while ( $labelCount != $row['GameNumber'] ){
 			$labels .= "," . ++$labelCount;
 			$series .= ",{meta: 'Game# " . $labelCount . "', value: " . $row['Score'] . "}";
 		}
 		$labels .= "," . $row['GameNumber'];
-		$series .= ",{meta: 'Game# " . $labelCount . "', value: " . $row['Score'] . "}";
+		$series .= ",{meta: 'Game# " . ($expanded ? $labelCount : $row['GameNumber']) . "', value: " . $row['Score'] . "}";
 	}
 ?>
 <script>

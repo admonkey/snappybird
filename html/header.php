@@ -27,6 +27,7 @@
 	<!-- CHARTIST -->
 		<script src="chartist/chartist.0.9.4.min.js"></script>
 		<script src="chartist/chartist-plugin-tooltip.js"></script>
+		<script src="chartist/chartist.custom.js"></script>
 		<link rel="stylesheet" href="chartist/chartist.min.css"></link>
 		<link rel="stylesheet" href="chartist/chartist.custom.css"></link>
 	
@@ -45,8 +46,8 @@
         </div><!-- end navbar-header -->
 	<div id="navbar" class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
-			<li><a href="#">Link 1</a></li>
-			<li><a href="#">Link 2</a></li>
+			<li><a href="test.php">Test</a></li>
+			<li><a href="#" onclick="toggleGrid();">Grid</a></li>
 		</ul>
 	</div><!--/.nav-collapse -->
       </div>
