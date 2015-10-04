@@ -21,7 +21,7 @@ This allows you to customize even the point size in CSS */
 	font-weight:700;
 	text-align:center;
 	pointer-events:none;
-	z-index:1
+	z-index:2001
 }
 .chartist-tooltip:after {
 	content:"";

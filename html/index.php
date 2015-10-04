@@ -4,7 +4,6 @@
 ?>
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
-<!--<div class="ct-chart ct-golden-section" id="chart2"></div>-->
 <?php
 	$query = "SELECT * FROM ScoreChangeCount 
 			WHERE GameNumber > 330000  
@@ -17,63 +16,30 @@
 	$labelCount = 330000;
 	$seriesCount = 0;
 	$labels = "330000";
-	$series = "0";
+	$series = "{meta: 'Game# 330000', value: 0 }";
 	while ($row = mysql_fetch_assoc($result)) {
 		while ( $labelCount != $row['GameNumber'] ){
 			$labels .= "," . ++$labelCount;
-			$series .= "," . $row['Score'];
+			$series .= ",{meta: 'Game# " . $labelCount . "', value: " . $row['Score'] . "}";
 		}
 		$labels .= "," . $row['GameNumber'];
-		$series .= "," . $row['Score'];
+		$series .= ",{meta: 'Game# " . $labelCount . "', value: " . $row['Score'] . "}";
 	}
 ?>
 <script>
-  // Initialize a Line chart in the container with the ID chart1
-  new Chartist.Line('#chart1', {
-    labels: [<?php echo $labels;?>],
-    series: [{
-    	name: 'series-1',
-    	data: [<?php echo $series;?>]
-    }]
-  },{
-    fullWidth: true,
-    //showLine: false,
-    series: {
-    'series-1': {
-      lineSmooth: Chartist.Interpolation.step()
-    }
-  }});
 
-  /*// Initialize a Line chart in the container with the ID chart2
-  new Chartist.Bar('#chart2', {
-    labels: [1, 2, 3, 4],
-    series: [[5, 2, 8, 3]]
-  });*/
-  
-	var $chart = $('.ct-chart');
-
-	var $toolTip = $chart
-	  .append('<div class="chartist-tooltip"></div>')
-	  .find('.chartist-tooltip')
-	  .hide();
-
-	$chart.on('mouseenter', '.ct-point', function() {
-	  var $point = $(this),
-	    value = $point.attr('ct:value'),
-	    seriesName = $point.parent().attr('ct:series-name');
-	  $toolTip.html(seriesName + '<br>' + value).show();
-	});
-
-	$chart.on('mouseleave', '.ct-point', function() {
-	  $toolTip.hide();
-	});
-
-	$chart.on('mousemove', function(event) {
-	  $toolTip.css({
-	    left: (event.offsetX || event.originalEvent.layerX) - $toolTip.width() / 2 - 10,
-	    top: (event.offsetY || event.originalEvent.layerY) - $toolTip.height() - 40
-	  });
-	});
+var chart = new Chartist.Line('.ct-chart', {
+  labels: [<?php echo $labels;?>],
+  series: [
+      [<?php echo $series;?>]
+  ]
+}, {
+  fullWidth: true,
+  lineSmooth: Chartist.Interpolation.step(),
+  plugins: [
+    Chartist.plugins.tooltip()
+  ]
+});
 
 </script>
 

@@ -26,6 +26,7 @@
 
 	<!-- CHARTIST -->
 		<script src="chartist/chartist.0.9.4.min.js"></script>
+		<script src="chartist/chartist-plugin-tooltip.js"></script>
 		<link rel="stylesheet" href="chartist/chartist.min.css"></link>
 		<link rel="stylesheet" href="chartist/chartist.custom.css"></link>
 	
