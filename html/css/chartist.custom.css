@@ -1,11 +1,15 @@
-/* BOOTSTRAP FIX: PADDING FOR STATIC-FIXED TOP NAV */
-body {
-	padding-top: 65px;
+/* This selector overrides the points style on line charts. 
+Points on line charts are actually just very short strokes. 
+This allows you to customize even the point size in CSS */
+.ct-series-a .ct-point {
+  /* Colour of your points */
+  stroke: red;
+  /* Size of your points */
+  stroke-width: 6px;
+  /* Make your points appear as squares 
+  stroke-linecap: square;*/
 }
-/* Enhance Logo */
-.navbar-brand {
-	text-shadow: gray 0.1em 0.1em 0.2em
-}
+
 /* Chartist tooltip */
 .chartist-tooltip {
 	position:absolute;
@@ -30,4 +34,3 @@ body {
 	border:15px solid transparent;
 	border-top-color:#F4C63D
 }
-

@@ -3,8 +3,6 @@
 	require_once('header.php');
 ?>
 
-<h1><?php echo $siteTitle;?></h1>
-
 <style>
 	/* This selector overrides the points style on line charts. 
 	Points on line charts are actually just very short strokes. 
@@ -19,7 +17,7 @@
 	}
 </style>
 
-<script src="js/chartist.min.js"></script>
+
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 <!--<div class="ct-chart ct-golden-section" id="chart2"></div>-->
@@ -27,19 +25,20 @@
 	$query = "SELECT * FROM ScoreChangeCount 
 			WHERE GameNumber > 330000  
 			AND InstanceID = '40081c52-bb10-4f33-9692-527ffe1b540c'
-		  ORDER BY GameNumber;";
+		  ORDER BY GameNumber
+		   LIMIT 20;";
 	$result = mysql_query($query);
 	if (!$result)
 		die('Invalid query: ' . mysql_error());
-	$labelCount = 36000;
+	$labelCount = 330000;
 	$seriesCount = 0;
-	$labels = "36000";
+	$labels = "330000";
 	$series = "0";
 	while ($row = mysql_fetch_assoc($result)) {
-		/*while ( $labelCount != $row['GameNumber'] ){
+		while ( $labelCount != $row['GameNumber'] ){
 			$labels .= "," . ++$labelCount;
 			$series .= "," . $row['Score'];
-		}*/
+		}
 		$labels .= "," . $row['GameNumber'];
 		$series .= "," . $row['Score'];
 	}

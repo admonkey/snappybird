@@ -12,22 +12,22 @@
 		    	echo $siteTitle;
 	?></title>
 
-	<!-- JAVASCRIPT -->
 	<!-- JQUERY --><script src="js/jquery.1.11.2.min.js"></script>
-	<!-- BOOTSTRAP --><script src="js/bootstrap.3.3.4.min.js"></script>
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-	<![endif]-->
 
-	<!-- CSS -->
-	<!-- MINIMAL <link rel="stylesheet" href="css/minimal.css"> -->
-	<!-- BOOTSTRAP --><link rel="stylesheet" href="css/bootstrap.3.3.4.min.css">
-	<!-- CUSTOM --><link rel="stylesheet" href="css/style.css">
-	
+	<!-- BOOTSTRAP -->
+		<script src="js/bootstrap.3.3.4.min.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.3.3.4.min.css"></link>
+		<link rel="stylesheet" href="css/bootstrap.custom.css"></link>
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
 	<!-- CHARTIST -->
-	<link rel="stylesheet" href="css/chartist.min.css"/>
+		<script src="js/chartist.0.9.4.min.js"></script>
+		<link rel="stylesheet" href="css/chartist.min.css"></link>
+		<link rel="stylesheet" href="css/chartist.custom.css"></link>
 	
   </head>
   <body>
