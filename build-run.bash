@@ -26,14 +26,14 @@ cp .qtable $game.qtable
 # SELECT @@GLOBAL.sql_mode;
 # SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES';
 
-alterUUID="ALTER TABLE ScoreChangeCount MODIFY InstanceID char(36) Default '$(uuidgen)';"
+alterUUID="CALL SetInstanceID('$game');"
 query="INSERT INTO ScoreChangeCount (GameNumber, Score) VALUES"
-revert=";ALTER TABLE ScoreChangeCount MODIFY InstanceID char(36) NOT NULL;"
+revertUUID=";CALL UnSetInstanceID();"
 
 # insert record into database
 mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
 $alterUUID
 $query
 $(cat $game.ScoreChanges.csv)
-$revert
+$revertUUID
 EOF
