@@ -5,18 +5,19 @@
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 <?php
+	$startGame = 245000;
 	$query = "SELECT * FROM ScoreChangeCount 
-			WHERE GameNumber > 330000  
+			WHERE GameNumber > " . $startGame . "  -- AND GameNumber < 330000
 			AND InstanceID = '40081c52-bb10-4f33-9692-527ffe1b540c'
 		  ORDER BY GameNumber
-		   LIMIT 20;";
+		   LIMIT 30;";
 	$result = mysql_query($query);
 	if (!$result)
 		die('Invalid query: ' . mysql_error());
-	$labelCount = 330000;
+	$labelCount = $startGame;
 	$seriesCount = 0;
-	$labels = "330000";
-	$series = "{meta: 'Game# 330000', value: 0 }";
+	$labels = $startGame;
+	$series = "{meta: 'Game# " . $startGame . "', value: 0 }";
 	while ($row = mysql_fetch_assoc($result)) {
 		while ( $labelCount != $row['GameNumber'] ){
 			$labels .= "," . ++$labelCount;
