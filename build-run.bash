@@ -29,9 +29,17 @@ cp .qtable $game.qtable
 alterUUID="CALL SetInstanceID('$game');"
 query="INSERT INTO ScoreChangeCount (GameNumber, Score) VALUES"
 revertUUID=";CALL UnSetInstanceID();"
+insertStateVars=""
+
+for key in $(jq '.StateSettings.Variables | keys[]' $game.Settings.json); do
+	# remove string quotes from key
+	key=$(echo $key | sed "s/^\([\"']\)\(.*\)\1\$/\2/g")
+	insertStateVars=$insertStateVars"INSERT INTO Instance_StateVariables (InstanceID,StateVariableID) VALUES ('$game',$key); "
+done
 
 # insert record into database
 mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
+$insertStateVars
 $alterUUID
 $query
 $(cat $game.ScoreChanges.csv)
