@@ -23,7 +23,9 @@
 		if (!$result)
 			die('Invalid query: ' . mysql_error());
 		$row = mysql_fetch_assoc($result);
-		$startGame = $row["sg"];
+		if(!empty($row["sg"]))
+			$startGame = $row["sg"];
+		else	$startGame = 0;
 	}
 
 	if(is_numeric($_GET["endGame"]))
