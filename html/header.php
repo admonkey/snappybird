@@ -56,16 +56,14 @@
 			echo '<li id="linetoggle" class="active"><a href="#" onclick="toggleLine();">Line</a></li>';
 			echo '<li id="contextM"><a href="#" onclick="contextMenu();">Context Menu</a></li>';
 			echo '<!-- EXPANDED GRAPH -->';
-			echo "<li>";
 				parse_str($_SERVER['QUERY_STRING'], $qs);
 				if($_GET["expanded"] == "true"){
 					$qs["expanded"] = "false";
-					echo '<a href="?' . http_build_query($qs) . '">Compress</a>';
+					echo '<li class="active"><a href="?' . http_build_query($qs) . '">Expand</a></li>';
 				} else {
 					$qs["expanded"] = "true";
-					echo '<a href="?' . http_build_query($qs) . '">Expand</a>';
+					echo '<li><a href="?' . http_build_query($qs) . '">Expand</a></li>';
 				}
-			echo "</li>";
 			} ?>
 		</ul>
 	</div><!--/.nav-collapse -->

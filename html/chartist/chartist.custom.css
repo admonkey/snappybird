@@ -42,3 +42,10 @@ This allows you to customize even the point size in CSS */
 	border:15px solid transparent;
 	border-top-color:#F4C63D
 }
+#menu {
+    display: none;
+    position: absolute;
+    padding: 10px;
+    background-color: #ddd;
+    border: 1px solid #000;
+}

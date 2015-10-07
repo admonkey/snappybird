@@ -20,6 +20,22 @@ function toggleLine(){
 }
 function contextMenu() {
 	$('.ct-point').bind("contextmenu", function(e) {
+	    $('#menu').css({
+		top: e.pageY+'px',
+		left: e.pageX+'px'
+	    }).show();
+
 	    return false;
 	});
+	$('#contextM').addClass('active');
 }
+$(document).ready(function() {
+
+    $('#menu').click(function() {
+        $('#menu').hide();
+    });
+    $(document).click(function() {
+        $('#menu').hide();
+    });
+
+});

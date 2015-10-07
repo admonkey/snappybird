@@ -72,4 +72,8 @@ var chart = new Chartist.Line('.ct-chart', {
 
 </script>
 
+<div id="menu">
+	<a href="http://google.com">google</a>
+</div>
+
 <?php require_once('footer.php');?>
