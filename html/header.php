@@ -48,7 +48,7 @@
 		<ul class="nav navbar-nav">
 			<li id="scorechangesphp"><a href="scorechanges.php">Graph Score Changes</a></li>
 			<?php if($graphcontrols) {
-			echo '<li><a href="#" onclick="toggleGrid();">Grid</a></li>';
+			echo '<li id="gridtoggle"><a href="#" onclick="toggleGrid();">Grid</a></li>';
 			echo '<!-- EXPANDED GRAPH -->';
 			echo "<li>";
 				parse_str($_SERVER['QUERY_STRING'], $qs);
