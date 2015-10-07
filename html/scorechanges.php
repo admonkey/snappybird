@@ -1,5 +1,6 @@
 <?php
 	$pageTitle = "Score Changes";
+	$graphcontrols = true;
 	require_once('header.php');
 ?>
 <script>$("#scorechangesphp").addClass("active");</script>
