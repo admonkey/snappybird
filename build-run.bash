@@ -37,8 +37,63 @@ for key in $(jq '.StateSettings.Variables | keys[]' $game.Settings.json); do
 	insertStateVars=$insertStateVars"INSERT INTO Instance_StateVariables (InstanceID,StateVariableID) VALUES ('$game',$key); "
 done
 
+insertInstanceSettingsKeys="InstanceID"
+insertInstanceSettingsVals="'$game'"
+
+# get previous instanceID if exists
+previousInstanceID=$(jq .PreviousInstanceID $game.Settings.json | tr \" \')
+if [[ ! -z "$previousInstanceID" ]]; then
+	insertInstanceSettingsKeys=$insertInstanceSettingsKeys",PreviousInstanceID"
+	insertInstanceSettingsVals=$insertInstanceSettingsVals",$previousInstanceID"
+fi
+
+# hostname
+insertInstanceSettingsKeys=$insertInstanceSettingsKeys",Hostname"
+val=$(jq .Hostname $game.Settings.json | tr \" \')
+insertInstanceSettingsVals=$insertInstanceSettingsVals",$val"
+
+# agent settings
+for key in $(jq '.AgentSettings | keys[]' $game.Settings.json); do
+	# remove string quotes from key
+	key=$(echo $key | sed "s/^\([\"']\)\(.*\)\1\$/\2/g")
+	insertInstanceSettingsKeys=$insertInstanceSettingsKeys",$key"
+	val=$(jq .AgentSettings.$key $game.Settings.json)
+	insertInstanceSettingsVals=$insertInstanceSettingsVals",$val"
+done
+
+# State.Discretizer
+insertInstanceSettingsKeys=$insertInstanceSettingsKeys",Discretizer"
+insertInstanceSettingsVals=$insertInstanceSettingsVals",$(jq .StateSettings.Discretizer $game.Settings.json)"
+
+# instance scores
+for key in $(jq '.InstanceScores | keys[]' $game.Settings.json); do
+	# remove string quotes from key
+	key=$(echo $key | sed "s/^\([\"']\)\(.*\)\1\$/\2/g")
+	insertInstanceSettingsKeys=$insertInstanceSettingsKeys",$key"
+	val=$(jq .InstanceScores.$key $game.Settings.json)
+	insertInstanceSettingsVals=$insertInstanceSettingsVals",$val"
+done
+
+# total scores
+for key in $(jq '.TotalScores | keys[]' $game.Settings.json); do
+	# remove string quotes from key
+	key=$(echo $key | sed "s/^\([\"']\)\(.*\)\1\$/\2/g")
+	insertInstanceSettingsKeys=$insertInstanceSettingsKeys",$key"
+	val=$(jq .TotalScores.$key $game.Settings.json)
+	insertInstanceSettingsVals=$insertInstanceSettingsVals",$val"
+done
+
+# times
+insertInstanceSettingsKeys=$insertInstanceSettingsKeys",StartTime"
+insertInstanceSettingsVals=$insertInstanceSettingsVals",$(jq .Time.StartTime $game.Settings.json | tr \" \')"
+insertInstanceSettingsKeys=$insertInstanceSettingsKeys",EndTime"
+insertInstanceSettingsVals=$insertInstanceSettingsVals",$(jq .Time.EndTime $game.Settings.json | tr \" \')"
+
+insertInstanceSettings="INSERT INTO InstanceSettings ($insertInstanceSettingsKeys) VALUES ($insertInstanceSettingsVals);"
+
 # insert record into database
 mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
+$insertInstanceSettings
 $insertStateVars
 $alterUUID
 $query

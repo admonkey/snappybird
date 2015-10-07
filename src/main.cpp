@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 			cout << "Settings.json imported.\n";
 
 			// total scores
-			InstanceSettingsJSON["TotalScores"]["PreviousInstanceID"] = ImportSettingsJSON["InstanceID"].asString();
+			InstanceSettingsJSON["PreviousInstanceID"] = ImportSettingsJSON["InstanceID"].asString();
 			totalFrames = ImportSettingsJSON["TotalScores"]["TotalFrames"].asInt();
 			totalGames = ImportSettingsJSON["TotalScores"]["TotalGames"].asInt();
 			totalHighScore = ImportSettingsJSON["TotalScores"]["TotalHighScore"].asInt();
