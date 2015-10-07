@@ -127,8 +127,8 @@
                   // see https://github.com/gionkunz/chartist-js/issues/381
                   height = height || $toolTip.offsetHeight;
                   width = width || $toolTip.offsetWidth;
-                  $toolTip.style.top = (event.layerY || event.offsetY) - height - 10 - options.tooltipOffset.y + 'px';
-                  $toolTip.style.left = (event.layerX || event.offsetX) - width / 3.4 - options.tooltipOffset.x + 'px';
+                  $toolTip.style.top = (event.layerY || event.offsetY) - height + options.tooltipOffset.y + 'px';
+                  $toolTip.style.left = (event.layerX || event.offsetX) - width / 2 - options.tooltipOffset.x + 'px';
               }
           }
       };

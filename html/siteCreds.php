@@ -2,8 +2,8 @@
 	$siteTitle = "Snappy Bird";
 
 	// declare database variables
-	$username = "snappyAgent";
-	$password = "TLQPdTfsGqm2utb4";
+	$username = "snappyViewer";
+	$password = "e9cuGPMphE2fwzLK";
 	$hostname = "localhost";
 	$database = "snappy";
 

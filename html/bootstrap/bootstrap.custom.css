@@ -6,3 +6,7 @@ body {
 .navbar-brand {
 	text-shadow: gray 0.1em 0.1em 0.2em
 }
+.container {
+  margin-right: 0px;
+  margin-left: 0px;
+}
