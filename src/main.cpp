@@ -91,10 +91,10 @@ int main(int argc, char *argv[])
 		{
 			std::ifstream ImportSettings("Settings.json", std::ifstream::binary);
 			ImportSettings >> ImportSettingsJSON;
-			//std::cout << styledWriter.write(ImportSettingsJSON);
 			cout << "Settings.json imported.\n";
 
 			// total scores
+			InstanceSettingsJSON["TotalScores"]["PreviousInstanceID"] = ImportSettingsJSON["InstanceID"].asString();
 			totalFrames = ImportSettingsJSON["TotalScores"]["TotalFrames"].asInt();
 			totalGames = ImportSettingsJSON["TotalScores"]["TotalGames"].asInt();
 			totalHighScore = ImportSettingsJSON["TotalScores"]["TotalHighScore"].asInt();
