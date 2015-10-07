@@ -46,7 +46,7 @@
         </div><!-- end navbar-header -->
 	<div id="navbar" class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
-			<li><a href="test.php">Test</a></li>
+			<li id="scorechangesphp"><a href="scorechanges.php">Graph Score Changes</a></li>
 			<li><a href="#" onclick="toggleGrid();">Grid</a></li>
 			<!-- EXPANDED GRAPH -->
 			<li><?php
