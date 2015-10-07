@@ -48,6 +48,13 @@
 		<ul class="nav navbar-nav">
 			<li><a href="test.php">Test</a></li>
 			<li><a href="#" onclick="toggleGrid();">Grid</a></li>
+			<!-- EXPANDED GRAPH -->
+			<li><?php
+				if($_GET["expanded"] == "true")
+					echo '<a href="?expanded=false">Compress</a>';
+				else
+					echo '<a href="?expanded=true">Expand</a>';
+			?></li>
 		</ul>
 	</div><!--/.nav-collapse -->
       </div>

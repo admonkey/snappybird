@@ -5,13 +5,16 @@
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 <?php
-	$expanded = false;
+	if($_GET["expanded"] == "true")
+		$expanded = true;
+	else
+		$expanded = false;
 	$startGame = 248600;
 	$query = "SELECT GameNumber, Score FROM ScoreChangeCount 
 			WHERE GameNumber > " . $startGame . "  -- AND GameNumber < 330000
 			AND InstanceID = '40081c52-bb10-4f33-9692-527ffe1b540c'
 		  ORDER BY GameNumber
-		  -- LIMIT 40;";
+		   LIMIT 40;";
 	$result = mysql_query($query);
 	if (!$result)
 		die('Invalid query: ' . mysql_error());
