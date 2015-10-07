@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 04, 2015 at 10:17 PM
+-- Generation Time: Oct 07, 2015 at 12:41 PM
 -- Server version: 5.5.44-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.13
 
@@ -93,7 +93,9 @@ DROP TABLE IF EXISTS `Instance_StateVariables`;
 CREATE TABLE IF NOT EXISTS `Instance_StateVariables` (
   `InstanceID` char(36) NOT NULL,
   `StateVariableID` int(11) NOT NULL,
-  PRIMARY KEY (`InstanceID`,`StateVariableID`)
+  PRIMARY KEY (`InstanceID`,`StateVariableID`),
+  KEY `StateVariableID` (`StateVariableID`),
+  KEY `StateVariableID_2` (`StateVariableID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -122,3 +124,14 @@ CREATE TABLE IF NOT EXISTS `StateVariables` (
   `Name` varchar(1024) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Instance_StateVariables`
+--
+ALTER TABLE `Instance_StateVariables`
+  ADD CONSTRAINT `FK_StateVariableID` FOREIGN KEY (`StateVariableID`) REFERENCES `StateVariables` (`ID`);
+
