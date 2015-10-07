@@ -18,3 +18,8 @@ function toggleLine(){
 		$('#linetoggle').addClass('active');
 	}
 }
+function contextMenu() {
+	$('.ct-point').bind("contextmenu", function(e) {
+	    return false;
+	});
+}

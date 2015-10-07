@@ -54,6 +54,7 @@
 			<?php if($graphcontrols) {
 			echo '<li id="gridtoggle"><a href="#" onclick="toggleGrid();">Grid</a></li>';
 			echo '<li id="linetoggle" class="active"><a href="#" onclick="toggleLine();">Line</a></li>';
+			echo '<li id="contextM"><a href="#" onclick="contextMenu();">Context Menu</a></li>';
 			echo '<!-- EXPANDED GRAPH -->';
 			echo "<li>";
 				parse_str($_SERVER['QUERY_STRING'], $qs);
