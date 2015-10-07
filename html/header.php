@@ -30,7 +30,11 @@
 		<script src="chartist/chartist.custom.js"></script>
 		<link rel="stylesheet" href="chartist/chartist.min.css"></link>
 		<link rel="stylesheet" href="chartist/chartist.custom.css"></link>
-	
+
+	<!-- JQUERY TABLESORTER -->
+		<script src="jquery-tablesorter/jquery.tablesorter.min.js"></script>
+		<link rel="stylesheet" href="jquery-tablesorter/jquery.tablesorter.style.css"></link>
+
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
