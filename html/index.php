@@ -5,14 +5,19 @@
 
 <div class="ct-chart ct-golden-section" id="chart1"></div>
 <?php
+	if(empty($_GET["instanceid"]))
+		die("error: no instance id specified.");
+	$instanceid = mysql_real_escape_string($_GET["instanceid"]);
+
 	if($_GET["expanded"] == "true")
 		$expanded = true;
 	else
 		$expanded = false;
+
 	$startGame = 248600;
 	$query = "SELECT GameNumber, Score FROM ScoreChangeCount 
 			WHERE GameNumber > " . $startGame . "  -- AND GameNumber < 330000
-			AND InstanceID = '40081c52-bb10-4f33-9692-527ffe1b540c'
+			AND InstanceID = '" . $instanceid . "'
 		  ORDER BY GameNumber
 		   LIMIT 40;";
 	$result = mysql_query($query);

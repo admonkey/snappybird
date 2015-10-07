@@ -50,10 +50,14 @@
 			<li><a href="#" onclick="toggleGrid();">Grid</a></li>
 			<!-- EXPANDED GRAPH -->
 			<li><?php
-				if($_GET["expanded"] == "true")
-					echo '<a href="?expanded=false">Compress</a>';
-				else
-					echo '<a href="?expanded=true">Expand</a>';
+				parse_str($_SERVER['QUERY_STRING'], $qs);
+				if($_GET["expanded"] == "true"){
+					$qs["expanded"] = "false";
+					echo '<a href="?' . http_build_query($qs) . '">Compress</a>';
+				} else {
+					$qs["expanded"] = "true";
+					echo '<a href="?' . http_build_query($qs) . '">Expand</a>';
+				}
 			?></li>
 		</ul>
 	</div><!--/.nav-collapse -->
