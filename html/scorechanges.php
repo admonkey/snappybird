@@ -36,8 +36,8 @@
 	if(!empty($endGame))
 		$query .= " AND GameNumber < " . $endGame;
 	$query .= " AND InstanceID = '" . $instanceid . "' ";
-	$query .= " ORDER BY GameNumber
-		   LIMIT 40;";
+	$query .= " ORDER BY GameNumber;
+		--   LIMIT 40;";
 	$result = mysql_query($query);
 	if (!$result)
 		die('Invalid query: ' . mysql_error());
