@@ -18,6 +18,23 @@ This allows you to customize even the point size in CSS */
 	stroke-width: 0px;
 }
 
+.ct-series-b .ct-point {
+  /* Colour of your points */
+  stroke: blue;
+  /* Size of your points */
+  stroke-width: 5px;
+  /* Make your points appear as squares 
+  stroke-linecap: square;*/
+}
+.ct-series-b .ct-line {
+  /* Size of your points */
+  stroke-width: 1px;
+}
+
+.ct-grid {
+	stroke-width: 0px;
+}
+
 /* Chartist tooltip */
 .chartist-tooltip {
 	position:absolute;
