@@ -50,6 +50,7 @@
         </div><!-- end navbar-header -->
 	<div id="navbar" class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
+			<li id="github"><a href="https://github.com/admonkey/snappybird" target="_blank">Github</a></li>
 			<li id="scorechangesphp"><a href="scorechanges.php">Graph Score Changes</a></li>
 			<?php if($graphcontrols) {
 			echo '<li id="gridtoggle"><a href="#" onclick="toggleGrid();">Grid</a></li>';
