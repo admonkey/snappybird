@@ -7,7 +7,10 @@
 <?php
 	if(empty($_GET["instanceid"]))
 		die("error: no instance id specified.");
-	$instanceid = mysql_real_escape_string($_GET["instanceid"]);
+	$whereInstance = "1=0";
+	foreach ($_GET["instanceid"] as $value) {
+	    $whereInstance .= " OR InstanceID = '" . mysql_real_escape_string($value) . "' ";
+	}
 
 	if($_GET["expanded"] == "true")
 		$expanded = true;
@@ -17,7 +20,7 @@
 	if(is_numeric($_GET["startGame"])) {
 		$startGame = $_GET["startGame"];
 	} else {
-		$query = " SELECT MIN(GameNumber) AS sg FROM ScoreChangeCount WHERE InstanceID = '" . $instanceid . "' 
+		$query = " SELECT MIN(GameNumber) AS sg FROM ScoreChangeCount WHERE (" . $whereInstance . ") 
 				AND GameNumber <> 0";
 		$result = mysql_query($query);
 		if (!$result)
@@ -35,7 +38,7 @@
 			WHERE GameNumber > " . $startGame;
 	if(!empty($endGame))
 		$query .= " AND GameNumber < " . $endGame;
-	$query .= " AND InstanceID = '" . $instanceid . "' ";
+	$query .= " AND (" . $whereInstance . ") ";
 	$query .= " ORDER BY GameNumber;
 		--   LIMIT 40;";
 	$result = mysql_query($query);

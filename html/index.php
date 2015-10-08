@@ -18,9 +18,9 @@
 		for ($i=0; $i < $numfields; $i++) // Header
 		{
 			if(mysql_field_name($result, $i) == "InstanceID")
-				echo '<td><a href="scorechanges.php?instanceid=' . $row["InstanceID"] . '">'.$row["InstanceID"].'</a></td>';
+				echo '<td><a href="scorechanges.php?instanceid[]=' . $row["InstanceID"] . '">'.$row["InstanceID"].'</a></td>';
 			elseif(mysql_field_name($result, $i) == "PreviousInstanceID")
-				echo '<td><a href="scorechanges.php?instanceid=' . $row["PreviousInstanceID"] . '">'.$row["PreviousInstanceID"].'</a></td>';
+				echo '<td><a href="scorechanges.php?instanceid[]=' . $row["PreviousInstanceID"] . '">'.$row["PreviousInstanceID"].'</a></td>';
 			else
 				echo '<td>'.$row[mysql_field_name($result, $i)].'</td>';
 		
