@@ -131,6 +131,10 @@ int main(int argc, char *argv[])
 				if(m.score > highScore){
 					 highScore = m.score;
 					 bestGame = games;
+					 if(m.score > totalHighScore){
+					 	totalHighScore = m.score;
+					 	totalBestGame += bestGame;
+					 }
 				}
 				// last score
 				// check > 0, else null comparison causes blank entry
@@ -191,14 +195,8 @@ int main(int argc, char *argv[])
 		InstanceSettingsJSON["TotalScores"]["TotalFrames"] = totalFrames + frames;
 		InstanceSettingsJSON["TotalScores"]["TotalGames"] = totalGames;
 		InstanceSettingsJSON["TotalScores"]["TotalScoreChangeCount"] = totalScoreChangeCount + scoreChangeCount;
-		if(highScore > totalHighScore){
-			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = highScore;
-			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalGames + bestGame;
-		}
-		else {
-			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = totalHighScore;
-			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalBestGame;
-		}
+		InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = totalHighScore;
+		InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalBestGame;
 
 		// write out results & settings
 		std::cout << styledWriter.write(InstanceSettingsJSON);
