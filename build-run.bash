@@ -22,6 +22,11 @@ cp ScoreChanges.csv $game.ScoreChanges.csv
 cp Settings.json $game.Settings.json
 cp .qtable $game.qtable
 
+if ! $(command -v jq >/dev/null 2>&1) ; then
+	echo "error: unix command 'jq' not installed. can't create sql statements."
+	exit 1
+fi
+
 # make sure MySQL mode 'STRICT_TRANS_TABLES' is enabled
 # SELECT @@GLOBAL.sql_mode;
 # SET GLOBAL sql_mode = 'STRICT_TRANS_TABLES';
@@ -92,11 +97,21 @@ insertInstanceSettingsVals=$insertInstanceSettingsVals",$(jq .Time.EndTime $game
 insertInstanceSettings="INSERT INTO InstanceSettings ($insertInstanceSettingsKeys) VALUES ($insertInstanceSettingsVals);"
 
 # insert record into database
-mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
-$insertInstanceSettings
-$insertStateVars
-$alterUUID
-$query
-$(cat $game.ScoreChanges.csv)
-$revertUUID
-EOF
+if $(command -v mysql >/dev/null 2>&1); then
+	mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
+	$insertInstanceSettings
+	$insertStateVars
+	$alterUUID
+	$query
+	$(cat $game.ScoreChanges.csv)
+	$revertUUID
+	EOF
+else
+	echo "writing sql statements to bin/$game.sql"
+	echo $insertInstanceSettings > $game.sql
+	echo $insertStateVars >> $game.sql
+	echo $alterUUID >> $game.sql
+	echo $query >> $game.sql
+	echo " -- copy/paste $game.ScoreChanges.csv values here." >> $game.sql
+	echo $revertUUID >> $game.sql
+fi
