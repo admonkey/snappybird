@@ -116,24 +116,22 @@ int main(int argc, char *argv[])
 		//Json::Value scoreChangesJSON;
 		std::string scoreChangesCSV = "(0,0)";
 		int scoreChangeCount = 0;
+		
+		int trainingFrames = 10000000;
 
 		time_t start = time(0);
-		while(keepRunning)
+		while(keepRunning && frames < trainingFrames)
 		{
 			// if bird dies, update stats & reset game
 			if(!m.update()){
 				c.agent.died = true;
 				
 				frames += m.frame;
-				totalGames++;
 				games++;
 				// high score
 				if(m.score > highScore){
 					 highScore = m.score;
 					 bestGame = games;
-					 if(m.score > totalHighScore){
-					 	totalHighScore = m.score;
-					 }
 				}
 				// last score
 				// check > 0, else null comparison causes blank entry
@@ -153,11 +151,11 @@ int main(int argc, char *argv[])
 				lastScore = m.score;
 
 				m.reset();
-				if( (c.viewOn) || (games % 10 == 0) ){
+				if( (c.viewOn) || (games % 100 == 0) ){
 					cout << "totalGames: " << totalGames;
 					cout << " totalHighScore: " << totalHighScore << " totalBestGame: " << totalBestGame + bestGame;
 					cout << " highScore: " << highScore << " bestGame: " << bestGame;
-					cout << " lastScore: " << lastScore << " games: " << games << "\n";
+					cout << " lastScore: " << lastScore << " games: " << games << " training: " << (((double)frames / (double)trainingFrames) * 100) << "%\n";
 				}
 			} else	c.agent.died = false; // signal agent reward system
 			
@@ -192,7 +190,7 @@ int main(int argc, char *argv[])
 
 		// total scores
 		InstanceSettingsJSON["TotalScores"]["TotalFrames"] = totalFrames + frames;
-		InstanceSettingsJSON["TotalScores"]["TotalGames"] = totalGames;
+		InstanceSettingsJSON["TotalScores"]["TotalGames"] = totalGames + games;
 		InstanceSettingsJSON["TotalScores"]["TotalScoreChangeCount"] = totalScoreChangeCount + scoreChangeCount;
 		if(highScore > totalHighScore){
 			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = highScore;
