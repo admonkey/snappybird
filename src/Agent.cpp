@@ -61,13 +61,14 @@ bool Agent::exploration()
 {
 	if(explorationRate == 0)
 		return false;
+
 	// increase exploration rate relative to absolute value of maximum Q
 	double scaledRate = explorationRate;
 	if(scaledExplorer)
-		scaledRate *= std::max(  std::abs(qFlap), std::abs(qNoFlap)  );
+		scaledRate *= std::max( std::abs(qFlap), std::abs(qNoFlap) );
 
 	if(scaledRate == 0)
-		return false;
+		return true;
 	return ( randNum.next(scaledRate) == 0 );
 }
 
