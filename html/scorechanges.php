@@ -2,6 +2,11 @@
 	$pageTitle = "Score Changes";
 	$graphcontrols = true;
 	require_once('header.php');
+
+	if($_GET["expanded"] == "true")
+		$expanded = true;
+	else
+		$expanded = false;
 ?>
 <script>$("#scorechangesphp").addClass("active");</script>
 <?php
@@ -11,11 +16,6 @@
 	foreach ($_GET["instanceid"] as $value) {
 	    $whereInstance .= " OR InstanceID = '" . mysql_real_escape_string($value) . "' ";
 	}
-
-	if($_GET["expanded"] == "true")
-		$expanded = true;
-	else
-		$expanded = false;
 
 	if(is_numeric($_GET["startGame"])) {
 		$startGame = $_GET["startGame"];

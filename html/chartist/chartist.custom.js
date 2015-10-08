@@ -31,7 +31,10 @@ function getNewQuery( p, v ){
 	      queryObj[name] = value;
 	}
 	queryObj[p] = v;
-	return jQuery.param( queryObj );
+	querystring = jQuery.param( queryObj );
+	querystring = querystring.replace( '%5B', '[' );
+	querystring = querystring.replace( '%5D', ']' );
+	return querystring;
 }
 
 function contextMenu() {

@@ -58,12 +58,14 @@
 			echo '<li id="contextM"><a href="#" onclick="contextMenu();">Context Menu</a></li>';
 			echo '<!-- EXPANDED GRAPH -->';
 				parse_str($_SERVER['QUERY_STRING'], $qs);
+				$urlBracketChars = array('%5B', '%5D');
+				$regBracketChars = array('[', ']');
 				if($_GET["expanded"] == "true"){
 					$qs["expanded"] = "false";
-					echo '<li class="active"><a href="?' . http_build_query($qs) . '">Expand</a></li>';
+					echo '<li class="active"><a href="?' . str_replace($urlBracketChars, $regBracketChars, http_build_query($qs)) . '">Expand</a></li>';
 				} else {
 					$qs["expanded"] = "true";
-					echo '<li><a href="?' . http_build_query($qs) . '">Expand</a></li>';
+					echo '<li><a href="?' . str_replace($urlBracketChars, $regBracketChars, http_build_query($qs)) . '">Expand</a></li>';
 				}
 			} ?>
 		</ul>
