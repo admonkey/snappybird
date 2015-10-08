@@ -133,7 +133,6 @@ int main(int argc, char *argv[])
 					 bestGame = games;
 					 if(m.score > totalHighScore){
 					 	totalHighScore = m.score;
-					 	totalBestGame += bestGame;
 					 }
 				}
 				// last score
@@ -156,7 +155,7 @@ int main(int argc, char *argv[])
 				m.reset();
 				if( (c.viewOn) || (games % 10 == 0) ){
 					cout << "totalGames: " << totalGames;
-					cout << " totalHighScore: " << totalHighScore << " totalBestGame: " << totalBestGame;
+					cout << " totalHighScore: " << totalHighScore << " totalBestGame: " << totalBestGame + bestGame;
 					cout << " highScore: " << highScore << " bestGame: " << bestGame;
 					cout << " lastScore: " << lastScore << " games: " << games << "\n";
 				}
@@ -195,8 +194,14 @@ int main(int argc, char *argv[])
 		InstanceSettingsJSON["TotalScores"]["TotalFrames"] = totalFrames + frames;
 		InstanceSettingsJSON["TotalScores"]["TotalGames"] = totalGames;
 		InstanceSettingsJSON["TotalScores"]["TotalScoreChangeCount"] = totalScoreChangeCount + scoreChangeCount;
-		InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = totalHighScore;
-		InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalBestGame;
+		if(highScore > totalHighScore){
+			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = highScore;
+			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalBestGame + bestGame;
+		}
+		else {
+			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = totalHighScore;
+			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalBestGame;
+		}
 
 		// write out results & settings
 		std::cout << styledWriter.write(InstanceSettingsJSON);
