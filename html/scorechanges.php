@@ -44,14 +44,14 @@
 	$labelCount = $startGame;
 	$seriesCount = 0;
 	$labels = $startGame;
-	$series = "{meta: 'Game: " . $startGame . "', value: 0 }";
+	$series = "{meta: '" . $startGame . "', value: 0 }";
 	while ($row = mysql_fetch_assoc($result)) {
 		if($expanded) while ( $labelCount != $row['GameNumber'] ){
 			$labels .= "," . ++$labelCount;
-			$series .= ",{meta: 'Game: " . $labelCount . "', value: " . $row['Score'] . "}";
+			$series .= ",{meta: '" . $labelCount . "', value: " . $row['Score'] . "}";
 		}
 		$labels .= "," . $row['GameNumber'];
-		$series .= ",{meta: 'Game: " . ($expanded ? $labelCount : $row['GameNumber']) . "', value: " . $row['Score'] . "}";
+		$series .= ",{meta: '" . ($expanded ? $labelCount : $row['GameNumber']) . "', value: " . $row['Score'] . "}";
 	}
 ?>
 <div class="ct-chart ct-golden-section" id="chart1"></div>
@@ -72,8 +72,6 @@ var chart = new Chartist.Line('.ct-chart', {
 
 </script>
 
-<div id="menu">
-	<a href="http://google.com">google</a>
-</div>
+<div id="menu"></div>
 
 <?php require_once('footer.php');?>

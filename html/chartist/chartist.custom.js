@@ -18,12 +18,32 @@ function toggleLine(){
 		$('#linetoggle').addClass('active');
 	}
 }
+
+function getNewQuery( p, v ){
+	var querystring = location.search.replace( '?', '' ).split( '&' );
+	var queryObj = {};
+	// loop through each name-value pair and populate object
+	for ( var i=0; i<querystring.length; i++ ) {
+	      // get name and value
+	      var name = querystring[i].split('=')[0];
+	      var value = querystring[i].split('=')[1];
+	      // populate object
+	      queryObj[name] = value;
+	}
+	queryObj[p] = v;
+	return jQuery.param( queryObj );
+}
+
 function contextMenu() {
 	$('.ct-point').bind("contextmenu", function(e) {
+	    var val = $( this ).attr( "ct:meta" );
 	    $('#menu').css({
 		top: e.pageY+'px',
 		left: e.pageX+'px'
-	    }).show();
+	    }).html(
+	    	"<a href='?" + getNewQuery( "startGame", val ) + "'>Start Point</a><br/>" +
+	    	"<a href='?" + getNewQuery( "endGame", val ) + "'>End Point</a>"
+	    ).show();
 
 	    return false;
 	});

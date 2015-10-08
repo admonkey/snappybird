@@ -86,7 +86,7 @@
                       tooltipText = options.tooltipFnc(meta, value);
                   } else {
                       if (meta) {
-                          tooltipText += meta + '<br>Score: ';
+                          tooltipText += 'Game: ' + meta + '<br>Score: ';
                       } else {
                           // For Pie Charts also take the labels into account
                           // Could add support for more charts here as well!
