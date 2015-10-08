@@ -139,10 +139,10 @@ int main(int argc, char *argv[])
 				   scoreChangeCount++;
 				   if(m.score > 0)
 					//scoreChangesJSON[to_str(games)] = m.score;
-					scoreChangesCSV += ",(" + to_str(totalGames) + "," + to_str(m.score) + ")";
+					scoreChangesCSV += ",(" + to_str(totalGames + games) + "," + to_str(m.score) + ")";
 				   else
 				   	//scoreChangesJSON[to_str(games)] = 0;
-				   	scoreChangesCSV += ",(" + to_str(totalGames) + ",0)";
+				   	scoreChangesCSV += ",(" + to_str(totalGames + games) + ",0)";
 				}
 				   if(m.score > 0)
 					lastScore = m.score;

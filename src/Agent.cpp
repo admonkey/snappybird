@@ -21,13 +21,14 @@
 
 #include "Agent.h"
 #include <algorithm>
+#include <cmath>
 
 Agent::Agent(Model& model, Json::Value& importJSON)
 : 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
 	playing(true), viewMax(false), qFlap(0), qNoFlap(0)
 {
 	// search for import value, or assign second parameter as default
-	explorationRate = importJSON["AgentSettings"].get("ExplorationRate", 100 ).asDouble();
+	explorationRate = importJSON["AgentSettings"].get("ExplorationRate", 10000 ).asDouble();
 	AgentSettingsJSON["ExplorationRate"] = explorationRate;
 	
 	learningRate = importJSON["AgentSettings"].get("LearningRate", 1.0 ).asDouble();
@@ -39,7 +40,7 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	flapRate = importJSON["AgentSettings"].get("FlapRate", 25 ).asDouble();
 	AgentSettingsJSON["FlapRate"] = flapRate;
 
-	scaledExplorer = importJSON["AgentSettings"].get("ScaledExplorer", false ).asBool();
+	scaledExplorer = importJSON["AgentSettings"].get("ScaledExplorer", true ).asBool();
 	AgentSettingsJSON["ScaledExplorer"] = scaledExplorer;
 
 	#ifdef QTABLE
@@ -58,13 +59,16 @@ void Agent::explore()
 
 bool Agent::exploration()
 {
-	// increase exploration rate relative to absolute value of maximum Q
-	if(scaledExplorer)
-		explorationRate *= abs(  std::max(qFlap, qNoFlap)  );
-
 	if(explorationRate == 0)
 		return false;
-	return ( randNum.next(explorationRate) == 0 );
+	// increase exploration rate relative to absolute value of maximum Q
+	double scaledRate = explorationRate;
+	if(scaledExplorer)
+		scaledRate *= std::max(  std::abs(qFlap), std::abs(qNoFlap)  );
+
+	if(scaledRate == 0)
+		return false;
+	return ( randNum.next(scaledRate) == 0 );
 }
 
 void Agent::exploit()
