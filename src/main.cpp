@@ -196,7 +196,7 @@ int main(int argc, char *argv[])
 		InstanceSettingsJSON["TotalScores"]["TotalScoreChangeCount"] = totalScoreChangeCount + scoreChangeCount;
 		if(highScore > totalHighScore){
 			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = highScore;
-			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalBestGame + bestGame;
+			InstanceSettingsJSON["TotalScores"]["TotalBestGame"] = totalGames + bestGame;
 		}
 		else {
 			InstanceSettingsJSON["TotalScores"]["TotalHighScore"] = totalHighScore;
