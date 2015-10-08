@@ -39,8 +39,12 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	flapRate = importJSON["AgentSettings"].get("FlapRate", 25 ).asDouble();
 	AgentSettingsJSON["FlapRate"] = flapRate;
 
-	scaledExplorer = importJSON["AgentSettings"].get("ScaledExplorer", true ).asBool();
+	scaledExplorer = importJSON["AgentSettings"].get("ScaledExplorer", false ).asBool();
 	AgentSettingsJSON["ScaledExplorer"] = scaledExplorer;
+
+	#ifdef QTABLE
+	AgentSettingsJSON["qTable"] = true;
+	#endif
 }
 
 Agent::~Agent()

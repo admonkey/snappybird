@@ -31,6 +31,7 @@ public:
 	std::string previousState;
 	bool died;
 	bool flapped;
+	#define QTABLE
 	qTable qt;
 	
 	bool playing;

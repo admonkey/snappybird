@@ -1,4 +1,7 @@
 #!/bin/bash
+keepInstanceFiles=true
+updateDatabase=true
+
 if ! $(command -v uuidgen >/dev/null 2>&1); then
 	echo "error: unix command 'uuidgen' dependency required"
 	exit 1
@@ -18,12 +21,27 @@ make opt
 cd ../bin
 ./$game $game $(hostname -f)
 rm $game
-cp ScoreChanges.csv $game.ScoreChanges.csv
-cp Settings.json $game.Settings.json
-cp .qtable $game.qtable
+
+if ( $keepInstanceFiles ); then
+	cp ScoreChanges.csv $game.ScoreChanges.csv
+	cp Settings.json $game.Settings.json
+	cp .qtable $game.qtable
+else
+	echo "deleting files..."
+	rm ScoreChanges.csv
+	rm Settings.json
+	rm .qtable
+
+	# exit without updating database
+	exit 0
+fi
+
+if !( $updateDatabase ); then
+	exit 0
+fi
 
 if ! $(command -v jq >/dev/null 2>&1) ; then
-	echo "error: unix command 'jq' not installed. can't create sql statements."
+	echo "Error: unix command 'jq' not installed. Can't parse JSON to create SQL statements."
 	exit 1
 fi
 
@@ -33,7 +51,7 @@ fi
 
 alterUUID="CALL SetInstanceID('$game');"
 query="INSERT INTO ScoreChangeCount (GameNumber, Score) VALUES"
-revertUUID=";CALL UnSetInstanceID();"
+revertUUID="; CALL UnSetInstanceID();"
 insertStateVars=""
 
 for key in $(jq '.StateSettings.Variables | keys[]' $game.Settings.json); do
@@ -98,15 +116,16 @@ insertInstanceSettings="INSERT INTO InstanceSettings ($insertInstanceSettingsKey
 
 # insert record into database
 if $(command -v mysql >/dev/null 2>&1); then
-	mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
-	$insertInstanceSettings
-	$insertStateVars
-	$alterUUID
-	$query
-	$(cat $game.ScoreChanges.csv)
-	$revertUUID
-	EOF
+mysql --host=localhost --user=snappyAgent --password=TLQPdTfsGqm2utb4 snappy << EOF
+$insertInstanceSettings
+$insertStateVars
+$alterUUID
+$query
+$(cat $game.ScoreChanges.csv)
+$revertUUID
+EOF
 else
+	echo "no MySQL client installed."
 	echo "writing sql statements to bin/$game.sql"
 	echo $insertInstanceSettings > $game.sql
 	echo $insertStateVars >> $game.sql
