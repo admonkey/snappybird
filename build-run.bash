@@ -1,6 +1,12 @@
 #!/bin/bash
+dev=true
 keepInstanceFiles=true
 updateDatabase=true
+
+if ( $dev ); then
+	keepInstanceFiles=false
+	updateDatabase=false
+fi
 
 if ! $(command -v uuidgen >/dev/null 2>&1); then
 	echo "error: unix command 'uuidgen' dependency required"
