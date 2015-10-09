@@ -106,7 +106,6 @@ int main(int argc, char *argv[])
 		Model m;
 		View v(m, 500, 500);
 		Controller c(m, &keepRunning, ImportSettingsJSON);
-		c.agent.qt.readTable("");
 
 		int frames = 0;
 		int games = 0;

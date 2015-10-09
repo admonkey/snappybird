@@ -46,6 +46,7 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 
 	#ifdef QTABLE
 	AgentSettingsJSON["qTable"] = true;
+	qt.readTable("");
 	#endif
 
 	#ifdef NNET
