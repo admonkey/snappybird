@@ -39,6 +39,8 @@ CPP_FILES =\
 	State.cpp\
 	qTable.cpp\
 	jsoncpp.cpp\
+	neuralnet.cpp\
+	matrix.cpp\
 
 ################
 # Lists

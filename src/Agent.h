@@ -11,6 +11,7 @@
 #include "rand.h"
 #include "State.h"
 #include "qTable.h"
+#include "neuralnet.h"
 
 #ifndef AGENT_H
 #define AGENT_H
@@ -34,6 +35,10 @@ public:
 	#define QTABLE
 	qTable qt;
 	
+	#define NNET
+	Rand rand;
+	NeuralNet nn;
+
 	bool playing;
 	bool viewMax;
 	double qFlap;

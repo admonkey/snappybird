@@ -25,7 +25,8 @@
 
 Agent::Agent(Model& model, Json::Value& importJSON)
 : 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
-	playing(true), viewMax(false), qFlap(0), qNoFlap(0)
+	playing(true), viewMax(false), qFlap(0), qNoFlap(0), 
+	rand(0), nn(rand)
 {
 	// search for import value, or assign second parameter as default
 	explorationRate = importJSON["AgentSettings"].get("ExplorationRate", 1000 ).asDouble();
@@ -46,6 +47,14 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	#ifdef QTABLE
 	AgentSettingsJSON["qTable"] = true;
 	#endif
+
+	#ifdef NNET
+	AgentSettingsJSON["nnet"] = true;
+	nn.m_layers.push_back(new Layer(4, 16));
+	nn.m_layers.push_back(new Layer(16, 1));
+	nn.init();
+	#endif
+	
 }
 
 Agent::~Agent()
