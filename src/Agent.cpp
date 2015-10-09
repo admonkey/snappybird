@@ -54,6 +54,51 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	nn.m_layers.push_back(new Layer(4, 16));
 	nn.m_layers.push_back(new Layer(16, 1));
 	nn.init();
+
+	// get vector from shuffled qTable
+	std::vector< std::vector<double> > tabVec;
+	std::cout << "writing qTable to vector\n";
+	tabVec = qt.toVector();
+	std::random_shuffle( tabVec.begin(), tabVec.end() );
+
+	// train nnet
+	std::cout << "Training...\n";
+	std::vector<double> in;
+	in.resize(4);
+	std::vector<double> out;
+	out.resize(1);
+	for ( size_t i = 0; i < tabVec.size(); i++ ){
+		// 4 state vars
+		in[0] = tabVec[i][0];
+		in[1] = tabVec[i][1];
+		in[2] = tabVec[i][2];
+		in[3] = tabVec[i][3];
+		out[0] = tabVec[i][4];
+		//for ( int i = 0; i < 500; i++ ) // calling refine multiple times has no effect on sse
+			nn.refine(in, out, 0.02);
+	}
+
+	// Test it
+	std::cout << "Testing...\n";
+	double sse = 0.0;
+	int testPatterns = 100;
+	for( size_t i = 0; i < tabVec.size(); i++ )
+	{
+		in[0] = tabVec[i][0];
+		in[1] = tabVec[i][1];
+		in[2] = tabVec[i][2];
+		in[3] = tabVec[i][3];
+		const vector<double>& prediction = nn.forward_prop(in);
+		out[0] = tabVec[i][4];
+		double err0 = out[0] - prediction[0];
+		sse += (err0 * err0);
+	}
+	double rmse = std::sqrt( sse / tabVec.size() );
+	if(rmse < 0.05)
+		std::cout << "Passed.\n";
+	else
+		std::cout << "Failed!!! Got " << to_str(rmse) << "\n";
+
 	#endif
 	
 }

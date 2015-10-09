@@ -1,7 +1,7 @@
 #!/bin/bash
-dev=true
+dev=false
 keepInstanceFiles=true
-updateDatabase=true
+updateDatabase=false
 
 if ( $dev ); then
 	keepInstanceFiles=false
