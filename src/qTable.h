@@ -10,6 +10,7 @@
 #include <map>
 #include <iostream>
 #include <sys/stat.h>
+#include <vector>
 
 #ifndef QTABLE_H
 #define QTABLE_H
@@ -27,6 +28,7 @@ public:
 	void setQ(std::string stateAction, double qVal);
 	void writeTable(std::string instanceID);
 	void readTable(std::string instanceID);
+	std::vector< std::vector<double> > toVector();
 };
 
 #endif // QTABLE_H

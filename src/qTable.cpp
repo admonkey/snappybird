@@ -106,3 +106,33 @@ void qTable::readTable(std::string instanceID){
     }
     else std::cout << "no qTable to import. creating new.\n";
 }
+
+// returns a vector of vectors holding every state/action-value in qTable
+std::vector< std::vector<double> > qTable::toVector(){
+	// vector for all state/action-values in qTable
+	std::vector< std::vector<double> > t;
+	// vector for state/action-value
+	std::vector<double> v;
+	// string for state variables
+	std::string val = "";
+	// iterate through qTable
+	std::map<std::string,double>::iterator iter;
+	for ( iter = tab.begin(); iter != tab.end(); ++iter ) {
+		// get state variables
+		for ( size_t i = 0; i < iter->first.length(); i++ ) {
+			// split vars on comma delimiter
+			if ( iter->first[i] != ',' )
+				val += iter->first[i];
+			else {
+				// add state variable to vector
+				v.push_back(   atof( val.c_str() )   );
+				val = "";
+			}
+		}
+		// get q value
+		v.push_back( iter->second );
+		// add state/action-value to table vector
+		t.push_back( v );
+	}
+	return t;
+}
