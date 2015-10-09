@@ -28,15 +28,15 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	playing(true), viewMax(false), qFlap(0), qNoFlap(0)
 {
 	// search for import value, or assign second parameter as default
-	explorationRate = importJSON["AgentSettings"].get("ExplorationRate", 10000 ).asDouble();
+	explorationRate = importJSON["AgentSettings"].get("ExplorationRate", 1000 ).asDouble();
 	AgentSettingsJSON["ExplorationRate"] = explorationRate;
-	
+
 	learningRate = importJSON["AgentSettings"].get("LearningRate", 1.0 ).asDouble();
 	AgentSettingsJSON["LearningRate"] = learningRate;
-	
+
 	discountFactor = importJSON["AgentSettings"].get("DiscountFactor", 0.99 ).asDouble();
 	AgentSettingsJSON["DiscountFactor"] = discountFactor;
-	
+
 	flapRate = importJSON["AgentSettings"].get("FlapRate", 25 ).asDouble();
 	AgentSettingsJSON["FlapRate"] = flapRate;
 
