@@ -111,13 +111,18 @@ void qTable::readTable(std::string instanceID){
 std::vector< std::vector<double> > qTable::toVector(){
 	// vector for all state/action-values in qTable
 	std::vector< std::vector<double> > t;
-	// vector for state/action-value
-	std::vector<double> v;
+	
 	// string for state variables
 	std::string val = "";
 	// iterate through qTable
 	std::map<std::string,double>::iterator iter;
 	for ( iter = tab.begin(); iter != tab.end(); ++iter ) {
+		// vector for state/action-value
+		std::vector<double> v;
+		// fix for game beginning state = 0
+		if ( iter->first == "0" ){
+			continue;
+		}
 		// get state variables
 		for ( size_t i = 0; i < iter->first.length(); i++ ) {
 			// split vars on comma delimiter
