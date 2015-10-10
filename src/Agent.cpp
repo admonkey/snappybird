@@ -51,7 +51,7 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 
 	#ifdef NNET
 	AgentSettingsJSON["nnet"] = true;
-	nn.m_layers.push_back(new Layer(4, 16));
+	nn.m_layers.push_back(new Layer(5, 16));
 	nn.m_layers.push_back(new Layer(16, 1));
 	nn.init();
 
@@ -64,7 +64,7 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	// train nnet
 	std::cout << "Training...\n";
 	std::vector<double> in;
-	in.resize(4);
+	in.resize(5);
 	std::vector<double> out;
 	out.resize(1);
 	for ( size_t i = 0; i < tabVec.size(); i++ ){
@@ -73,23 +73,24 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 		in[1] = tabVec[i][1];
 		in[2] = tabVec[i][2];
 		in[3] = tabVec[i][3];
-		out[0] = tabVec[i][4];
-		//for ( int i = 0; i < 500; i++ ) // calling refine multiple times has no effect on sse
+		in[4] = tabVec[i][4];
+		out[0] = tabVec[i][5];
+		//for ( int i = 0; i < 100; i++ ) // calling refine multiple times has no effect on sse
 			nn.refine(in, out, 0.02);
 	}
 
 	// Test it
 	std::cout << "Testing...\n";
 	double sse = 0.0;
-	int testPatterns = 100;
 	for( size_t i = 0; i < tabVec.size(); i++ )
 	{
 		in[0] = tabVec[i][0];
 		in[1] = tabVec[i][1];
 		in[2] = tabVec[i][2];
 		in[3] = tabVec[i][3];
+		in[4] = tabVec[i][4];
 		const vector<double>& prediction = nn.forward_prop(in);
-		out[0] = tabVec[i][4];
+		out[0] = tabVec[i][5];
 		double err0 = out[0] - prediction[0];
 		sse += (err0 * err0);
 	}

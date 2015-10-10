@@ -129,6 +129,9 @@ std::vector< std::vector<double> > qTable::toVector(){
 				val = "";
 			}
 		}
+		// add action (last value in string) to vector
+		v.push_back(   atof( val.c_str() )   );
+		val = "";
 		// get q value
 		v.push_back( iter->second );
 		// add state/action-value to table vector
