@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 				m.reset();
 				if( (c.viewOn) || (games % 100 == 0) ){
 					cout << "totalGames: " << totalGames;
-					cout << " totalHighScore: " << totalHighScore << " totalBestGame: " << totalBestGame + bestGame;
+					cout << " totalHighScore: " << totalHighScore << " totalBestGame: " << totalBestGame;
 					cout << " highScore: " << highScore << " bestGame: " << bestGame;
 					cout << " lastScore: " << lastScore << " games: " << games << " training: " << (((double)frames / (double)trainingFrames) * 100) << "%\n";
 				}
