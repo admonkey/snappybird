@@ -53,6 +53,7 @@ public:
 	void exploit();
 	bool exploration();
 	void flap(bool flap);
+	double getQ(std::string stateAction);
 };
 
 #endif // AGENT_H

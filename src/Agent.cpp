@@ -160,8 +160,8 @@ bool Agent::update()
 	
 	// agent decision process
 	if(playing){
-		qFlap 	= qt.getQ( previousState + to_str(true) );
-		qNoFlap	= qt.getQ( previousState + to_str(false) );
+		qFlap 	= getQ( previousState + to_str(true) );
+		qNoFlap	= getQ( previousState + to_str(false) );
 		if( exploration() )
 			explore();
 		else 	exploit();
@@ -183,10 +183,14 @@ double Agent::calculateQ()
 		qvalue = -1;
 
 	// add discounted max next state
-	double qFlap 	= qt.getQ( state.toCSV() + to_str(true) );
-	double qNoFlap 	= qt.getQ( state.toCSV() + to_str(false) );
+	double qFlap 	= getQ( state.toCSV() + to_str(true) );
+	double qNoFlap 	= getQ( state.toCSV() + to_str(false) );
 	double maxQ = std::max(qFlap, qNoFlap);
 	qvalue += (discountFactor * maxQ);
 
 	return qvalue;
+}
+
+double Agent::getQ(std::string stateAction){
+	return qt.getQ(stateAction);
 }
