@@ -116,6 +116,10 @@ std::string State::toClassicStateCSV()
 }
 
 std::vector<double> State::toVector(){
+	return toClassicStateVector();
+}
+
+std::vector<double> State::toClassicStateVector(){
 	std::vector<double> vec;
 	return vec;
 }

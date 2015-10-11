@@ -31,6 +31,7 @@ public:
 	void defaultState();
 	void ClassicStateVars();
 	std::vector<double> toVector();
+	std::vector<double> toClassicStateVector();
 };
 
 #endif // STATE_H
