@@ -80,9 +80,12 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 	}
 
 	// Test it
-	std::cout << "Testing...\n";
 	double sse = 0.0;
-	for( size_t i = 0; i < tabVec.size(); i++ )
+	int sample = 100;
+	if ( tabVec.size() < sample )
+		sample = tabVec.size();
+	std::cout << "Testing " << sample << " samples...\n";
+	for( size_t i = 0; i < sample; i++ )
 	{
 		in[0] = tabVec[i][0];
 		in[1] = tabVec[i][1];
@@ -91,10 +94,12 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 		in[4] = tabVec[i][4];
 		const vector<double>& prediction = nn.forward_prop(in);
 		out[0] = tabVec[i][5];
+		//std::cout << "prediction: " << prediction[0] << "\n";
+		//std::cout << "actual: " << out[0] << " samples...\n";
 		double err0 = out[0] - prediction[0];
 		sse += (err0 * err0);
 	}
-	double rmse = std::sqrt( sse / tabVec.size() );
+	double rmse = std::sqrt( sse / sample );
 	if(rmse < 0.05)
 		std::cout << "Passed.\n";
 	else
