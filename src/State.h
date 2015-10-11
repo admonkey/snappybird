@@ -30,6 +30,7 @@ public:
 	std::string toClassicStateCSV();
 	void defaultState();
 	void ClassicStateVars();
+	std::vector<double> toVector();
 };
 
 #endif // STATE_H

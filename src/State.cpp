@@ -114,3 +114,8 @@ std::string State::toClassicStateCSV()
 	s += "," + to_str(m_model.bird.vert_vel / discretizer) + ",";
 	return s;
 }
+
+std::vector<double> State::toVector(){
+	std::vector<double> vec;
+	return vec;
+}
