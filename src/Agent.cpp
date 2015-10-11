@@ -153,7 +153,7 @@ void Agent::flap(bool flap)
 bool Agent::update()
 {
 	// update qTable
-	qt.setQ(previousState + to_str(flapped), calculateQ());
+	setQ(previousState + to_str(flapped), calculateQ());
 
 	// save state for next frame
 	previousState = state.toCSV();
@@ -193,4 +193,8 @@ double Agent::calculateQ()
 
 double Agent::getQ(std::string stateAction){
 	return qt.getQ(stateAction);
+}
+
+void Agent::setQ(std::string stateAction, double q){
+	qt.setQ(stateAction, q);
 }

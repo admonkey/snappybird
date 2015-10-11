@@ -54,6 +54,7 @@ public:
 	bool exploration();
 	void flap(bool flap);
 	double getQ(std::string stateAction);
+	void setQ(std::string stateAction, double q);
 };
 
 #endif // AGENT_H
