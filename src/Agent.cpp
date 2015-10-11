@@ -172,11 +172,6 @@ bool Agent::update()
 
 double Agent::calculateQ()
 {
-	/*// combine previous state with last action
-	std::string s;
-	s = previousState;
-	s += to_str(flapped);*/
-	
 	// current reward
 	double 	qvalue = 0.01;
 	if(died)
