@@ -152,16 +152,34 @@ void Agent::flap(bool flap)
 
 bool Agent::update()
 {
-	// update qTable
-	setQ(previousStateString + to_str(flapped), calculateQ());
-
-	// save state for next frame
-	previousStateString = state.toCSV();
+	// update qTable, save state for next frame, & get flap/noflap prediction
+	if (AgentSettingsJSON["nnet"] == true) {
+		// update
+		previousStateVector.push_back( flapped?1.0:0.0 );
+		setQ( previousStateVector, calculateQ() );
+		// save
+		previousStateVector.clear();
+		previousStateVector = state.toVector();
+		// predict
+		std::vector<double> fv = previousStateVector; // deep copy
+		fv.push_back(1.0);
+		qFlap 	= getQ( fv );
+		std::vector<double> nfv = previousStateVector; // deep copy
+		nfv.push_back(1.0);
+		qNoFlap	= getQ( nfv );
+	}
+	else {
+		// update
+		setQ(previousStateString + to_str(flapped), calculateQ());
+		// save
+		previousStateString = state.toCSV();
+		// predict
+		qFlap 	= getQ( previousStateString + to_str(true) );
+		qNoFlap	= getQ( previousStateString + to_str(false) );
+	}
 	
 	// agent decision process
 	if(playing){
-		qFlap 	= getQ( previousStateString + to_str(true) );
-		qNoFlap	= getQ( previousStateString + to_str(false) );
 		if( exploration() )
 			explore();
 		else 	exploit();
@@ -178,9 +196,20 @@ double Agent::calculateQ()
 		qvalue = -1;
 
 	// add discounted max next state
-	double qFlap 	= getQ( state.toCSV() + to_str(true) );
-	double qNoFlap 	= getQ( state.toCSV() + to_str(false) );
-	double maxQ = std::max(qFlap, qNoFlap);
+	double qf, qnf;
+	if (AgentSettingsJSON["nnet"] == true) {
+		std::vector<double> fv = state.toVector();
+		fv.push_back(1.0);
+		qf = getQ( fv );
+		std::vector<double> nfv = state.toVector();
+		nfv.push_back(0.0);
+		qnf = getQ( nfv );
+	}
+	else {
+		qf = getQ( state.toCSV() + to_str(true) );
+		qnf = getQ( state.toCSV() + to_str(false) );
+	}
+	double maxQ = std::max(qf, qnf);
 	qvalue += (discountFactor * maxQ);
 
 	return qvalue;
