@@ -24,7 +24,7 @@
 #include <cmath>
 
 Agent::Agent(Model& model, Json::Value& importJSON)
-: 	randNum(0), m_model(model), state(model, importJSON), previousState(""), died(false), flapped(false),
+: 	randNum(0), m_model(model), state(model, importJSON), previousStateString(""), died(false), flapped(false),
 	playing(true), viewMax(false), qFlap(0), qNoFlap(0), 
 	rand(0), nn(rand)
 {
@@ -153,15 +153,15 @@ void Agent::flap(bool flap)
 bool Agent::update()
 {
 	// update qTable
-	setQ(previousState + to_str(flapped), calculateQ());
+	setQ(previousStateString + to_str(flapped), calculateQ());
 
 	// save state for next frame
-	previousState = state.toCSV();
+	previousStateString = state.toCSV();
 	
 	// agent decision process
 	if(playing){
-		qFlap 	= getQ( previousState + to_str(true) );
-		qNoFlap	= getQ( previousState + to_str(false) );
+		qFlap 	= getQ( previousStateString + to_str(true) );
+		qNoFlap	= getQ( previousStateString + to_str(false) );
 		if( exploration() )
 			explore();
 		else 	exploit();

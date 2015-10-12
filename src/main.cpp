@@ -165,8 +165,10 @@ int main(int argc, char *argv[])
 			}
 
 			c.update();
-			if(c.agent.died)
-				c.agent.previousState = "";
+			if(c.agent.died){ // needs less sloppy implementation, such as agent.died() method.
+				c.agent.previousStateString = "";
+				c.agent.previousStateVector.clear();
+			}
 		}
 		time_t end = time(0);
 		if(c.viewOn) mili_sleep(1000);

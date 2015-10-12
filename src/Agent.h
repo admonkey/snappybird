@@ -29,7 +29,8 @@ public:
 	Rand randNum;
 	Model& m_model;
 	State state;
-	std::string previousState;
+	std::string previousStateString;
+	std::vector<double> previousStateVector;
 	bool died;
 	bool flapped;
 	#define QTABLE
