@@ -193,3 +193,14 @@ double Agent::getQ(std::string stateAction){
 void Agent::setQ(std::string stateAction, double q){
 	qt.setQ(stateAction, q);
 }
+
+double Agent::getQ(std::vector<double> stateAction){
+	const vector<double>& prediction = nn.forward_prop(stateAction);
+	return prediction[0];
+}
+
+void Agent::setQ(std::vector<double> stateAction, double q){
+	std::vector<double> out;
+	out.push_back(q);
+	nn.refine(stateAction, out, 0.02);
+}

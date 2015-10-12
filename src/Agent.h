@@ -55,6 +55,8 @@ public:
 	void flap(bool flap);
 	double getQ(std::string stateAction);
 	void setQ(std::string stateAction, double q);
+	double getQ(std::vector<double> stateAction);
+	void setQ(std::vector<double> stateAction, double q);
 };
 
 #endif // AGENT_H
