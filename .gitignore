@@ -1,8 +1,0 @@
-# snappy unnecessaries #
-########################
-obj/
-bin/*
-img/
-*qtable
-maxpipecalcs
-*test*
