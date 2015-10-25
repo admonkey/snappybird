@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 		int trainingFrames = 10000000;
 
 		time_t start = time(0);
-		while(keepRunning && frames < trainingFrames)
+		while(keepRunning)
 		{
 			// if bird dies, update stats & reset game
 			if(!m.update()){
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
 				lastScore = m.score;
 
 				m.reset();
-				if( (c.viewOn) || (games % 100 == 0) ){
+				if( (c.viewOn) ){
 					cout << "totalGames: " << totalGames;
 					cout << " totalHighScore: " << totalHighScore << " totalBestGame: " << totalBestGame;
 					cout << " highScore: " << highScore << " bestGame: " << bestGame;

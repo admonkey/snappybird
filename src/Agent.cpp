@@ -51,8 +51,8 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 
 	#ifdef NNET
 	AgentSettingsJSON["nnet"] = true;
-	nn.m_layers.push_back(new Layer(5, 16));
-	nn.m_layers.push_back(new Layer(16, 1));
+	nn.m_layers.push_back(new Layer(5, 32));
+	nn.m_layers.push_back(new Layer(32, 1));
 	nn.init();
 
 	// get vector from shuffled qTable
@@ -76,7 +76,7 @@ Agent::Agent(Model& model, Json::Value& importJSON)
 		in[4] = tabVec[i][4];
 		out[0] = tabVec[i][5];
 		//for ( int i = 0; i < 100; i++ ) // calling refine multiple times has no effect on sse
-			nn.refine(in, out, 0.02);
+			nn.refine(in, out, 0.1);
 	}
 
 	// Test it
@@ -191,9 +191,9 @@ bool Agent::update()
 double Agent::calculateQ()
 {
 	// current reward
-	double 	qvalue = 0.01;
+	double 	qvalue = 0.00001;
 	if(died)
-		qvalue = -1;
+		qvalue = -0.01;
 
 	// add discounted max next state
 	double qf, qnf;
@@ -231,5 +231,6 @@ double Agent::getQ(std::vector<double> stateAction){
 void Agent::setQ(std::vector<double> stateAction, double q){
 	std::vector<double> out;
 	out.push_back(q);
-	nn.refine(stateAction, out, 0.02);
+	for(int i = 0; i < 10; i++)
+		nn.refine(stateAction, out, 0.1);
 }

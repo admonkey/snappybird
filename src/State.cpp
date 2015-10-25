@@ -130,18 +130,18 @@ std::vector<double> State::toClassicStateVector(){
 	  // next tube up/down
 	  vec.push_back( m_model.tubes[i]->up?1.0:0.0 );
 	  // difference between bird-y and tube-y
-	  vec.push_back( (m_model.bird.y - m_model.tubes[i]->y) / discretizer );
+	  vec.push_back( (double)((m_model.bird.y - m_model.tubes[i]->y) / discretizer)*0.001 );
 	  // difference between bird-x and tube-x
-	  vec.push_back( (m_model.tubes[i]->x - m_model.bird.x) / discretizer );
+	  vec.push_back( (double)((m_model.tubes[i]->x - m_model.bird.x) / discretizer)*0.001 );
 	}
 	else {
 	  vec.push_back( 1 );
-	  vec.push_back( (m_model.bird.y - 500) / discretizer );
-	  vec.push_back( 400 / discretizer );
+	  vec.push_back( (double)((m_model.bird.y - 500) / discretizer)*0.001 );
+	  vec.push_back( 0.4 / discretizer );
 	}
 
 	// bird-y velocity
-	vec.push_back( m_model.bird.vert_vel / discretizer );
+	vec.push_back( (double)(m_model.bird.vert_vel / discretizer)*0.01 );
 
 	return vec;
 }
