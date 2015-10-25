@@ -5,18 +5,21 @@ import javax.swing.Timer;
 import java.io.IOException;
 import java.awt.event.WindowEvent;
 import java.awt.Robot;
+import java.io.File;
 
 public class Game extends JFrame implements ActionListener {
 	Model model;
+	Controller controller;
 	View view;
 	Timer timer;
 	int ttl;
-	Robot robot;
+//	Robot robot;
 	int frame;
+	int gameNumber;
 
 	public Game() throws IOException, Exception {
 		this.model = new Model();
-		Controller controller = new Controller(this.model);
+		controller = new Controller(this.model);
 		this.view = new View(this.model);
 		addMouseListener(controller);
 		addKeyListener(controller);
@@ -26,24 +29,41 @@ public class Game extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocation(0,0);
 		this.setVisible(true);
-		this.robot = new Robot();
+//		this.robot = new Robot();
 		timer = new Timer(30, this);
 		timer.start(); // Indirectly calls actionPerformed at regular intervals
 	}
 
+	void train() throws Exception {
+		for(int i = 0; i < 100; i++) {
+			System.out.println(Integer.toString(i) + "%");
+			for(int j = 0; j < 100000; j++) {
+				if(!this.controller.update())
+					controller.reset();
+			}
+		}
+	}
+
 	public void actionPerformed(ActionEvent evt) {
-		if(ttl > 0)
-		{
-			if(--ttl == 0)
+		if(!this.controller.update()) {
+			controller.reset();
+			if(gameNumber == 0)
 			{
 				timer.stop();
-				dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+				try {
+					train();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				timer.start();
 			}
-			return;
+			controller.exploreRate = 0.0;
+			//controller.learn = false;
+			System.out.println("---------------------------");
+			gameNumber++;
 		}
-		if(!this.model.update())
-			ttl = 50;
-		robot.mouseMove(470 + (int)(20 * Math.cos(frame)), 70 + (int)(20 * Math.sin(frame++)));
+		frame++;
+//		robot.mouseMove(470 + (int)(20 * Math.cos(frame)), 70 + (int)(20 * Math.sin(frame++)));
 		view.invalidate();
 		repaint(); // Indirectly calls View.paintComponent
 	}
